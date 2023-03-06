@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>CHW Policy Dashboard</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css?family=Playfair Display" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
+
+  <style>
+   
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0px;
+      padding: 0px;
+      background-color: #F4F1EB;
+      font-size: 14pt;
+    }
+
+    /* Container for the page */
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Container for header elements */
+    .header {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      flex-wrap: nowrap;
+      width: 100%;
+      height: 20%;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    /* Child containers within header */
+    .left {
+      position: relative;
+      height: 100%;
+      width: 60%;
+      display: flex;
+      flex-wrap: nowrap;
+      margin-left: 20px;
+    }
+
+    .right {
+      position: relative;
+      height: 100%;
+      width: 40%;
+      font-family: "Anton";
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 2vw;
+      border: 3px solid #340C2F;
+      border-radius: 8px;
+      padding: 30px;
+      margin-right: 20px;
+      margin-left: 20px;
+      margin-top: 20px;
+    }
+
+    /* "Submit additional country details" link design */
+    #right a {
+      color: #F36744;
+      text-justify: center;
+    }
+
+    #right a:link {
+      text-decoration: none;
+    }
+
+    #right a:visited {
+      text-decoration: none;
+    }
+
+    /* Total accredited & salaried */
+    #totaltext {
+      position: relative;
+      color: #340C2F;
+      font-family: Anton;
+      font-size: 2vw;
+      overflow-wrap: normal;
+      height: 100%;
+      vertical-align: middle;
+      margin-top: 10px;
+    }
+
+    #total_accredited_and_salaried {
+      position: relative;
+      background-color: #F36744;
+      color: #F4F1EB;
+      font-family: Anton;
+      font-size: 4vw;
+      justify-content: center;
+      vertical-align: middle;
+      height: 100%;
+      padding-left: 20px;
+      padding-right: 20px;
+      margin-right: 20px;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+
+    /* Map positioning */
+    #map {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 80%;
+      width: 70%;
+    }
+
+    /* Map overlays */
+    .legend {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: #fff;
+      margin-left: 20px;
+      font-family: sans-serif;
+      overflow: auto;
+      border-radius: 3px;
+      padding: 10px;
+      line-height: 18px;
+      font-family: sans-serif;
+    }
+
+    #legend {
+      padding: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      line-height: 24px;
+      margin-bottom: 40px;
+    }
+
+    .legend-key {
+      display: inline-block;
+      border-radius: 20%;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+    }
+
+    .legenditems {
+      display: inline-block;
+    }
+
+    h4 {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    /* Popup design */
+    .mapboxgl-popup-content {
+      font: 'Helvetica Neue', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+    }
+
+    /* Sidebar design */
+    #sidebar {
+      color: #F4F1EB;
+      background-color: #4F2049;
+      position: absolute;
+      width: 30%;
+      height: 80%;
+      bottom: 0;
+      right: 0;
+      padding: 30px;
+    }
+
+    .country_details * {
+      font-family: sans-serif;
+      margin-bottom: 20px;
+      font-size: .9vw;
+      line-height: 1.5em;
+    }
+
+    #country_name {
+      font-size: 2vw;
+      text-transform: uppercase;
+      font-family: Anton;
+    }
+
+    #policy_link a {
+      color: #F4F1EB;
+      font-weight: bold;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      bottom: 20px;
+      padding-top: 40px;
+      font-size: .8vw;
+    }
+
+    #links a {
+      font-family: sans-serif;
+      color: #F4F1EB;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    /* Button design */
+    .buttoncontainer {
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 20px;
+      margin-bottom: 20px;
+      margin-left: 20px;
+    }
+
+    .button * {
+      flex: 1;
+    }
+
+    button {
+      background-color: #F4F1EB;
+      color: #340C2F;
+      padding: 10px;
+      border-color: #340C2F;
+      border-radius: 8px;
+      font-family: "Anton";
+      text-transform: uppercase;
+      font-size: 1em;
+    }
+
+    #buttoncontainer {
+      position: absolute;
+      top: 23%;
+      left: 0;
+      margin-left: 10px;
+      width: 75%;
+    }
+
+    button:hover {
+      background: #fff;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Page congainer -->
+  <div id="container" class="container">
+
+    <!-- Header container, with title, subtitle, proCHW total, and accompanying text -->
+    <div id="header" class="header">
+
+      <!-- Left side of header -->
+      <div id="left" class="left">
+        <div id="total_accredited_and_salaried" class="total"></div>
+        <div id="totaltext" class="totaltext">COUNTRIES CURRENTLY HAVE ONE OR MORE CHW CADRES WHO ARE ACCREDITED AND
+          SALARIED</div>
+      </div>
+
+      <!-- Right side of header -->
+      <div id="right" class="right">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdP_DzqfOZBhdXScixixzYs1ZxPLmo0iSTNg3kwZaq8Ex-7OA/viewform?usp=sf_link"
+          target="_blank">
+          Submit additional country details here!
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Map and sidebar container, for rest of page -->
+    <div id="mapandsidebarcontainer" class="mapandsidebarcontainer">
+
+      <!-- Map container with map inside -->
+      <div class="mapcontainer">
+        <div id="map" class="map"></div>
+      </div>
+
+      <!-- Map overlays, including legend and buttons -->
+      <div id="legend" class="legend">
+        <h4 id="legend_title"></h4>
+        <div id="legenditems"></div>
+      </div>
+
+      <!-- Button container -->
+      <div id="buttoncontainer">
+        <button id="accredited_chws_button" class="button">Accredited CHWs</button>
+        <button id="salaried_chws_button" class="button">Salaried CHWs</button>
+        <button id="accredited_and_salaried_chws_button" class="button">Accredited & Salaried CHWs</button>
+      </div>
+
+      <!-- Sidebar -->
+      <div id='sidebar' class='content'>
+
+        <!-- Country details section within sidebar -->
+        <div id='country_details' class='country_details'>
+
+          <div id="country_name">
+            Hover over a country or click to see details
+          </div>
+          <div id="num_cadres"></div>
+          <div id="num_paid_accredited_chw_cadres"></div>
+          <div id="cadre_names_combined"></div>
+          <div id="chw_policy_implementation"></div>
+          <div id="policy_status"></div>
+          <div id="policy_years_covered"></div>
+          <div id="date_last_updated"></div>
+          <div id="policy_link"></div>
+          <div id="links" class="links">
+            <a href="https://docs.google.com/spreadsheets/d/11L5hMFGt3b1itg13PoIW2nfKaPCFb-s3T8UmU70A11w/edit#gid=870974579"
+              target="_blank">
+              See raw data here.
+            </a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdP_DzqfOZBhdXScixixzYs1ZxPLmo0iSTNg3kwZaq8Ex-7OA/viewform?usp=sf_link"
+              target="_blank">
+              See something missing? Submit additional country details here!
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+<script>
+
+  // Initialize data
+  let csv_data = false
+
+  // Basemap info
+  mapboxgl.accessToken = 'pk.eyJ1Ijoiam1kb3duZXkiLCJhIjoiY2xkZDljdTBwMDFlNDN2b3pqYmhwNnh1NSJ9.UIef5KlMG_Ulx-LZ1GNgkA';
+  const map = new mapboxgl.Map({
+    container: 'map', // container ID
+    style: 'mapbox://styles/jmdowney/cleeyi8mb000p01mdl1yktxww', // style URL
+    center: [-3.0, 10.0], // starting position [lng, lat]
+    zoom: 2 // starting zoom
+  });
+
+  // Create function to build a legend
+  function buildLegend(legendColors, legendValues) {
+    // First empty legend items
+    const item = $('#legenditems')
+    item.empty()
+    legendValues.forEach((legendValue, i) => {
+      const color = legendColors[i];
+      // const item = document.createElement('div')
+      const key = document.createElement('span')
+      key.className = 'legend-key';
+      key.style.backgroundColor = color
+
+      const value = document.createElement('span');
+      value.innerHTML = `${legendValue}`;
+      item.append(key);
+      item.append(value);
+      item.append(document.createElement("br"));
+    })
+  }
+
+  // Create function to define how colors are added to map and to build the legend
+  function setColorsToMap(indicator_name) {
+
+    // Initialize arrays for the map colors, the legend colors, and the legend values
+    var caseExpression = []
+
+    // If indicator is paid_accredited_cat:
+    if (indicator_name == "paid_accredited_cat") {
+
+      // Initialize arrays for all possible values of this indicator
+      let both_array = []
+      let one_array = []
+      let neither_array = []
+      let na_array = []
+
+      // Push ISO codes from csv data to arrays based on values
+      csv_data.forEach((row) => {
+        if (row[indicator_name] == "Both") {
+          both_array.push(row.ISO_A3)
+        }
+        if (row[indicator_name] == "Only paid or only accredited") {
+          one_array.push(row.ISO_A3)
+        }
+        if (row[indicator_name] == "Neither") {
+          neither_array.push(row.ISO_A3)
+        }
+        if (row[indicator_name] == "Data not available") {
+          na_array.push(row.ISO_A3)
+        }
+      })
+
+      // Set Mapbox colors based on arrays
+      var caseExpression = [
+        'case',
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", both_array]], "#340c2f",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", one_array]], "#ba55ad",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", neither_array]], "#e8c6e4",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", na_array]], "#999999",
+        "#dbdbdb"
+      ]
+
+      // Set legend title, colors and values manually
+      $('#legend_title').text("Is at least one CHW cadre salaried & accredited?")
+      const legendColors = ["#340c2f", "#ba55ad", "#e8c6e4", "#999999", "#dbdbdb"]
+      const legendValues = ["Both", "Only salaried or only accredited", "Neither", "Data not available", "Out of scope"]
+
+      // Now build legend
+      buildLegend(legendColors, legendValues)
+
+    }
+    // Else if indicator is at_least_1_accredited:
+    if (indicator_name == "at_least_1_accredited") {
+
+      // Initialize arrays for all possible values of this indicator
+      let y_array = []
+      let n_array = []
+      let na_array = []
+
+      // Push ISO codes from csv data to arrays based on values
+      csv_data.forEach((row) => {
+        if (row[indicator_name] == "Yes") {
+          y_array.push(row.ISO_A3)
+        }
+        if (row[indicator_name] == "No") {
+          n_array.push(row.ISO_A3)
+        }
+        if (row[indicator_name] == "Data not available") {
+          na_array.push(row.ISO_A3)
+        }
+      })
+
+      // Set Mapbox colors based on arrays
+      var caseExpression = [
+        'case',
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", y_array]], "#9272d9",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", n_array]], "#e9e3f7",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", na_array]], "#999999",
+        "#dbdbdb"
+      ]
+
+      // Set legend title, colors and values manually
+      $('#legend_title').text("Is at least one CHW cadre accreditd?")
+      var legendColors = ["#9272d9", "#e9e3f7", "#999999", "#dbdbdb"]
+      var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
+
+      // Now build legend
+      buildLegend(legendColors, legendValues)
+
+    }
+    // Else if indicator is at_least_1_salaried:
+    if (indicator_name == "at_least_1_salaried") {
+
+      // Initialize arrays for all possible values of this indicator
+      let y_array = []
+      let n_array = []
+      let na_array = []
+
+      // Push ISO codes from csv data to arrays based on values
+      csv_data.forEach((row) => {
+        if (row[indicator_name] == "Yes") {
+          y_array.push(row.ISO_A3)
+        }
+        if (row[indicator_name] == "No") {
+          n_array.push(row.ISO_A3)
+        }
+        if (row[indicator_name] == "Data not available") {
+          na_array.push(row.ISO_A3)
+        }
+      })
+
+      // Set Mapbox colors based on arrays
+      var caseExpression = [
+        'case',
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", y_array]], "#20bdc5",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", n_array]], "#cff5f7",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", na_array]], "#999999",
+        "#dbdbdb"
+      ]
+
+      // Set legend title, colors and values manually
+      $('#legend_title').text("Is at least one CHW cadre salaried?")
+      var legendColors = ["#20bdc5", "#cff5f7", "#999999", "#dbdbdb"]
+      var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
+
+      // Now build legend
+      buildLegend(legendColors, legendValues)
+
+    }
+
+    // Now, based on results of if statements and indicator selected, set map colors 
+    map.setPaintProperty('country-boundaries', 'fill-color', caseExpression)
+
+  };
+
+  // Create function to sum counts for tickers
+  function sumIndicators(sum_indicator_name) {
+
+    let indicator_array = []
+
+    csv_data.forEach((row) => {
+      if (row[sum_indicator_name] == "Yes") {
+        indicator_array.push(row.ISO_A3)
+      }
+    })
+
+    return indicator_sum = indicator_array.length
+
+  };
+
+  // Resize map to its container on map render
+  map.on('render', function () {
+    map.resize();
+  });
+
+  // On map load, load csv data, color the map, load top scorecards, and set up for populating sidebar and hovers
+  map.on('load', () => {
+
+    // Fetch CSV data - this is where CHIC team will update data quarterly
+    const sheetId = '2PACX-1vTFp80t17bKRZM7cYSzeARNE5pd7LPIy2hWQQUwFqLOASzE4hDrsuygRqdAdfLCn0yl3WXqL80fJWAb'
+    fetch(`https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`)
+      .catch(err => console.error(err))
+      .then(resp => resp.text())
+      .then(response => {
+        csv().fromString(response)
+          .then(rows => {
+            csv_data = rows
+
+            // Initialize map with data for proCHW indicator
+            setColorsToMap("paid_accredited_cat")
+
+            // Add scorecard at top based on csv data
+            const total_accredited_and_salaried = sumIndicators("at_least_1_paid_accredited")
+            $('#total_accredited_and_salaried').text(total_accredited_and_salaried + "/137")
+
+            setTimeout(() => {
+              map.setPaintProperty('country-boundaries', 'fill-opacity', 1)
+            }, 1000)
+
+          })
+      })
+
+    // Add event listeners for button clicks to change the map based on the indicator selected
+    $("#accredited_chws_button").click(function () {
+      setColorsToMap("at_least_1_accredited")
+    });
+
+    $("#salaried_chws_button").click(function () {
+      setColorsToMap("at_least_1_salaried")
+    });
+
+    $("#accredited_and_salaried_chws_button").click(function () {
+      setColorsToMap("paid_accredited_cat")
+    });
+
+    // Populate sidebar upon click
+    map.on('click', 'country-boundaries', (e) => {
+
+      const thisCountry = csv_data.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
+
+      if (thisCountry) {
+
+        $("#country_name").text(thisCountry.country)
+        $("#num_cadres").text("# of CHW Cadres: " + thisCountry.cadre_count)
+        $("#num_paid_accredited_chw_cadres").text("# of Salaried & Accredited CHW Cadres: " + thisCountry.paid_accredited_count)
+        $("#cadre_names_combined").text("Cadre Name(s): " + thisCountry.cadre_names_combined)
+        $("#chw_policy_implementation").text("CHW Policy Implementation: " + thisCountry.implementation_combined)
+        $("#policy_status").text("Policy Status: " + thisCountry.policy_status)
+        $("#policy_years_covered").text("Policy Years Covered: " + thisCountry.policy_years_covered)
+        $("#date_last_updated").text("Last Updated: " + thisCountry.date_last_updated)
+        // For policy links, first determine if the link is available
+        if (thisCountry.policy_link != "Out of scope" && thisCountry.policy_link != "Data not available") {
+          // If available, link it
+          const link = thisCountry.policy_link
+          $("#policy_link").html('<a href=' + link + ' target="_blank">See the policy here!</a>')
+        } else {
+          // If link not available, make div blank
+          $("#policy_link").text("")
+        }
+      }
+
+    });
+
+    // Create popup on hover
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false
+    });
+
+    map.on('mousemove', 'country-boundaries', (e) => {
+
+      map.getCanvas().style.cursor = 'pointer'
+
+      const thisCountry = csv_data.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
+
+      if (thisCountry) {
+
+        popup.setLngLat(e.lngLat)
+          .setHTML(
+            `
+                        <div>
+                        ${thisCountry.country}<br> 
+                        At least 1 cadre accredited:
+                        ${thisCountry.at_least_1_accredited}<br>
+                        At least 1 cadre salaried:
+                        ${thisCountry.at_least_1_salaried}
+                        </div>
+                        `
+          )
+          .addTo(map)
+
+      }
+
+    });
+
+    map.on('mouseleave', 'country-boundaries', (e) => {
+
+      map.getCanvas().style.cursor = '';
+      popup.remove();
+
+    });
+
+  });
+
+</script>
+
+</body>
+
+</html>
