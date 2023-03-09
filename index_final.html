@@ -338,11 +338,12 @@
       .submitlink {
         text-justify: center;
         background-color: #20BDC5;
-        font-family: "Playfair Display";
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
         text-align: center;
         vertical-align: middle;
-        font-size: 1.5vw;
-        font-weight: bold;
+        font-size: 1.1vw;
+        /* font-weight: bold; */
+        text-transform: uppercase;
         /* border: 3px solid #340C2F; */
         border-radius: 6px;
         padding: 1rem;
@@ -365,12 +366,14 @@
       #totaltext {
         color: #340C2F;
         font-family: Anton;
-        font-size: clamp(1rem, 2vw, 4rem);
+        font-size: clamp(1rem, 3vw, 4rem);
         overflow-wrap: normal;
         vertical-align: middle;
         margin-top: 1rem;
         margin-bottom: 1.5rem;
         margin-right: 1.5rem;
+        line-height: 1.1em;
+
       }
 
       #total_accredited_and_salaried {
@@ -442,14 +445,6 @@
       }
 
       /* Sidebar design */
-      /* .sidebar {
-        color: #F4F1EB;
-        background-color: #4F2049;
-        padding: 1.5rem;
-        width: 100%;
-        font-size: 1.6vh;
-      } */
-
       .country_details * {
         font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
         margin-bottom: 1rem;
@@ -460,6 +455,7 @@
         font-size: 2vw;
         text-transform: uppercase;
         font-family: Anton;
+        line-height: 1.1em;
       }
 
       #policy_link a {
@@ -494,9 +490,9 @@
       /* Button design */
       .button {
         background-color: #F4F1EB;
-        color: #340C2F;
+        color: #4F2049;
         padding: 10px;
-        border-color: 1px solid #340C2F;
+        border: 1px solid #4F2049;
         border-radius: 5px;
         font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
         font-size: .8em;
@@ -607,7 +603,7 @@
         <div id="submitlink" class="submitlink">
           <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQfSZ9YG6ecSnWiBoUshtKBRGXVyYPt4Hfo_nx4ugBFkaEww/viewform"
             target="_blank">
-            Submit additional country details here!
+            Submit additional country details here
           </a>
         </div>
       </div>
@@ -930,6 +926,8 @@
     // Populate sidebar upon click
     map.on('click', 'country-boundaries', (e) => {
 
+      console.log(e)
+
       const thisCountry = csv_data.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
 
       if (thisCountry) {
@@ -968,8 +966,6 @@
       const thisCountry = csv_data.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
 
       if (thisCountry) {
-
-        console.log(e.features[0].properties.iso_3166_1_alpha_3)
 
         popup.setLngLat(e.lngLat)
           .setHTML(
