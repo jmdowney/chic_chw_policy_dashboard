@@ -91,7 +91,7 @@
         font-size: 3vw;
         text-align: center;
         vertical-align: middle;
-        background-color: #F36744;
+        background-color: #9272d9;
         margin: 1rem;
         padding: .5rem;
         border-radius: 3px;
@@ -213,6 +213,7 @@
         height: 35%;
         font-size: .5rem;
         overflow: scroll;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
       }
 
       .country_details * {
@@ -245,7 +246,7 @@
         position: absolute;
         bottom: 0;
         padding-bottom: .5rem;
-        line-height: 1em;
+        line-height: 1.5em;
       }
 
       #sidebarsubmitlink a {
@@ -378,7 +379,7 @@
         font-size: 3.3vw;
         text-align: center;
         vertical-align: middle;
-        background-color: #F36744;
+        background-color: #9272d9;
         margin: 1rem;
         padding: 1rem;
         border-radius: 6px;
@@ -479,6 +480,7 @@
         bottom: 0;
         padding-bottom: 1rem;
         line-height: 2em;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
       }
 
       #sidebarsubmitlink a {
@@ -494,18 +496,25 @@
         background-color: #F4F1EB;
         color: #340C2F;
         padding: 10px;
-        border-color: #340C2F;
-        border-radius: 3px;
+        border-color: 1px solid #340C2F;
+        border-radius: 5px;
         font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        /* text-transform: uppercase; */
-        /* font-weight: bold; */
         font-size: .8em;
+        font-weight: bold;
+        text-align: center;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+        margin: 0;
+        opacity: 0.8;
       }
 
       .button.active {
         background: #4F2049;
         color: #F4F1EB;
         font-weight: bold;
+        opacity: 1;
       }
 
       #buttoncontainer {
@@ -519,6 +528,7 @@
         background: #4F2049;
         color: #F4F1EB;
         font-weight: bold;
+        border-color: 1px solid #4F2049;
       }
 
       /* Button hover (definition) design */
@@ -595,7 +605,7 @@
       <!-- Right side of header -->
       <div class="header-section right">
         <div id="submitlink" class="submitlink">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdP_DzqfOZBhdXScixixzYs1ZxPLmo0iSTNg3kwZaq8Ex-7OA/viewform?usp=sf_link"
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQfSZ9YG6ecSnWiBoUshtKBRGXVyYPt4Hfo_nx4ugBFkaEww/viewform"
             target="_blank">
             Submit additional country details here!
           </a>
@@ -617,17 +627,17 @@
 
     <!-- Button container -->
     <div id="buttoncontainer">
-      <button id="accredited_chws_button" class="button">Accredited CHWs
+      <button id="accredited_chws_button" class="button">ACCREDITED CHWS
         <div class="accredited_chws_button_def">Does the country policy document explicitly recognize roles,
           qualifications, and competencies for CHWs?</div>
       </button>
-      <button id="salaried_chws_button" class="button">Salaried CHWs
+      <button id="salaried_chws_button" class="button">SALARIED CHWS
         <div class="salaried_chws_button_def"> Does the policy document provide for CHWs to be compensated through
           government wage bills? (N.B. policies that stipulate CHW remuneration via performance-based incentives,
           stipends, and/or non-financial incentives like gumboots, t-shirts, soap, and batteries were coded as “No”)
         </div>
       </button>
-      <button id="accredited_and_salaried_chws_button" class="button">Accredited & Salaried CHWs
+      <button id="accredited_and_salaried_chws_button" class="button">ACCREDITED & SALARIED CHWS
         <div class="accredited_and_salaried_chws_button_def">For purposes of this dashboard, we focus on two of the
           eight best practices that are indicative of formal, fulfilling, and dignified labor conditions and for which
           sufficient data exists in policy documents: accreditation and compensation.</div>
@@ -650,16 +660,14 @@
         <div id="policy_years_covered"></div>
         <div id="links" class="links">
           <div id="policy_link"></div>
-          <a href="https://docs.google.com/spreadsheets/d/11L5hMFGt3b1itg13PoIW2nfKaPCFb-s3T8UmU70A11w/edit#gid=870974579"
-            target="_blank">
-            See the raw data here.
+          <a href="https://docs.google.com/spreadsheets/d/1LTB8mJ566h_z1RJEn3D2StMElgN0MMfripYmhaeSQ3Y/export?format=csv">
+            Download the raw data here.
           </a>
         </div>
       </div>
       <div id="bottom" class="bottom">
         <div id="sidebarsubmitlink" class="sidebarsubmitlink">
-          <a style="font-family: Playfair Display"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSdP_DzqfOZBhdXScixixzYs1ZxPLmo0iSTNg3kwZaq8Ex-7OA/viewform?usp=sf_link"
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdP_DzqfOZBhdXScixixzYs1ZxPLmo0iSTNg3kwZaq8Ex-7OA/viewform?usp=sf_link"
             target="_blank">
             See something missing? Submit it for review by the CHIC team.
           </a>
@@ -684,7 +692,7 @@
   const map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/jmdowney/cleeyi8mb000p01mdl1yktxww', // style URL
-    center: [-3.0, 10.0], // starting position [lng, lat]
+    center: [-3.0, -5.0], // starting position [lng, lat]
     zoom: 2, // starting zoom
   });
 
@@ -742,16 +750,16 @@
       // Set Mapbox colors based on arrays
       var caseExpression = [
         'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", both_array]], "#340c2f",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", one_array]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", neither_array]], "#20BDC5",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", both_array]], "#9272d9",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", one_array]], "#20bdc5",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", neither_array]], "#F36744",
         ["in", ["get", "iso_3166_1_alpha_3"], ["literal", na_array]], "#999999",
         "#dbdbdb"
       ]
 
       // Set legend title, colors and values manually
       $('#legend_title').text("Is at least one CHW cadre salaried & accredited?")
-      const legendColors = ["#340c2f", "#9272d9", "#e8c6e4", "#999999", "#dbdbdb"]
+      const legendColors = ["#9272d9", "#20bdc5", "#F36744", "#999999", "#dbdbdb"]
       const legendValues = ["Both", "Only salaried or only accredited", "Neither", "Data not available", "Out of scope"]
 
       // Now build legend
@@ -783,14 +791,14 @@
       var caseExpression = [
         'case',
         ["in", ["get", "iso_3166_1_alpha_3"], ["literal", y_array]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", n_array]], "#e9e3f7",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", n_array]], "#F36744",
         ["in", ["get", "iso_3166_1_alpha_3"], ["literal", na_array]], "#999999",
         "#dbdbdb"
       ]
 
       // Set legend title, colors and values manually
       $('#legend_title').text("Is at least one CHW cadre accredited?")
-      var legendColors = ["#9272d9", "#e9e3f7", "#999999", "#dbdbdb"]
+      var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
       var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
 
       // Now build legend
@@ -821,15 +829,15 @@
       // Set Mapbox colors based on arrays
       var caseExpression = [
         'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", y_array]], "#20bdc5",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", n_array]], "#cff5f7",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", y_array]], "#9272d9",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", n_array]], "#F36744",
         ["in", ["get", "iso_3166_1_alpha_3"], ["literal", na_array]], "#999999",
         "#dbdbdb"
       ]
 
       // Set legend title, colors and values manually
       $('#legend_title').text("Is at least one CHW cadre salaried?")
-      var legendColors = ["#20bdc5", "#cff5f7", "#999999", "#dbdbdb"]
+      var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
       var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
 
       // Now build legend
@@ -868,7 +876,7 @@
     // Set zoom level based on device
     var mq = window.matchMedia("(min-width: 768px)");
     if (mq.matches) {
-      map.setZoom(2);
+      map.setZoom(2.3);
     } else {
       map.setZoom(.5);
     };
