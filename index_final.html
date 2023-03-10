@@ -29,7 +29,7 @@
       .container {
         display: grid;
         grid-template-columns: repeat(4, minmax(0px, 1fr));
-        grid-template-rows: 8vh 5vh 47vh 40vh;
+        grid-template-rows: 10vh 6vh 50vh 34vh;
         max-width: 100%;
       }
 
@@ -41,6 +41,7 @@
       .header-section {
         grid-row: 1;
         display: grid;
+        align-content: center;
       }
 
       /* Child containers within header */
@@ -70,7 +71,7 @@
       #totaltext {
         color: #340C2F;
         font-family: Anton;
-        font-size: 4.5vw;
+        font-size: 4.4vw;
         overflow-wrap: normal;
         vertical-align: middle;
         margin-top: .5rem;
@@ -130,8 +131,8 @@
         color: #4F2049;
         padding-top: .25em;
         padding-bottom: .25em;
-        padding-right: .75em;
-        padding-left: .75em;
+        padding-right: .5em;
+        padding-left: .5em;
         border: 1px solid #4F2049;
         border-radius: 3px;
         font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
@@ -151,7 +152,7 @@
 
       #buttoncontainer {
         position: absolute;
-        top: 14%;
+        top: 16%;
         left: 0;
         margin-left: .5em;
       }
@@ -159,20 +160,20 @@
       /* Legend design */
       .legend {
         position: absolute;
-        top: 40%;
-        right: 5%;
+        top: 43%;
+        right: 3%;
         width: 40%;
         background: #fff;
         margin-right: .5rem;
         overflow: auto;
-        padding: .5rem;
+        padding: .6em;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: .5rem;
+        font-size: .45rem;
       }
 
       #legend {
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        line-height: 1.3em;
+        line-height: 1.1em;
         margin-bottom: 1rem;
       }
 
@@ -242,7 +243,7 @@
       }
 
       #sidebarsubmitlink a {
-        color: #F4F1EB;
+        color: #340C2F;
       }
 
       #date_last_updated {
@@ -1189,8 +1190,6 @@
     // Populate sidebar upon click
     map.on('click', 'country-boundaries', (e) => {
 
-      console.log(e)
-
       const thisCountry = csv_data.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
 
       if (thisCountry) {
@@ -1256,25 +1255,23 @@
     });
 
     // Create hover on buttons with definitions
-    if (mq.matches) {
-      $("#accredited_chws_button").hover(function () {
-        $('.accredited_chws_button_def').show();
-      }, function () {
-        $('.accredited_chws_button_def').hide();
-      })
+    $("#accredited_chws_button").hover(function () {
+      $('.accredited_chws_button_def').show();
+    }, function () {
+      $('.accredited_chws_button_def').hide();
+    })
 
-      $("#salaried_chws_button").hover(function () {
-        $('.salaried_chws_button_def').show()
-      }, function () {
-        $('.salaried_chws_button_def').hide();
-      })
+    $("#salaried_chws_button").hover(function () {
+      $('.salaried_chws_button_def').show()
+    }, function () {
+      $('.salaried_chws_button_def').hide();
+    })
 
-      $("#accredited_and_salaried_chws_button").hover(function () {
-        $('.accredited_and_salaried_chws_button_def').show()
-      }, function () {
-        $('.accredited_and_salaried_chws_button_def').hide();
-      })
-    }
+    $("#accredited_and_salaried_chws_button").hover(function () {
+      $('.accredited_and_salaried_chws_button_def').show()
+    }, function () {
+      $('.accredited_and_salaried_chws_button_def').hide();
+    })
 
   });
 
