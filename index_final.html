@@ -1125,13 +1125,9 @@
 
     // Set zoom level based on device
     var laptop = window.matchMedia("(min-width: 768px)");
-    var desktop = window.matchMedia("(min-width: 1280px min-height: 570px)")
 
-    if (desktop.matches) {
-      map.setZoom(2.3);
-    }
     if (laptop.matches) {
-      map.setZoom(1.5)
+      map.setZoom(2.3);
     }
     else {
       map.setZoom(.5);
