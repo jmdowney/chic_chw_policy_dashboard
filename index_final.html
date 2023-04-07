@@ -860,7 +860,7 @@
       </div>
 
       <!-- Middle of header -->
-      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE ONE OR MORE CHW CADRES WHO ARE
+      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE
         ACCREDITED AND
         SALARIED</div>
 
@@ -915,9 +915,9 @@
       <div id='country_details' class='country_details'>
 
         <div id="country_name">Select a country to see details</div>
-        <div id="num_cadres"></div>
-        <div id="num_paid_accredited_chw_cadres"></div>
-        <div id="cadre_names_combined"></div>
+        <div id="num_groups"></div>
+        <div id="num_paid_accredited_chw_groups"></div>
+        <div id="group_names_combined"></div>
         <div id="chw_policy_implementation"></div>
         <div id="policy_status"></div>
         <div id="policy_years_covered"></div>
@@ -1022,7 +1022,7 @@
       ]
 
       // Set legend title, colors and values manually
-      $('#legend_title').text("Is at least one CHW cadre salaried & accredited?")
+      $('#legend_title').text("Is at least one CHW group salaried & accredited?")
       const legendColors = ["#9272d9", "#20bdc5", "#F36744", "#999999", "#dbdbdb"]
       const legendValues = ["Both", "Only salaried or only accredited", "Neither", "Data not available", "Out of scope"]
 
@@ -1061,7 +1061,7 @@
       ]
 
       // Set legend title, colors and values manually
-      $('#legend_title').text("Is at least one CHW cadre accredited?")
+      $('#legend_title').text("Is at least one CHW group accredited?")
       var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
       var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
 
@@ -1100,7 +1100,7 @@
       ]
 
       // Set legend title, colors and values manually
-      $('#legend_title').text("Is at least one CHW cadre salaried?")
+      $('#legend_title').text("Is at least one CHW group salaried?")
       var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
       var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
 
@@ -1201,9 +1201,9 @@
       if (thisCountry) {
 
         $("#country_name").text(thisCountry.country)
-        $("#num_cadres").text("# of CHW cadres: " + thisCountry.cadre_count)
-        $("#num_paid_accredited_chw_cadres").text("# of salaried & accredited CHW cadres: " + thisCountry.paid_accredited_count)
-        $("#cadre_names_combined").text("Cadre name(s): " + thisCountry.cadre_names_combined)
+        $("#num_groups").text("# of CHW groups: " + thisCountry.group_count)
+        $("#num_paid_accredited_chw_groups").text("# of salaried & accredited CHW groups: " + thisCountry.paid_accredited_count)
+        $("#group_names_combined").text("Group name(s): " + thisCountry.group_names_combined)
         $("#chw_policy_implementation").text("CHW policy implementation: " + thisCountry.implementation_combined)
         $("#policy_status").text("Policy status: " + thisCountry.policy_status)
         $("#policy_years_covered").text("Policy years covered: " + thisCountry.policy_years_covered)
@@ -1240,9 +1240,9 @@
             `
                         <div>
                         ${thisCountry.country}<br> 
-                        At least 1 cadre accredited:
+                        At least 1 group accredited:
                         ${thisCountry.at_least_1_accredited}<br>
-                        At least 1 cadre salaried:
+                        At least 1 group salaried:
                         ${thisCountry.at_least_1_salaried}
                         </div>
                         `
