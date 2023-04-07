@@ -1,2 +1,11 @@
-# chic_chw_policy_dashboard
-Code for the CHIC CHW Policy Dashboard
+# CHIC proCHW Policy Dashboard
+## The largest-ever public dashboard for community health worker policies
+This repository houses the code for the CHIC proCHW Policy Dashboard, which can be found at http://joinchic.org/wins/#dashboard. Community Health Impact Coalition is making professional community health workers (proCHWs) the norm worldwide by changing guidelines, funding, and policy. Our goal is to see 40+ low- and middle-income countries adopt proCHW policies. To track progress and accelerate policy change, we’re excited to steward the largest-ever public-facing dashboard on proCHW policies. The dashboard is intended to be a shared resource for the entire field. Help us keep it current by submitting tips or updates.
+
+## Methods
+We developed this dashboard in two phases: (a) policy analysis, and (b) design and visualization. Policy analysis involved identifying the latest community health policy (or equivalent document) for the countries in scope via desk review and stakeholder outreach; data extraction into a Google Sheet template; and initial validation of findings by CHIC collaborators. The dashboard design and visualization involved light data cleaning using R to generate a live Google sheet of final data, [published to the web and viewable by anyone](https://docs.google.com/spreadsheets/d/1LTB8mJ566h_z1RJEn3D2StMElgN0MMfripYmhaeSQ3Y/edit?usp=sharing). This repository houses the HTML, CSS, and JavaScript code that is used to fetch the data from this spreadsheet, link it by country ISO A3 code with a Mapbox style, and add interactive elements to produce a final dashboard.  
+
+## Update Process
+We are committed to providing the latest and greatest information in this policy dashboard. [We accept update requests for the data on a rolling/ongoing basis here.](https://docs.google.com/forms/d/e/1FAIpQLSeQfSZ9YG6ecSnWiBoUshtKBRGXVyYPt4Hfo_nx4ugBFkaEww/viewform) Once received, our team will review your submission, validate the information, and publish updates to the dashboard on a quarterly basis. We encourage submissions to fill in missing data or to request an update for existing country data. You can check the date a country was last updated by clicking on the country on the map.
+
+We also encourage pull requests! If you have ideas for extensions to the dashboard, or improvements to the code, please open a PR. 
