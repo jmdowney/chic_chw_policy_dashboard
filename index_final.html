@@ -1114,6 +1114,21 @@
 
   };
 
+  // Create function to sum countries with data available for denominator 
+  function denominator(sum_denominator) {
+
+    let denominator_array = []
+
+    csv_data.forEach((row) => {
+      if (row[sum_denominator] == "Yes" || row[sum_denominator] == "No") {
+        denominator_array.push(row.ISO_A3)
+      } 
+    })
+
+    return denominator_sum = denominator_array.length
+
+  };
+
   // Create function to sum counts for tickers
   function sumIndicators(sum_indicator_name) {
 
@@ -1159,7 +1174,8 @@
 
             // Add scorecard at top based on csv data
             const total_accredited_and_salaried = sumIndicators("at_least_1_paid_accredited")
-            $('#total_accredited_and_salaried').text(total_accredited_and_salaried + "/137")
+            const total_denominator = denominator("at_least_1_paid_accredited")
+            $('#total_accredited_and_salaried').text(total_accredited_and_salaried + "/" + total_denominator)
 
             // Initialize map with data for proCHW indicator
             setColorsToMap("paid_accredited_cat")
