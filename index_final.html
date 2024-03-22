@@ -13,835 +13,964 @@
   <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
 
   <style>
-    /* Mobile */
-    @media screen and (max-width: 768px) {
+  /* Mobile */
+  @media screen and (max-width: 768px) {
 
-      * {
-        box-sizing: border-box;
-      }
+    * {
+      box-sizing: border-box;
+    }
 
-      body {
-        margin: 0px;
-        padding: 0px;
-        background-color: #F4F1EB;
-      }
+    body {
+      margin: 0px;
+      padding: 0px;
+      background-color: #F4F1EB;
+    }
 
-      .container {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0px, 1fr));
-        grid-template-rows: 10vh 6vh 50vh 34vh;
-        max-width: 100%;
-      }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0px, 1fr));
+      grid-template-rows: 10vh 6vh 50vh 34vh;
+      max-width: 100%;
+    }
 
-      .header {
-        grid-column: 1 / span 4;
-        display: grid;
-      }
+    .header {
+      grid-column: 1 / span 4;
+      display: grid;
+    }
 
-      .header-section {
-        grid-row: 1;
-        display: grid;
-        align-content: center;
-      }
+    .header-section {
+      grid-row: 1;
+      display: grid;
+      align-content: center;
+    }
 
-      /* Child containers within header */
-      .left {
-        grid-column: 1 / span 1;
-      }
+    /* Child containers within header */
+    .left {
+      grid-column: 1 / span 1;
+    }
 
-      .middle {
-        grid-column: 2 / span 3;
-      }
+    .middle {
+      grid-column: 2 / span 3;
+    }
 
-      .right {
-        grid-column: 1 / span 4;
-        grid-row: 2 / span 1;
-        display: grid;
-        text-align: center;
-        margin: .5em;
-      }
+    .right {
+      grid-column: 1 / span 4;
+      grid-row: 2 / span 1;
+      display: grid;
+      text-align: center;
+      margin: .5em;
+    }
 
-      /* Map and sidebar */
-      .content-section {
-        grid-column: 1 / span 4;
-        grid-row: 3 / span 2;
-      }
+    /* Map and sidebar */
+    .content-section {
+      grid-column: 1 / span 4;
+      grid-row: 3 / span 2;
+    }
 
-      /* Total accredited & salaried */
-      #totaltext {
-        color: #340C2F;
-        font-family: Anton;
-        font-size: 4.4vw;
-        overflow-wrap: normal;
-        vertical-align: middle;
-        margin-top: .5rem;
-        margin-bottom: .5rem;
-        margin-right: .5rem;
-        line-height: 1.1em;
-      }
+    /* Total accredited & salaried */
+    #totaltext {
+      color: #340C2F;
+      font-family: Anton;
+      font-size: 4.4vw;
+      overflow-wrap: normal;
+      vertical-align: middle;
+      margin-top: .5rem;
+      margin-bottom: .5rem;
+      margin-right: .5rem;
+      line-height: 1.1em;
+    }
 
-      #total_accredited_and_salaried {
-        color: #F4F1EB;
-        font-family: Anton;
-        font-size: 4vw;
-        text-align: center;
-        vertical-align: middle;
-        background-color: #9272d9;
-        margin: .5rem;
-        padding: .5rem;
-        border-radius: 3px;
-      }
+    #total-accredited-and-salaried {
+      color: #F4F1EB;
+      font-family: Anton;
+      font-size: 4vw;
+      text-align: center;
+      vertical-align: middle;
+      background-color: #9272d9;
+      margin: .5rem;
+      padding: .5rem;
+      border-radius: 3px;
+    }
 
-      /* "Submit additional country details" link design */
-      .submitlink {
-        place-self: center;
-        background-color: #20BDC5;
-        font-family: "Helvetica Neue", "Arial Narrow", sans-serif;
-        vertical-align: middle;
-        font-size: .6rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        border-radius: 6px;
-        padding: .25rem;
-        width: 100%;
-      }
+    /* "Submit additional country details" link design */
+    .submitlink {
+      place-self: center;
+      background-color: #20BDC5;
+      font-family: "Helvetica Neue", "Arial Narrow", sans-serif;
+      vertical-align: middle;
+      font-size: .6rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-radius: 6px;
+      padding: .25rem;
+      width: 100%;
+    }
 
-      #submitlink a {
-        color: #F4F1EB;
-      }
+    #submitlink a {
+      color: #F4F1EB;
+    }
 
-      .right a:link {
-        text-decoration: none;
-      }
+    .right a:link {
+      text-decoration: none;
+    }
 
-      .right a:visited {
-        text-decoration: none;
-      }
+    .right a:visited {
+      text-decoration: none;
+    }
 
-      /* Map positioning */
-      #map {
-        grid-column: 1 / span 4;
-        grid-row: 3 / span 1;
-        height: 100%;
-      }
+    /* Map positioning */
+    #map {
+      grid-column: 1 / span 4;
+      grid-row: 3 / span 1;
+      height: 100%;
+    }
 
-      /* Button design */
-      .button {
-        background-color: #F4F1EB;
-        color: #4F2049;
-        padding-top: .25em;
-        padding-bottom: .25em;
-        padding-right: .5em;
-        padding-left: .5em;
-        border: 1px solid #4F2049;
-        border-radius: 3px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        font-size: .5rem;
-        font-weight: bold;
-        text-align: center;
-        margin: 0;
-        opacity: 0.8;
-      }
+    /* Button design (map buttons) */
+    .button {
+      background-color: #F4F1EB;
+      color: #111111;
+      padding-top: .25em;
+      padding-bottom: .25em;
+      padding-right: .5em;
+      padding-left: .5em;
+      border: 1px solid #111111;
+      border-radius: 3px;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-size: .5rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 0;
+      opacity: 0.8;
+    }
 
-      .button.active {
-        background: #4F2049;
-        color: #F4F1EB;
-        font-weight: bold;
-        opacity: 1;
-      }
+    .button.active {
+      background: #4F2049;
+      color: #F4F1EB;
+      border: 1px solid #4F2049;
+      font-weight: bold;
+      opacity: 1;
+    }
 
-      #buttoncontainer {
-        position: absolute;
-        top: 16%;
-        left: 0;
-        margin-left: .5em;
-      }
+    #buttoncontainer {
+      position: absolute;
+      top: 16%;
+      left: 0;
+      margin-left: .5em;
+    }
 
-      /* Legend design */
-      .legend {
-        position: absolute;
-        top: 47%;
-        right: 3%;
-        width: 40%;
-        background: #fff;
-        margin-right: .5rem;
-        overflow: auto;
-        padding: .6em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: .45rem;
-      }
+    /* Legend design */
+    .legend {
+      position: absolute;
+      top: 47%;
+      right: 3%;
+      width: 40%;
+      background: #fff;
+      margin-right: .5rem;
+      overflow: auto;
+      padding: .6em;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      font-size: .45rem;
+    }
 
-      #legend {
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        line-height: 1.1em;
-        margin-bottom: 1rem;
-      }
+    #legend {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      line-height: 1.1em;
+      margin-bottom: 1rem;
+    }
 
-      .legend-key {
-        display: inline-block;
-        border-radius: 20%;
-        width: 10px;
-        height: 10px;
-        margin-right: 5px;
-      }
+    .legend-key {
+      display: inline-block;
+      border-radius: 20%;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+    }
 
-      .legenditems {
-        display: block;
-      }
+    .legenditems {
+      display: block;
+    }
 
-      h4 {
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
+    h4 {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
 
-      .sidebar {
-        display: flex;
-        flex-direction: column;
-        grid-column: 1 / span 4;
-        grid-row: 4 / span 1;
-        bottom: 0;
-        background-color: #F4F1EB;
-        color: #340C2F;
-        padding: 2em;
-        font-size: .8rem;
-        overflow: scroll;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        border-top: solid 1px #340C2F;
-      }
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      grid-column: 1 / span 4;
+      grid-row: 4 / span 1;
+      bottom: 0;
+      background-color: #F4F1EB;
+      color: #340C2F;
+      padding: 2em;
+      font-size: .8rem;
+      overflow: scroll;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      border-top: solid 1px #340C2F;
+    }
 
-      .country_details * {
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        margin-bottom: .5em;
-        line-height: 1.3em;
-        overflow-wrap: normal;
-      }
+    .country-details * {
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      margin-bottom: .5em;
+      line-height: 1.3em;
+      overflow-wrap: normal;
+    }
 
-      .country_details {
-        margin-bottom: 1rem;
-      }
+    .country-details {
+      margin-bottom: 1rem;
+    }
 
-      #country_name {
-        font-size: 1.2rem;
-        text-transform: uppercase;
-        font-family: Anton;
-      }
+    #country-name {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      font-family: Anton;
+    }
 
-      .links {
-        margin-top: 2.5em;
-      }
+    /* Button design (sidebar buttons) */
+    .buttonsidebar {
+      background-color: #F4F1EB;
+      color: #111111;
+      padding-top: .25em;
+      padding-bottom: .25em;
+      padding-right: .5em;
+      padding-left: .5em;
+      border: 1px solid #111111;
+      border-radius: 3px;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-size: .6rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 0;
+      opacity: 1;
+    }
 
-      #links a {
-        color: #340C2F;
-      }
+    .buttonsidebar.active {
+      background: #4F2049;
+      color: #F4F1EB;
+      border: 1px solid #4F2049;
+      font-weight: bold;
+      opacity: 1;
+    }
 
-      #bottom {
-        flex: 0 0 50px;
-        margin-top: auto;
-        line-height: 1.5em;
-        font-size: .8rem;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      }
+    #policybutton {
+      margin-top: 1em;
+      display: none;
+    }
 
-      #sidebarsubmitlink a {
-        color: #340C2F;
-      }
+    #download-link {
+      margin-top: 1em;
+    }
 
-      #date_last_updated {
-        font-style: italic;
-      }
+    #download-link a {
+      color: #340C2F;
+    }
 
-      /* Button hover (definition) design */
-      .buttondefcontainer {
-        display: none;
-      }
+    /* Bottom container of sidebar */
+    #bottom {
+      flex: 0 0 50px;
+      margin-top: auto;
+      line-height: 1.5em;
+      font-size: .8rem;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+    }
+
+    #sidebarsubmitbutton {
+      margin-bottom: 1em;
+    }
+
+    #date-last-updated {
+      font-style: italic;
+    }
+
+    /* Button hover (definition) design */
+    .buttondefcontainer {
+      display: none;
+    }
+
+  }
+
+  /* Laptop */
+  @media screen and (min-width: 768px) {
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0px;
+      padding: 0px;
+      background-color: #F4F1EB;
+      height: 100%;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: 20vh 80vh;
+      height: 100%;
+    }
+
+    /* Container for header elements */
+    .header {
+      grid-column: 1 / span 12;
+      display: grid;
+    }
+
+    .header-section {
+      grid-row: 1;
+      display: grid;
+      align-items: center;
+    }
+
+    /* Child containers within header */
+    .left {
+      grid-column: 1 / span 2;
+    }
+
+    .middle {
+      grid-column: 3 / span 6;
+    }
+
+    .right {
+      grid-column: 9 / span 3;
+    }
+
+    /* Define map and sidebar container */
+    .content-section {
+      grid-row: 2;
+    }
+
+    .sidebar {
+      display: flex;
+      grid-column: 10 / span 3;
+      background-color: #F4F1EB;
+      color: #340C2F;
+      padding: 1em;
+      border-top: solid 1.5px #340C2F;
+      border-left: solid 1.5px #340C2F;
+    }
+
+    /* "Submit additional country details" link design */
+    .submitlink {
+      text-align: center;
+      background-color: #20BDC5;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-radius: 6px;
+      padding: 1em;
+      margin: 1em;
+    }
+
+    #submitlink a {
+      color: #F4F1EB;
+    }
+
+    .right a:link {
+      text-decoration: none;
+    }
+
+    .right a:visited {
+      text-decoration: none;
+    }
+
+    /* Total accredited & salaried */
+    #totaltext {
+      color: #340C2F;
+      font-family: Anton;
+      font-size: clamp(1.8rem, 1.046rem + 1.571vw, 2.46rem);
+      overflow-wrap: normal;
+      vertical-align: middle;
+      margin-top: 0.3em;
+      margin-bottom: 0.3em;
+      margin-right: 0.3em;
+      line-height: 1.1em;
 
     }
 
-    /* Laptop */
-    @media screen and (min-width: 768px) {
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0px;
-        padding: 0px;
-        background-color: #F4F1EB;
-        height: 100%;
-      }
-
-      .container {
-        display: grid;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-template-rows: 20vh 80vh;
-        height: 100%;
-      }
-
-      /* Container for header elements */
-      .header {
-        grid-column: 1 / span 12;
-        display: grid;
-      }
-
-      .header-section {
-        grid-row: 1;
-        display: grid;
-        align-items: center;
-      }
-
-      /* Child containers within header */
-      .left {
-        grid-column: 1 / span 2;
-      }
-
-      .middle {
-        grid-column: 3 / span 6;
-      }
-
-      .right {
-        grid-column: 9 / span 3;
-      }
-
-      /* Define map and sidebar container */
-      .content-section {
-        grid-row: 2;
-      }
-
-      .sidebar {
-        display: flex;
-        grid-column: 10 / span 3;
-        background-color: #F4F1EB;
-        color: #340C2F;
-        padding: 1em;
-        border-top: solid 1.5px #340C2F;
-        border-left: solid 1.5px #340C2F;
-      }
-
-      /* "Submit additional country details" link design */
-      .submitlink {
-        text-justify: center;
-        background-color: #20BDC5;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        text-align: center;
-        vertical-align: middle;
-        font-size: 1rem;
-        /* font-size: clamp(0.6rem, 0.4425rem + .7vw, 1.3rem); */
-        text-transform: uppercase;
-        border-radius: 6px;
-        padding: 1em;
-        margin: 1em;
-      }
-
-      #submitlink a {
-        color: #F4F1EB;
-      }
-
-      .right a:link {
-        text-decoration: none;
-      }
-
-      .right a:visited {
-        text-decoration: none;
-      }
-
-      /* Total accredited & salaried */
-      #totaltext {
-        color: #340C2F;
-        font-family: Anton;
-        font-size: clamp(1.8rem, 1.046rem + 1.571vw, 2.46rem);
-        overflow-wrap: normal;
-        vertical-align: middle;
-        margin-top: 0.3em;
-        margin-bottom: 0.3em;
-        margin-right: 0.3em;
-        line-height: 1.1em;
-
-      }
-
-      #total_accredited_and_salaried {
-        color: #F4F1EB;
-        font-family: Anton;
-        font-size: clamp(2rem, 1.2rem + 1.667vw, 2.7rem);
-        text-align: center;
-        vertical-align: middle;
-        background-color: #9272d9;
-        margin: 0.3em;
-        padding: 0.3em;
-        border-radius: 6px;
-      }
-
-      /* Map positioning */
-      #map {
-        grid-column: 1 / span 9;
-        height: 100%;
-      }
-
-      /* Map overlays */
-      .legend {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        background: #fff;
-        margin-left: 1em;
-        overflow: auto;
-        border-radius: 4px;
-        padding: .8em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-      }
-
-      #legend {
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        line-height: 1.3em;
-        margin-bottom: 2.5em;
-      }
-
-      .legend-key {
-        display: inline-block;
-        border-radius: 20%;
-        width: 10px;
-        height: 10px;
-        margin-right: 5px;
-      }
-
-      .legenditems {
-        display: inline-block;
-      }
-
-      h4 {
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
-
-      /* Popup design */
-      .mapboxgl-popup-content {
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
-      }
-
-      /* Sidebar design */
-      .country_details * {
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        margin-bottom: .5em;
-        line-height: 1.3em;
-        overflow-wrap: normal;
-        font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
-        /* font-size: clamp(.7rem, 0.6325rem + .3vw, 1rem) */
-      }
-
-      #country_name {
-        font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
-        text-transform: uppercase;
-        font-family: Anton;
-        line-height: 1.1em;
-      }
-
-      .links {
-        margin-top: 3.5em;
-      }
-
-      #links a {
-        color: #340C2F;
-      }
-
-      .bottom {
-        position: absolute;
-        bottom: 0;
-        padding-bottom: 1em;
-        padding-right: 1em;
-        line-height: 1.3em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
-        /* font-size: clamp(.7rem, 0.655rem + .2vw, 1rem); */
-      }
-
-      #sidebarsubmitlink a {
-        color: #340C2F;
-      }
-
-      #date_last_updated {
-        font-style: italic;
-      }
-
-      /* Button design */
-      .button {
-        background-color: #F4F1EB;
-        color: #4F2049;
-        padding: 10px;
-        border: 1px solid #4F2049;
-        border-radius: 5px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-        font-weight: bold;
-        text-align: center;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: .5em;
-        padding-bottom: .5em;
-        margin: 0;
-        opacity: 0.8;
-      }
-
-      .button.active {
-        background: #4F2049;
-        color: #F4F1EB;
-        font-weight: bold;
-        opacity: 1;
-      }
-
-      .buttoncontainer {
-        position: absolute;
-        top: 22%;
-        left: 0;
-        margin-left: 10px;
-      }
-
-      button:hover {
-        background: #4F2049;
-        color: #F4F1EB;
-        font-weight: bold;
-        border-color: 1px solid #4F2049;
-      }
-
-      /* Button hover (definition) design */
-      .buttondefcontainer {
-        position: absolute;
-        top: 28%;
-        left: 0;
-        margin-left: 10px;
-        width: 41%;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: .8rem;
-      }
-
-      .accredited_chws_button_def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
-        padding: 10px;
-      }
-
-      .salaried_chws_button_def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
-        padding: 10px;
-      }
-
-      .accredited_and_salaried_chws_button_def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
-        padding: 10px;
-      }
+    #total-accredited-and-salaried {
+      color: #F4F1EB;
+      font-family: Anton;
+      font-size: clamp(2rem, 1.2rem + 1.667vw, 2.7rem);
+      text-align: center;
+      vertical-align: middle;
+      background-color: #9272d9;
+      margin: 0.3em;
+      padding: 0.3em;
+      border-radius: 6px;
     }
 
-    /* Desktop */
-    @media screen and (min-width: 1280px) and (min-height: 570px) {
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0px;
-        padding: 0px;
-        background-color: #F4F1EB;
-        height: 100%;
-      }
-
-      .container {
-        display: grid;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-template-rows: 20vh 80vh;
-        height: 100%;
-      }
-
-      /* Container for header elements */
-      .header {
-        grid-column: 1 / span 12;
-        display: grid;
-        align-items: center;
-      }
-
-      .header-section {
-        grid-row: 1;
-      }
-
-      /* Child containers within header */
-      .left {
-        grid-column: 1 / span 2;
-      }
-
-      .middle {
-        grid-column: 3 / span 6;
-      }
-
-      .right {
-        grid-column: 9 / span 3;
-      }
-
-      /* Define map and sidebar container */
-      .content-section {
-        grid-row: 2;
-      }
-
-      .sidebar {
-        display: flex;
-        flex-direction: column;
-        grid-column: 10 / span 3;
-        background-color: #F4F1EB;
-        color: #340C2F;
-        padding: 1em;
-        border-top: solid 1.5px #340C2F;
-        border-left: solid 1.5px #340C2F;
-      }
-
-      /* "Submit additional country details" link design */
-      .submitlink {
-        text-justify: center;
-        background-color: #20BDC5;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        text-align: center;
-        vertical-align: middle;
-        font-size: clamp(0.6rem, 0.4425rem + .7vw, 1.3rem);
-        text-transform: uppercase;
-        border-radius: 6px;
-        padding: 1em;
-        margin: 1em;
-      }
-
-      #submitlink a {
-        color: #F4F1EB;
-      }
-
-      .right a:link {
-        text-decoration: none;
-      }
-
-      .right a:visited {
-        text-decoration: none;
-      }
-
-      /* Total accredited & salaried */
-      #totaltext {
-        color: #340C2F;
-        font-family: Anton;
-        font-size: clamp(2.4rem, -8.8rem + 14vw, 3.8rem);
-        vertical-align: middle;
-        margin-top: 0.3em;
-        margin-bottom: 0.3em;
-        margin-right: 0.3em;
-        line-height: 1.1em;
-
-      }
-
-      #total_accredited_and_salaried {
-        color: #F4F1EB;
-        font-family: Anton;
-        font-size: clamp(2.4rem, -10.4rem + 16vw, 4rem);
-        text-align: center;
-        vertical-align: middle;
-        background-color: #9272d9;
-        margin: 0.3em;
-        padding: 0.3em;
-        border-radius: 6px;
-      }
-
-      /* Map positioning */
-      #map {
-        grid-column: 1 / span 9;
-        height: 100%;
-      }
-
-      /* Map overlays */
-      .legend {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        background: #fff;
-        margin-left: 1em;
-        overflow: auto;
-        border-radius: 4px;
-        padding: .8em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-      }
-
-      #legend {
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        line-height: 1.3em;
-        margin-bottom: 2.5em;
-      }
-
-      .legend-key {
-        display: inline-block;
-        border-radius: 20%;
-        width: 10px;
-        height: 10px;
-        margin-right: 5px;
-      }
-
-      .legenditems {
-        display: inline-block;
-      }
-
-      h4 {
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
-
-      /* Popup design */
-      .mapboxgl-popup-content {
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
-      }
-
-      /* Sidebar design */
-      .country_details * {
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        margin-bottom: .8em;
-        line-height: 1.5em;
-        overflow-wrap: normal;
-        font-size: clamp(.7rem, 0.6325rem + .3vw, 1rem)
-      }
-
-      #country_name {
-        font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
-        text-transform: uppercase;
-        font-family: Anton;
-        line-height: 1.1em;
-      }
-
-      .links {
-        margin-top: 3.5em;
-      }
-
-      #links a {
-        color: #340C2F;
-      }
-
-      .bottom {
-        flex: 0 0 50px;
-        margin-top: auto;
-        padding-bottom: 2em;
-        padding-right: 1em;
-        line-height: 1.3em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        font-size: clamp(.7rem, 0.655rem + .2vw, 1rem);
-      }
-
-      #sidebarsubmitlink a {
-        color: #340C2F;
-      }
-
-      #date_last_updated {
-        font-style: italic;
-      }
-
-      /* Button design */
-      .button {
-        background-color: #F4F1EB;
-        color: #4F2049;
-        padding: 10px;
-        border: 1px solid #4F2049;
-        border-radius: 5px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-        font-weight: bold;
-        text-align: center;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: .5em;
-        padding-bottom: .5em;
-        margin: 0;
-        opacity: 0.8;
-      }
-
-      .button.active {
-        background: #4F2049;
-        color: #F4F1EB;
-        font-weight: bold;
-        opacity: 1;
-      }
-
-      .buttoncontainer {
-        position: absolute;
-        top: 20%;
-        left: 0;
-        margin-left: 10px;
-      }
-
-      button:hover {
-        background: #4F2049;
-        color: #F4F1EB;
-        font-weight: bold;
-        border-color: 1px solid #4F2049;
-      }
-
-      /* Button hover (definition) design */
-      .buttondefcontainer {
-        position: absolute;
-        top: 25%;
-        left: 0;
-        margin-left: 10px;
-        width: 34%;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: .8rem;
-      }
-
-      .accredited_chws_button_def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
-        padding: 10px;
-      }
-
-      .salaried_chws_button_def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
-        padding: 10px;
-      }
-
-      .accredited_and_salaried_chws_button_def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
-        padding: 10px;
-      }
+    /* Map positioning */
+    #map {
+      grid-column: 1 / span 9;
+      height: 100%;
     }
+
+    /* Map overlays */
+    .legend {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: #fff;
+      margin-left: 1em;
+      overflow: auto;
+      border-radius: 4px;
+      padding: .8em;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+    }
+
+    #legend {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      line-height: 1.3em;
+      margin-bottom: 2.5em;
+    }
+
+    .legend-key {
+      display: inline-block;
+      border-radius: 20%;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+    }
+
+    .legenditems {
+      display: inline-block;
+    }
+
+    h4 {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    /* Popup design */
+    .mapboxgl-popup-content {
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+    }
+
+    /* Sidebar design */
+    #country-name {
+      font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
+      text-transform: uppercase;
+      font-family: Anton;
+      line-height: 1.1em;
+    }
+
+    .country-details * {
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      margin-bottom: .5em;
+      line-height: 1.3em;
+      overflow-wrap: normal;
+      font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
+    }
+
+    #policybutton {
+      margin-top: 1em;
+      width: 100%;
+      display: none;
+    }
+
+    #download-link {
+      margin-top: 1em;
+    }
+
+    #download-link a {
+      color: #340C2F;
+    }
+
+    /* Button design (sidebar buttons) */
+    .buttonsidebar {
+      background-color: #F4F1EB;
+      color: #111111;
+      border: 1px solid #111111;
+      border-radius: 5px;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      white-space: normal;
+      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      font-weight: bold;
+      text-align: center;
+      padding-right: 1em;
+      padding-left: 1em;
+      padding-top: 1em;
+      padding-bottom: 1em;
+      opacity: 1;
+    }
+
+    buttonsidebar:hover {
+      background: #4F2049;
+      color: #F4F1EB;
+      border: 1px solid #4F2049;
+      font-weight: bold;
+      opacity: 1;
+    }
+
+    /* Bottom container of sidebar */
+    .bottom {
+      position: absolute;
+      bottom: 0;
+      padding-right: 1.5em;
+      line-height: 1.3em;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
+    }
+
+    #sidebarsubmitbutton {
+      margin-bottom: 1em;
+      width: 100%;
+    }
+
+    #date-last-updated {
+      font-style: italic;
+    }
+
+    /* Map button design */
+    .button {
+      background-color: #F4F1EB;
+      color: #111111;
+      padding: 10px;
+      border: 1px solid #111111;
+      border-radius: 5px;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      font-weight: bold;
+      text-align: center;
+      padding-right: 1em;
+      padding-left: 1em;
+      padding-top: .5em;
+      padding-bottom: .5em;
+      margin: 0;
+      opacity: 0.8;
+    }
+
+    .button.active {
+      background: #4F2049;
+      color: #F4F1EB;
+      border: 1px solid #4F2049;
+      font-weight: bold;
+      opacity: 1;
+    }
+
+    .buttoncontainer {
+      position: absolute;
+      top: 22%;
+      left: 0;
+      margin-left: 10px;
+    }
+
+    button:hover {
+      background: #4F2049;
+      color: #F4F1EB;
+      font-weight: bold;
+      border: 1px solid #4F2049;
+    }
+
+    /* Button hover (definition) design */
+    .buttondefcontainer {
+      position: absolute;
+      top: 28%;
+      left: 0;
+      margin-left: 10px;
+      width: 30%;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      font-size: .8rem;
+    }
+
+    .accredited-chws-button-def {
+      display: none;
+      position: relative;
+      top: 0;
+      left: 0;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+      padding: 10px;
+    }
+
+    .salaried-chws-button-def {
+      display: none;
+      position: relative;
+      top: 0;
+      left: 0;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+      padding: 10px;
+    }
+
+    .accredited-and-salaried-chws-button-def {
+      display: none;
+      position: relative;
+      top: 0;
+      left: 0;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+      padding: 10px;
+    }
+
+    .policy-expiring-within-18-months-button-def {
+      display: none;
+      position: relative;
+      top: 0;
+      left: 0;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+      padding: 10px;
+    }
+
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 1280px) and (min-height: 570px) {
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0px;
+      padding: 0px;
+      background-color: #F4F1EB;
+      height: 100%;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: 20vh 80vh;
+      height: 100%;
+    }
+
+    /* Container for header elements */
+    .header {
+      grid-column: 1 / span 12;
+      display: grid;
+      align-items: center;
+    }
+
+    .header-section {
+      grid-row: 1;
+    }
+
+    /* Child containers within header */
+    .left {
+      grid-column: 1 / span 2;
+    }
+
+    .middle {
+      grid-column: 3 / span 6;
+    }
+
+    .right {
+      grid-column: 9 / span 3;
+    }
+
+    /* Define map and sidebar container */
+    .content-section {
+      grid-row: 2;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      grid-column: 10 / span 3;
+      background-color: #F4F1EB;
+      color: #340C2F;
+      padding: 1em;
+      border-top: solid 1.5px #340C2F;
+      border-left: solid 1.5px #340C2F;
+    }
+
+    /* "Submit additional country details" link design */
+    .submitlink {
+      text-align: center;
+      background-color: #20BDC5;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-weight: bold;
+      text-align: center;
+      vertical-align: middle;
+      font-size: clamp(0.6rem, 0.4425rem + .7vw, 1.3rem);
+      text-transform: uppercase;
+      border-radius: 6px;
+      padding: 1em;
+      margin: 1em;
+    }
+
+    #submitlink a {
+      color: #F4F1EB;
+    }
+
+    .right a:link {
+      text-decoration: none;
+    }
+
+    .right a:visited {
+      text-decoration: none;
+    }
+
+    /* Total accredited & salaried */
+    #totaltext {
+      color: #340C2F;
+      font-family: Anton;
+      font-size: clamp(2.4rem, -8.8rem + 14vw, 3.8rem);
+      vertical-align: middle;
+      margin-top: 0.3em;
+      margin-bottom: 0.3em;
+      margin-right: 0.3em;
+      line-height: 1.1em;
+
+    }
+
+    #total-accredited-and-salaried {
+      color: #F4F1EB;
+      font-family: Anton;
+      font-size: clamp(2.4rem, -10.4rem + 16vw, 4rem);
+      text-align: center;
+      vertical-align: middle;
+      background-color: #9272d9;
+      margin: 0.3em;
+      padding: 0.3em;
+      border-radius: 6px;
+    }
+
+    /* Map positioning */
+    #map {
+      grid-column: 1 / span 9;
+      height: 100%;
+    }
+
+    /* Map overlays */
+    .legend {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: #fff;
+      margin-left: 1em;
+      overflow: auto;
+      border-radius: 4px;
+      padding: .8em;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+    }
+
+    #legend {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      line-height: 1.3em;
+      margin-bottom: 2.5em;
+    }
+
+    .legend-key {
+      display: inline-block;
+      border-radius: 20%;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+    }
+
+    .legenditems {
+      display: inline-block;
+    }
+
+    h4 {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    /* Popup design */
+    .mapboxgl-popup-content {
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+    }
+
+    /* Sidebar design */
+    #country-name {
+      font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
+      text-transform: uppercase;
+      font-family: Anton;
+      line-height: 1.1em;
+    }
+
+    .country-details * {
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      margin-bottom: 0.8em;
+      line-height: 1.5em;
+      overflow-wrap: normal;
+      font-size: clamp(.7rem, 0.6325rem + .3vw, 1rem)
+    }
+
+    #policybutton {
+      margin-top: 1em;
+      width: 100%;
+      display: none;
+    }
+
+    #download-link {
+      margin-top: 1em;
+    }
+
+    #download-link a {
+      color: #340C2F;
+    }
+
+    /* Button design (sidebar buttons) */
+    .buttonsidebar {
+      background-color: #F4F1EB;
+      color: #111111;
+      border: 1px solid #111111;
+      border-radius: 5px;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      font-weight: bold;
+      text-align: center;
+      padding-right: 1em;
+      padding-left: 1em;
+      padding-top: 1em;
+      padding-bottom: 1em;
+      opacity: 1;
+    }
+
+    buttonsidebar:hover {
+      background: #4F2049;
+      color: #F4F1EB;
+      border: 1px solid #4F2049;
+      font-weight: bold;
+      opacity: 1;
+    }
+
+    /* Bottom container of sidebar */
+    .bottom {
+      position: absolute;
+      bottom: 0;
+      padding-bottom: 1em;
+      padding-right: 1em;
+      line-height: 1.3em;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-size: clamp(.7rem, 0.655rem + .2vw, 1rem);
+    }
+
+    #sidebarsubmitbutton {
+      margin-bottom: 1em;
+    }
+
+    #date-last-updated {
+      font-style: italic;
+    }
+
+    /* Map button design */
+    .button {
+      background-color: #F4F1EB;
+      color: #111111;
+      padding: 10px;
+      border: 1px solid #111111;
+      border-radius: 5px;
+      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      font-weight: bold;
+      text-align: center;
+      padding-right: 1em;
+      padding-left: 1em;
+      padding-top: .5em;
+      padding-bottom: .5em;
+      margin: 0;
+      opacity: 0.8;
+    }
+
+    .button.active {
+      background: #4F2049;
+      color: #F4F1EB;
+      border: 1px solid #4F2049;
+      font-weight: bold;
+      opacity: 1;
+    }
+
+    .buttoncontainer {
+      position: absolute;
+      top: 20%;
+      left: 0;
+      margin-left: 10px;
+    }
+
+    button:hover {
+      background: #4F2049;
+      color: #F4F1EB;
+      font-weight: bold;
+      border: 1px solid #4F2049;
+    }
+
+    /* Button hover (definition) design */
+    .buttondefcontainer {
+      position: absolute;
+      top: 25%;
+      left: 0;
+      margin-left: 10px;
+      width: 30%;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      font-size: .8rem;
+    }
+
+    .accredited-chws-button-def {
+      display: none;
+      position: relative;
+      top: 0;
+      left: 0;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+      padding: 10px;
+    }
+
+    .salaried-chws-button-def {
+      display: none;
+      position: relative;
+      top: 0;
+      left: 0;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+      padding: 10px;
+    }
+
+    .accredited-and-salaried-chws-button-def {
+      display: none;
+      position: relative;
+      top: 0;
+      left: 0;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+      padding: 10px;
+    }
+
+    .policy-expiring-within-18-months-button-def {
+      display: none;
+      position: relative;
+      top: 0;
+      left: 0;
+      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+      opacity: 0.8;
+      background-color: #111111;
+      color: #F4F1EB;
+      padding: 10px;
+    }
+
+  }
+
   </style>
 
 </head>
@@ -856,20 +985,18 @@
 
       <!-- Left side of header -->
       <div class="header-section left">
-        <div id="total_accredited_and_salaried"></div>
+        <div id="total-accredited-and-salaried"></div>
       </div>
 
       <!-- Middle of header -->
-      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE
-        ACCREDITED AND
-        SALARIED</div>
+      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED AND SALARIED</div>
 
       <!-- Right side of header -->
       <div class="header-section right">
         <div id="submitlink" class="submitlink">
           <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQfSZ9YG6ecSnWiBoUshtKBRGXVyYPt4Hfo_nx4ugBFkaEww/viewform"
             target="_blank">
-            Submit additional country details here
+            SUBMIT ADDITIONAL COUNTRY DETAILS HERE
           </a>
         </div>
       </div>
@@ -881,62 +1008,72 @@
 
     <!-- Map overlays, including legend and buttons -->
     <div id="legend" class="legend">
-      <h4 id="legend_title"></h4>
+      <h4 id="legend-title"></h4>
       <div id="legenditems"></div>
     </div>
 
     <!-- Button container -->
     <div id="buttoncontainer" class="buttoncontainer">
-      <button id="accredited_chws_button" class="button">ACCREDITED CHWS</button>
-      <button id="salaried_chws_button" class="button">SALARIED CHWS</button>
-      <button id="accredited_and_salaried_chws_button" class="button">ACCREDITED & SALARIED CHWS</button>
+      <button type="button" id="accredited-chws-button" class="button">ACCREDITED CHWS</button>
+      <button type="button" id="salaried-chws-button" class="button">SALARIED CHWS</button>
+      <button type="button" id="accredited-and-salaried-chws-button" class="button">ACCREDITED & SALARIED CHWS</button>
+      <button type="button" id="policy-expiring-within-18-months-button" class="button">POLICIES EXPIRED OR EXPIRING</button>
     </div>
 
     <!-- Button definitions -->
     <div class="buttondefcontainer">
-      <div class="accredited_and_salaried_chws_button_def">For purposes of
+      <div class="accredited-and-salaried-chws-button-def">For purposes of
         this dashboard, we focus on two of the eight best practices that are indicative of formal,
         fulfilling, and dignified labor conditions and for which sufficient data exists in policy
         documents: accreditation and compensation.
       </div>
-      <div class="salaried_chws_button_def">Does the policy document provide for CHWs to be compensated
+      <div class="salaried-chws-button-def">Does the policy document provide for CHWs to be compensated
         through government wage bills? (Policies that stipulate CHW remuneration via performance-based
         incentives, stipends, and/or non-financial incentives like gumboots, t-shirts, soap, and
         batteries were coded as “No”.)
       </div>
-      <div class="accredited_chws_button_def">Does the country policy document explicitly recognize
-        roles, qualifications, and competencies for CHWs?</div>
+      <div class="accredited-chws-button-def">Does the country policy document explicitly recognize
+        roles, qualifications, and competencies for CHWs?
+      </div>
+      <div class="policy-expiring-within-18-months-button-def">Does the country have a policy that is 
+        already expired or is expiring within 18 months of March 2024?
+      </div>
     </div>
 
     <!-- Sidebar -->
     <div class="content-section sidebar">
 
       <!-- Country details section within sidebar -->
-      <div id='country_details' class='country_details'>
+      <div id='country-details' class='country-details'>
 
-        <div id="country_name">Select a country to see details</div>
-        <div id="num_groups"></div>
-        <div id="num_paid_accredited_chw_groups"></div>
-        <div id="group_names_combined"></div>
-        <div id="chw_policy_implementation"></div>
-        <div id="policy_status"></div>
-        <div id="policy_years_covered"></div>
-        <div id="links" class="links">
-          <div id="policy_link"></div>
+        <div id="country-name">Select a country to see details</div>
+        <div id="num-groups"></div>
+        <div id="num-paid-accredited-chw-groups"></div>
+        <div id="group-names-combined"></div>
+        <div id="chw-policy-implementation"></div>
+        <div id="policy-status"></div>
+        <div id="policy-years-covered"></div>
+        <button type="button" id="policybutton" class="buttonsidebar">SEE THE POLICY HERE</button>
+        <div id="policy-link"></div>
+
+        <!-- Raw data download link -->
+        <div id="download-link">
           <a
             href="https://docs.google.com/spreadsheets/d/1LTB8mJ566h_z1RJEn3D2StMElgN0MMfripYmhaeSQ3Y/export?format=csv">
             Download the raw data here.
           </a>
         </div>
+
       </div>
+
+      <!-- Bottom part of the sidebar -->
       <div id="bottom" class="bottom">
-        <div id="sidebarsubmitlink" class="sidebarsubmitlink">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQfSZ9YG6ecSnWiBoUshtKBRGXVyYPt4Hfo_nx4ugBFkaEww/viewform"
-            target="_blank">
-            See something missing? Submit it for review by the CHIC team.
-          </a>
-          <div id="date_last_updated"></div>
-        </div>
+
+        <!-- Submit button in sidebar -->
+        <button type="button" id="sidebarsubmitbutton" class="buttonsidebar">SEE SOMETHING MISSING? SUBMIT IT FOR REVIEW BY THE CHIC TEAM</button>
+
+        <!-- Date last updated -->
+        <div id="date-last-updated"></div>
 
       </div>
 
@@ -949,7 +1086,7 @@
 <script>
 
   // Initialize data
-  let csv_data = false
+  let csvData = false
 
   // Basemap info
   mapboxgl.accessToken = 'pk.eyJ1IjoiY2hpY3BvbGljeWRhc2hib2FyZCIsImEiOiJjbGV5M3ZncXIwam96M3FuMGU4b3puMDVlIn0.aIXbEvRX7bYtEjBE2mmLTg';
@@ -967,7 +1104,6 @@
     item.empty()
     legendValues.forEach((legendValue, i) => {
       const color = legendColors[i];
-      // const item = document.createElement('div')
       const key = document.createElement('span')
       key.className = 'legend-key';
       key.style.backgroundColor = color
@@ -981,48 +1117,48 @@
   }
 
   // Create function to define how colors are added to map and to build the legend
-  function setColorsToMap(indicator_name) {
+  function setColorsToMap(indicatorName) {
 
     // Initialize arrays for the map colors, the legend colors, and the legend values
     var caseExpression = []
 
     // If indicator is paid_accredited_cat:
-    if (indicator_name == "paid_accredited_cat") {
+    if (indicatorName == "paid_accredited_cat") {
 
       // Initialize arrays for all possible values of this indicator
-      let both_array = []
-      let one_array = []
-      let neither_array = []
-      let na_array = []
+      let bothArray = []
+      let oneArray = []
+      let neitherArray = []
+      let naArray = []
 
       // Push ISO codes from csv data to arrays based on values
-      csv_data.forEach((row) => {
-        if (row[indicator_name] == "Both") {
-          both_array.push(row.ISO_A3)
+      csvData.forEach((row) => {
+        if (row[indicatorName] == "Both") {
+          bothArray.push(row.ISO_A3)
         }
-        if (row[indicator_name] == "Only paid or only accredited") {
-          one_array.push(row.ISO_A3)
+        if (row[indicatorName] == "Only paid or only accredited") {
+          oneArray.push(row.ISO_A3)
         }
-        if (row[indicator_name] == "Neither") {
-          neither_array.push(row.ISO_A3)
+        if (row[indicatorName] == "Neither") {
+          neitherArray.push(row.ISO_A3)
         }
-        if (row[indicator_name] == "Data not available") {
-          na_array.push(row.ISO_A3)
+        if (row[indicatorName] == "Data not available") {
+          naArray.push(row.ISO_A3)
         }
       })
 
       // Set Mapbox colors based on arrays
       var caseExpression = [
         'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", both_array]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", one_array]], "#20bdc5",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", neither_array]], "#F36744",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", na_array]], "#999999",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", bothArray]], "#9272d9",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", oneArray]], "#20bdc5",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", neitherArray]], "#F36744",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
         "#dbdbdb"
       ]
 
       // Set legend title, colors and values manually
-      $('#legend_title').text("Is at least one CHW group salaried & accredited?")
+      $('#legend-title').text("Is at least one CHW group salaried & accredited?")
       const legendColors = ["#9272d9", "#20bdc5", "#F36744", "#999999", "#dbdbdb"]
       const legendValues = ["Both", "Only salaried or only accredited", "Neither", "Data not available", "Out of scope"]
 
@@ -1030,38 +1166,39 @@
       buildLegend(legendColors, legendValues)
 
     }
+
     // Else if indicator is at_least_1_accredited:
-    if (indicator_name == "at_least_1_accredited") {
+    if (indicatorName == "at_least_1_accredited") {
 
       // Initialize arrays for all possible values of this indicator
-      let y_array = []
-      let n_array = []
-      let na_array = []
+      let yArray = []
+      let nArray = []
+      let naArray = []
 
       // Push ISO codes from csv data to arrays based on values
-      csv_data.forEach((row) => {
-        if (row[indicator_name] == "Yes") {
-          y_array.push(row.ISO_A3)
+      csvData.forEach((row) => {
+        if (row[indicatorName] == "Yes") {
+          yArray.push(row.ISO_A3)
         }
-        if (row[indicator_name] == "No") {
-          n_array.push(row.ISO_A3)
+        if (row[indicatorName] == "No") {
+          nArray.push(row.ISO_A3)
         }
-        if (row[indicator_name] == "Data not available") {
-          na_array.push(row.ISO_A3)
+        if (row[indicatorName] == "Data not available") {
+          naArray.push(row.ISO_A3)
         }
       })
 
       // Set Mapbox colors based on arrays
       var caseExpression = [
         'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", y_array]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", n_array]], "#F36744",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", na_array]], "#999999",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", yArray]], "#9272d9",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", nArray]], "#F36744",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
         "#dbdbdb"
       ]
 
       // Set legend title, colors and values manually
-      $('#legend_title').text("Is at least one CHW group accredited?")
+      $('#legend-title').text("Is at least one CHW group accredited?")
       var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
       var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
 
@@ -1069,38 +1206,39 @@
       buildLegend(legendColors, legendValues)
 
     }
+
     // Else if indicator is at_least_1_salaried:
-    if (indicator_name == "at_least_1_salaried") {
+    if (indicatorName == "at_least_1_salaried") {
 
       // Initialize arrays for all possible values of this indicator
-      let y_array = []
-      let n_array = []
-      let na_array = []
+      let yArray = []
+      let nArray = []
+      let naArray = []
 
       // Push ISO codes from csv data to arrays based on values
-      csv_data.forEach((row) => {
-        if (row[indicator_name] == "Yes") {
-          y_array.push(row.ISO_A3)
+      csvData.forEach((row) => {
+        if (row[indicatorName] == "Yes") {
+          yArray.push(row.ISO_A3)
         }
-        if (row[indicator_name] == "No") {
-          n_array.push(row.ISO_A3)
+        if (row[indicatorName] == "No") {
+          nArray.push(row.ISO_A3)
         }
-        if (row[indicator_name] == "Data not available") {
-          na_array.push(row.ISO_A3)
+        if (row[indicatorName] == "Data not available") {
+          naArray.push(row.ISO_A3)
         }
       })
 
       // Set Mapbox colors based on arrays
       var caseExpression = [
         'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", y_array]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", n_array]], "#F36744",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", na_array]], "#999999",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", yArray]], "#9272d9",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", nArray]], "#F36744",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
         "#dbdbdb"
       ]
 
       // Set legend title, colors and values manually
-      $('#legend_title').text("Is at least one CHW group salaried?")
+      $('#legend-title').text("Is at least one CHW group salaried?")
       var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
       var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
 
@@ -1108,6 +1246,51 @@
       buildLegend(legendColors, legendValues)
 
     }
+
+    // Else if indicator is policy_expiring_within_18_months:
+    if (indicatorName == "policy_expiring_within_18_months") {
+
+      // Initialize arrays for all possible values of this indicator
+      let noArray = []
+      let expiringArray = []
+      let expiredArray = []
+      let naArray = []
+
+      // Push ISO codes from csv data to arrays based on values
+      csvData.forEach((row) => {
+        if (row[indicatorName] == "No") {
+          noArray.push(row.ISO_A3)
+        }
+        if (row[indicatorName] == "Yes") {
+          expiringArray.push(row.ISO_A3)
+        }
+        if (row[indicatorName] == "Already expired") {
+          expiredArray.push(row.ISO_A3)
+        }
+        if (row[indicatorName] == "Data not available") {
+          naArray.push(row.ISO_A3)
+        }
+      })
+
+      // Set Mapbox colors based on arrays
+      var caseExpression = [
+        'case',
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", noArray]], "#9272d9",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", expiringArray]], "#20bdc5",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", expiredArray]], "#F36744",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
+        "#dbdbdb"
+      ]
+
+      // Set legend title, colors and values manually
+      $('#legend-title').text("Is the country policy expired or expiring within 18 months of March 2024?")
+      const legendColors = ["#9272d9", "#20bdc5", "#F36744", "#999999", "#dbdbdb"]
+      const legendValues = ["No", "Yes", "Already expired", "Data not available", "Out of scope"]
+
+      // Now build legend
+      buildLegend(legendColors, legendValues)
+
+      }
 
     // Now, based on results of if statements and indicator selected, set map colors 
     map.setPaintProperty('country-boundaries', 'fill-color', caseExpression)
@@ -1115,32 +1298,32 @@
   };
 
   // Create function to sum countries with data available for denominator 
-  function denominator(sum_denominator) {
+  function denominator(sumDenominator) {
 
-    let denominator_array = []
+    let denominatorArray = []
 
-    csv_data.forEach((row) => {
-      if (row[sum_denominator] == "Yes" || row[sum_denominator] == "No") {
-        denominator_array.push(row.ISO_A3)
+    csvData.forEach((row) => {
+      if (row[sumDenominator] == "Yes" || row[sumDenominator] == "No") {
+        denominatorArray.push(row.ISO_A3)
       } 
     })
 
-    return denominator_sum = denominator_array.length
+    return denominatorSum = denominatorArray.length
 
   };
 
   // Create function to sum counts for tickers
-  function sumIndicators(sum_indicator_name) {
+  function sumIndicators(sumIndicatorName) {
 
-    let indicator_array = []
+    let indicatorArray = []
 
-    csv_data.forEach((row) => {
-      if (row[sum_indicator_name] == "Yes") {
-        indicator_array.push(row.ISO_A3)
+    csvData.forEach((row) => {
+      if (row[sumIndicatorName] == "Yes") {
+        indicatorArray.push(row.ISO_A3)
       }
     })
 
-    return indicator_sum = indicator_array.length
+    return indicatorSum = indicatorArray.length
 
   };
 
@@ -1170,18 +1353,18 @@
       .then(response => {
         csv().fromString(response)
           .then(rows => {
-            csv_data = rows
+            csvData = rows
 
             // Add scorecard at top based on csv data
-            const total_accredited_and_salaried = sumIndicators("at_least_1_paid_accredited")
-            const total_denominator = denominator("at_least_1_paid_accredited")
-            $('#total_accredited_and_salaried').text(total_accredited_and_salaried + "/" + total_denominator)
+            const totalAccreditedAndSalaried = sumIndicators("at_least_1_paid_accredited")
+            const totalDenominator = denominator("at_least_1_paid_accredited")
+            $('#total-accredited-and-salaried').text(totalAccreditedAndSalaried + "/" + totalDenominator)
 
             // Initialize map with data for proCHW indicator
             setColorsToMap("paid_accredited_cat")
 
             // Add button active state
-            $('#accredited_and_salaried_chws_button').addClass('active');
+            $('#accredited-and-salaried-chws-button').addClass('active');
 
             setTimeout(() => {
               map.setPaintProperty('country-boundaries', 'fill-opacity', 1)
@@ -1191,47 +1374,70 @@
       })
 
     // Add event listeners for button clicks to change the map based on the indicator selected and toggle button to active state
-    $("#accredited_chws_button").click(function () {
+    $("#accredited-chws-button").click(function () {
       setColorsToMap("at_least_1_accredited")
       $('.button').removeClass('active')
       $(this).addClass('active')
     })
 
-    $("#salaried_chws_button").click(function () {
+    $("#salaried-chws-button").click(function () {
       setColorsToMap("at_least_1_salaried")
       $('.button').removeClass('active')
       $(this).addClass('active')
     })
 
-    $("#accredited_and_salaried_chws_button").click(function () {
+    $("#accredited-and-salaried-chws-button").click(function () {
       setColorsToMap("paid_accredited_cat")
       $('.button').removeClass('active')
       $(this).addClass('active')
     })
 
+    $("#policy-expiring-within-18-months-button").click(function () {
+      setColorsToMap("policy_expiring_within_18_months")
+      $('.button').removeClass('active')
+      $(this).addClass('active')
+    })
+
+    // Add event listener for click on "see something missing" button
+    $("#sidebarsubmitbutton").click(function () {
+      sidebarsubmitbutton.style.display = "inline-block";
+      const submitlink = "https://docs.google.com/forms/d/e/1FAIpQLSeQfSZ9YG6ecSnWiBoUshtKBRGXVyYPt4Hfo_nx4ugBFkaEww/viewform"
+      window.open(submitlink)
+    })
+
     // Populate sidebar upon click
     map.on('click', 'country-boundaries', (e) => {
 
-      const thisCountry = csv_data.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
+      const thisCountry = csvData.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
 
       if (thisCountry) {
 
-        $("#country_name").text(thisCountry.country)
-        $("#num_groups").text("# of CHW groups: " + thisCountry.group_count)
-        $("#num_paid_accredited_chw_groups").text("# of salaried & accredited CHW groups: " + thisCountry.paid_accredited_count)
-        $("#group_names_combined").text("Group name(s): " + thisCountry.group_names_combined)
-        $("#chw_policy_implementation").text("CHW policy implementation: " + thisCountry.implementation_combined)
-        $("#policy_status").text("Policy status: " + thisCountry.policy_status)
-        $("#policy_years_covered").text("Policy years covered: " + thisCountry.policy_years_covered)
-        $("#date_last_updated").text("Date last updated: " + thisCountry.date_last_updated)
+        $("#country-name").text(thisCountry.country)
+        $("#num-groups").text("# of CHW groups: " + thisCountry.group_count)
+        $("#num-paid-accredited-chw-groups").text("# of salaried & accredited CHW groups: " + thisCountry.paid_accredited_count)
+        $("#group-names-combined").text("Group name(s): " + thisCountry.group_names_combined)
+        $("#chw-policy-implementation").text("CHW policy implementation: " + thisCountry.implementation_combined)
+        $("#policy-status").text("Policy status: " + thisCountry.policy_status)
+        $("#policy-years-covered").text("Policy years covered: " + thisCountry.policy_years_covered)
+        $("#date-last-updated").text("Date last updated: " + thisCountry.date_last_updated)
         // For policy links, first determine if the link is available
         if (thisCountry.policy_link != "Out of scope" && thisCountry.policy_link != "Data not available") {
-          // If available, link it
-          const link = thisCountry.policy_link
-          $("#policy_link").html('<a href=' + link + ' target="_blank">See the policy here!</a>')
+          // If available, show button and link policy
+          $("#policy-link").hide()
+          policybutton.style.display = "inline-block";
+          $("#policybutton").unbind('click')
+          // Upon click, go to the policy link
+          $(function(){
+            $("#policybutton").click(function(){
+              const link = thisCountry.policy_link
+              window.open(link)
+            });
+          });
         } else {
           // If link not available, return "Policy link not available"
-          $("#policy_link").text("Policy link not available")
+          $("#policy-link").show()
+          $("#policy-link").text("Policy link not available")
+          $("#policybutton").hide()
         }
       }
 
@@ -1247,7 +1453,7 @@
 
       map.getCanvas().style.cursor = 'pointer'
 
-      const thisCountry = csv_data.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
+      const thisCountry = csvData.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
 
       if (thisCountry) {
 
@@ -1277,22 +1483,28 @@
     });
 
     // Create hover on buttons with definitions
-    $("#accredited_chws_button").hover(function () {
-      $('.accredited_chws_button_def').show();
+    $("#accredited-chws-button").hover(function () {
+      $('.accredited-chws-button-def').show();
     }, function () {
-      $('.accredited_chws_button_def').hide();
+      $('.accredited-chws-button-def').hide();
     })
 
-    $("#salaried_chws_button").hover(function () {
-      $('.salaried_chws_button_def').show()
+    $("#salaried-chws-button").hover(function () {
+      $('.salaried-chws-button-def').show()
     }, function () {
-      $('.salaried_chws_button_def').hide();
+      $('.salaried-chws-button-def').hide();
     })
 
-    $("#accredited_and_salaried_chws_button").hover(function () {
-      $('.accredited_and_salaried_chws_button_def').show()
+    $("#accredited-and-salaried-chws-button").hover(function () {
+      $('.accredited-and-salaried-chws-button-def').show()
     }, function () {
-      $('.accredited_and_salaried_chws_button_def').hide();
+      $('.accredited-and-salaried-chws-button-def').hide();
+    })
+
+    $("#policy-expiring-within-18-months-button").hover(function () {
+      $('.policy-expiring-within-18-months-button-def').show()
+    }, function () {
+      $('.policy-expiring-within-18-months-button-def').hide();
     })
 
   });
