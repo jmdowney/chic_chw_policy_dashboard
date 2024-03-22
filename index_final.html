@@ -13,963 +13,963 @@
   <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
 
   <style>
-  /* Mobile */
-  @media screen and (max-width: 768px) {
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0px;
-      padding: 0px;
-      background-color: #F4F1EB;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0px, 1fr));
-      grid-template-rows: 10vh 6vh 50vh 34vh;
-      max-width: 100%;
-    }
-
-    .header {
-      grid-column: 1 / span 4;
-      display: grid;
-    }
-
-    .header-section {
-      grid-row: 1;
-      display: grid;
-      align-content: center;
-    }
-
-    /* Child containers within header */
-    .left {
-      grid-column: 1 / span 1;
-    }
-
-    .middle {
-      grid-column: 2 / span 3;
-    }
-
-    .right {
-      grid-column: 1 / span 4;
-      grid-row: 2 / span 1;
-      display: grid;
-      text-align: center;
-      margin: .5em;
-    }
-
-    /* Map and sidebar */
-    .content-section {
-      grid-column: 1 / span 4;
-      grid-row: 3 / span 2;
-    }
-
-    /* Total accredited & salaried */
-    #totaltext {
-      color: #340C2F;
-      font-family: Anton;
-      font-size: 4.4vw;
-      overflow-wrap: normal;
-      vertical-align: middle;
-      margin-top: .5rem;
-      margin-bottom: .5rem;
-      margin-right: .5rem;
-      line-height: 1.1em;
-    }
-
-    #total-accredited-and-salaried {
-      color: #F4F1EB;
-      font-family: Anton;
-      font-size: 4vw;
-      text-align: center;
-      vertical-align: middle;
-      background-color: #9272d9;
-      margin: .5rem;
-      padding: .5rem;
-      border-radius: 3px;
-    }
-
-    /* "Submit additional country details" link design */
-    .submitlink {
-      place-self: center;
-      background-color: #20BDC5;
-      font-family: "Helvetica Neue", "Arial Narrow", sans-serif;
-      vertical-align: middle;
-      font-size: .6rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      border-radius: 6px;
-      padding: .25rem;
-      width: 100%;
-    }
-
-    #submitlink a {
-      color: #F4F1EB;
-    }
-
-    .right a:link {
-      text-decoration: none;
-    }
-
-    .right a:visited {
-      text-decoration: none;
-    }
-
-    /* Map positioning */
-    #map {
-      grid-column: 1 / span 4;
-      grid-row: 3 / span 1;
-      height: 100%;
-    }
-
-    /* Button design (map buttons) */
-    .button {
-      background-color: #F4F1EB;
-      color: #111111;
-      padding-top: .25em;
-      padding-bottom: .25em;
-      padding-right: .5em;
-      padding-left: .5em;
-      border: 1px solid #111111;
-      border-radius: 3px;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      font-size: .5rem;
-      font-weight: bold;
-      text-align: center;
-      margin: 0;
-      opacity: 0.8;
-    }
-
-    .button.active {
-      background: #4F2049;
-      color: #F4F1EB;
-      border: 1px solid #4F2049;
-      font-weight: bold;
-      opacity: 1;
-    }
-
-    #buttoncontainer {
-      position: absolute;
-      top: 16%;
-      left: 0;
-      margin-left: .5em;
-    }
-
-    /* Legend design */
-    .legend {
-      position: absolute;
-      top: 47%;
-      right: 3%;
-      width: 40%;
-      background: #fff;
-      margin-right: .5rem;
-      overflow: auto;
-      padding: .6em;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      font-size: .45rem;
-    }
-
-    #legend {
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      line-height: 1.1em;
-      margin-bottom: 1rem;
-    }
-
-    .legend-key {
-      display: inline-block;
-      border-radius: 20%;
-      width: 10px;
-      height: 10px;
-      margin-right: 5px;
-    }
-
-    .legenditems {
-      display: block;
-    }
-
-    h4 {
-      margin-top: 5px;
-      margin-bottom: 5px;
-    }
-
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      grid-column: 1 / span 4;
-      grid-row: 4 / span 1;
-      bottom: 0;
-      background-color: #F4F1EB;
-      color: #340C2F;
-      padding: 2em;
-      font-size: .8rem;
-      overflow: scroll;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      border-top: solid 1px #340C2F;
-    }
-
-    .country-details * {
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      margin-bottom: .5em;
-      line-height: 1.3em;
-      overflow-wrap: normal;
-    }
-
-    .country-details {
-      margin-bottom: 1rem;
-    }
-
-    #country-name {
-      font-size: 1.2rem;
-      text-transform: uppercase;
-      font-family: Anton;
-    }
-
-    /* Button design (sidebar buttons) */
-    .buttonsidebar {
-      background-color: #F4F1EB;
-      color: #111111;
-      padding-top: .25em;
-      padding-bottom: .25em;
-      padding-right: .5em;
-      padding-left: .5em;
-      border: 1px solid #111111;
-      border-radius: 3px;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      font-size: .6rem;
-      font-weight: bold;
-      text-align: center;
-      margin: 0;
-      opacity: 1;
-    }
-
-    .buttonsidebar.active {
-      background: #4F2049;
-      color: #F4F1EB;
-      border: 1px solid #4F2049;
-      font-weight: bold;
-      opacity: 1;
-    }
-
-    #policybutton {
-      margin-top: 1em;
-      display: none;
-    }
-
-    #download-link {
-      margin-top: 1em;
-    }
-
-    #download-link a {
-      color: #340C2F;
-    }
-
-    /* Bottom container of sidebar */
-    #bottom {
-      flex: 0 0 50px;
-      margin-top: auto;
-      line-height: 1.5em;
-      font-size: .8rem;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-    }
-
-    #sidebarsubmitbutton {
-      margin-bottom: 1em;
-    }
-
-    #date-last-updated {
-      font-style: italic;
-    }
-
-    /* Button hover (definition) design */
-    .buttondefcontainer {
-      display: none;
-    }
-
-  }
-
-  /* Laptop */
-  @media screen and (min-width: 768px) {
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0px;
-      padding: 0px;
-      background-color: #F4F1EB;
-      height: 100%;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      grid-template-rows: 20vh 80vh;
-      height: 100%;
-    }
-
-    /* Container for header elements */
-    .header {
-      grid-column: 1 / span 12;
-      display: grid;
-    }
-
-    .header-section {
-      grid-row: 1;
-      display: grid;
-      align-items: center;
-    }
-
-    /* Child containers within header */
-    .left {
-      grid-column: 1 / span 2;
-    }
-
-    .middle {
-      grid-column: 3 / span 6;
-    }
-
-    .right {
-      grid-column: 9 / span 3;
-    }
-
-    /* Define map and sidebar container */
-    .content-section {
-      grid-row: 2;
-    }
-
-    .sidebar {
-      display: flex;
-      grid-column: 10 / span 3;
-      background-color: #F4F1EB;
-      color: #340C2F;
-      padding: 1em;
-      border-top: solid 1.5px #340C2F;
-      border-left: solid 1.5px #340C2F;
-    }
-
-    /* "Submit additional country details" link design */
-    .submitlink {
-      text-align: center;
-      background-color: #20BDC5;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      text-align: center;
-      vertical-align: middle;
-      font-size: 1rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      border-radius: 6px;
-      padding: 1em;
-      margin: 1em;
-    }
-
-    #submitlink a {
-      color: #F4F1EB;
-    }
-
-    .right a:link {
-      text-decoration: none;
-    }
-
-    .right a:visited {
-      text-decoration: none;
-    }
-
-    /* Total accredited & salaried */
-    #totaltext {
-      color: #340C2F;
-      font-family: Anton;
-      font-size: clamp(1.8rem, 1.046rem + 1.571vw, 2.46rem);
-      overflow-wrap: normal;
-      vertical-align: middle;
-      margin-top: 0.3em;
-      margin-bottom: 0.3em;
-      margin-right: 0.3em;
-      line-height: 1.1em;
-
-    }
-
-    #total-accredited-and-salaried {
-      color: #F4F1EB;
-      font-family: Anton;
-      font-size: clamp(2rem, 1.2rem + 1.667vw, 2.7rem);
-      text-align: center;
-      vertical-align: middle;
-      background-color: #9272d9;
-      margin: 0.3em;
-      padding: 0.3em;
-      border-radius: 6px;
-    }
-
-    /* Map positioning */
-    #map {
-      grid-column: 1 / span 9;
-      height: 100%;
-    }
-
-    /* Map overlays */
-    .legend {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      background: #fff;
-      margin-left: 1em;
-      overflow: auto;
-      border-radius: 4px;
-      padding: .8em;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-    }
-
-    #legend {
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      line-height: 1.3em;
-      margin-bottom: 2.5em;
-    }
-
-    .legend-key {
-      display: inline-block;
-      border-radius: 20%;
-      width: 10px;
-      height: 10px;
-      margin-right: 5px;
-    }
-
-    .legenditems {
-      display: inline-block;
-    }
-
-    h4 {
-      margin-top: 5px;
-      margin-bottom: 5px;
-    }
-
-    /* Popup design */
-    .mapboxgl-popup-content {
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-    }
-
-    /* Sidebar design */
-    #country-name {
-      font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
-      text-transform: uppercase;
-      font-family: Anton;
-      line-height: 1.1em;
-    }
-
-    .country-details * {
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      margin-bottom: .5em;
-      line-height: 1.3em;
-      overflow-wrap: normal;
-      font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
-    }
-
-    #policybutton {
-      margin-top: 1em;
-      width: 100%;
-      display: none;
-    }
-
-    #download-link {
-      margin-top: 1em;
-    }
-
-    #download-link a {
-      color: #340C2F;
-    }
-
-    /* Button design (sidebar buttons) */
-    .buttonsidebar {
-      background-color: #F4F1EB;
-      color: #111111;
-      border: 1px solid #111111;
-      border-radius: 5px;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      white-space: normal;
-      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-      font-weight: bold;
-      text-align: center;
-      padding-right: 1em;
-      padding-left: 1em;
-      padding-top: 1em;
-      padding-bottom: 1em;
-      opacity: 1;
-    }
-
-    buttonsidebar:hover {
-      background: #4F2049;
-      color: #F4F1EB;
-      border: 1px solid #4F2049;
-      font-weight: bold;
-      opacity: 1;
-    }
-
-    /* Bottom container of sidebar */
-    .bottom {
-      position: absolute;
-      bottom: 0;
-      padding-right: 1.5em;
-      line-height: 1.3em;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
-    }
-
-    #sidebarsubmitbutton {
-      margin-bottom: 1em;
-      width: 100%;
-    }
-
-    #date-last-updated {
-      font-style: italic;
-    }
-
-    /* Map button design */
-    .button {
-      background-color: #F4F1EB;
-      color: #111111;
-      padding: 10px;
-      border: 1px solid #111111;
-      border-radius: 5px;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-      font-weight: bold;
-      text-align: center;
-      padding-right: 1em;
-      padding-left: 1em;
-      padding-top: .5em;
-      padding-bottom: .5em;
-      margin: 0;
-      opacity: 0.8;
-    }
-
-    .button.active {
-      background: #4F2049;
-      color: #F4F1EB;
-      border: 1px solid #4F2049;
-      font-weight: bold;
-      opacity: 1;
-    }
-
-    .buttoncontainer {
-      position: absolute;
-      top: 22%;
-      left: 0;
-      margin-left: 10px;
-    }
-
-    button:hover {
-      background: #4F2049;
-      color: #F4F1EB;
-      font-weight: bold;
-      border: 1px solid #4F2049;
-    }
-
-    /* Button hover (definition) design */
-    .buttondefcontainer {
-      position: absolute;
-      top: 28%;
-      left: 0;
-      margin-left: 10px;
-      width: 30%;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      font-size: .8rem;
-    }
-
-    .accredited-chws-button-def {
-      display: none;
-      position: relative;
-      top: 0;
-      left: 0;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-      padding: 10px;
-    }
-
-    .salaried-chws-button-def {
-      display: none;
-      position: relative;
-      top: 0;
-      left: 0;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-      padding: 10px;
-    }
-
-    .accredited-and-salaried-chws-button-def {
-      display: none;
-      position: relative;
-      top: 0;
-      left: 0;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-      padding: 10px;
-    }
-
-    .policy-expiring-within-18-months-button-def {
-      display: none;
-      position: relative;
-      top: 0;
-      left: 0;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-      padding: 10px;
-    }
-
-  }
-
-  /* Desktop */
-  @media screen and (min-width: 1280px) and (min-height: 570px) {
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0px;
-      padding: 0px;
-      background-color: #F4F1EB;
-      height: 100%;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      grid-template-rows: 20vh 80vh;
-      height: 100%;
-    }
-
-    /* Container for header elements */
-    .header {
-      grid-column: 1 / span 12;
-      display: grid;
-      align-items: center;
-    }
-
-    .header-section {
-      grid-row: 1;
-    }
-
-    /* Child containers within header */
-    .left {
-      grid-column: 1 / span 2;
-    }
-
-    .middle {
-      grid-column: 3 / span 6;
-    }
-
-    .right {
-      grid-column: 9 / span 3;
-    }
-
-    /* Define map and sidebar container */
-    .content-section {
-      grid-row: 2;
-    }
-
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      grid-column: 10 / span 3;
-      background-color: #F4F1EB;
-      color: #340C2F;
-      padding: 1em;
-      border-top: solid 1.5px #340C2F;
-      border-left: solid 1.5px #340C2F;
-    }
-
-    /* "Submit additional country details" link design */
-    .submitlink {
-      text-align: center;
-      background-color: #20BDC5;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      font-weight: bold;
-      text-align: center;
-      vertical-align: middle;
-      font-size: clamp(0.6rem, 0.4425rem + .7vw, 1.3rem);
-      text-transform: uppercase;
-      border-radius: 6px;
-      padding: 1em;
-      margin: 1em;
-    }
+    /* Mobile */
+    @media screen and (max-width: 768px) {
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0px;
+        padding: 0px;
+        background-color: #F4F1EB;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0px, 1fr));
+        grid-template-rows: 10vh 6vh 50vh 34vh;
+        max-width: 100%;
+      }
+
+      .header {
+        grid-column: 1 / span 4;
+        display: grid;
+      }
+
+      .header-section {
+        grid-row: 1;
+        display: grid;
+        align-content: center;
+      }
+
+      /* Child containers within header */
+      .left {
+        grid-column: 1 / span 1;
+      }
+
+      .middle {
+        grid-column: 2 / span 3;
+      }
+
+      .right {
+        grid-column: 1 / span 4;
+        grid-row: 2 / span 1;
+        display: grid;
+        text-align: center;
+        margin: .5em;
+      }
+
+      /* Map and sidebar */
+      .content-section {
+        grid-column: 1 / span 4;
+        grid-row: 3 / span 2;
+      }
+
+      /* Total accredited & salaried */
+      #totaltext {
+        color: #340C2F;
+        font-family: Anton;
+        font-size: 4.4vw;
+        overflow-wrap: normal;
+        vertical-align: middle;
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+        margin-right: .5rem;
+        line-height: 1.1em;
+      }
+
+      #total-accredited-and-salaried {
+        color: #F4F1EB;
+        font-family: Anton;
+        font-size: 4vw;
+        text-align: center;
+        vertical-align: middle;
+        background-color: #9272d9;
+        margin: .5rem;
+        padding: .5rem;
+        border-radius: 3px;
+      }
+
+      /* "Submit additional country details" link design */
+      .submitlink {
+        place-self: center;
+        background-color: #20BDC5;
+        font-family: "Helvetica Neue", "Arial Narrow", sans-serif;
+        vertical-align: middle;
+        font-size: .6rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-radius: 6px;
+        padding: .25rem;
+        width: 100%;
+      }
+
+      #submitlink a {
+        color: #F4F1EB;
+      }
+
+      .right a:link {
+        text-decoration: none;
+      }
+
+      .right a:visited {
+        text-decoration: none;
+      }
+
+      /* Map positioning */
+      #map {
+        grid-column: 1 / span 4;
+        grid-row: 3 / span 1;
+        height: 100%;
+      }
+
+      /* Button design (map buttons) */
+      .button {
+        background-color: #F4F1EB;
+        color: #111111;
+        padding-top: .25em;
+        padding-bottom: .25em;
+        padding-right: .5em;
+        padding-left: .5em;
+        border: 1px solid #111111;
+        border-radius: 3px;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: .5rem;
+        font-weight: bold;
+        text-align: center;
+        margin: 0;
+        opacity: 0.8;
+      }
+
+      .button.active {
+        background: #4F2049;
+        color: #F4F1EB;
+        border: 1px solid #4F2049;
+        font-weight: bold;
+        opacity: 1;
+      }
+
+      #buttoncontainer {
+        position: absolute;
+        top: 16%;
+        left: 0;
+        margin-left: .5em;
+      }
+
+      /* Legend design */
+      .legend {
+        position: absolute;
+        top: 47%;
+        right: 3%;
+        width: 40%;
+        background: #fff;
+        margin-right: .5rem;
+        overflow: auto;
+        padding: .6em;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        font-size: .45rem;
+      }
+
+      #legend {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        line-height: 1.1em;
+        margin-bottom: 1rem;
+      }
+
+      .legend-key {
+        display: inline-block;
+        border-radius: 20%;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+      }
+
+      .legenditems {
+        display: block;
+      }
+
+      h4 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        grid-column: 1 / span 4;
+        grid-row: 4 / span 1;
+        bottom: 0;
+        background-color: #F4F1EB;
+        color: #340C2F;
+        padding: 2em;
+        font-size: .8rem;
+        overflow: scroll;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        border-top: solid 1px #340C2F;
+      }
+
+      .country-details * {
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        margin-bottom: .5em;
+        line-height: 1.3em;
+        overflow-wrap: normal;
+      }
+
+      .country-details {
+        margin-bottom: 1rem;
+      }
+
+      #country-name {
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        font-family: Anton;
+      }
+
+      /* Button design (sidebar buttons) */
+      .buttonsidebar {
+        background-color: #F4F1EB;
+        color: #111111;
+        padding-top: .25em;
+        padding-bottom: .25em;
+        padding-right: .5em;
+        padding-left: .5em;
+        border: 1px solid #111111;
+        border-radius: 3px;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: .6rem;
+        font-weight: bold;
+        text-align: center;
+        margin: 0;
+        opacity: 1;
+      }
+
+      .buttonsidebar.active {
+        background: #4F2049;
+        color: #F4F1EB;
+        border: 1px solid #4F2049;
+        font-weight: bold;
+        opacity: 1;
+      }
+
+      #policybutton {
+        margin-top: 1em;
+        display: none;
+      }
+
+      #download-link {
+        margin-top: 1em;
+      }
+
+      #download-link a {
+        color: #340C2F;
+      }
+
+      /* Bottom container of sidebar */
+      #bottom {
+        flex: 0 0 50px;
+        margin-top: auto;
+        line-height: 1.5em;
+        font-size: .8rem;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      }
+
+      #sidebarsubmitbutton {
+        margin-bottom: 1em;
+      }
+
+      #date-last-updated {
+        font-style: italic;
+      }
+
+      /* Button hover (definition) design */
+      .buttondefcontainer {
+        display: none;
+      }
+
+    }
+
+    /* Laptop */
+    @media screen and (min-width: 768px) {
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0px;
+        padding: 0px;
+        background-color: #F4F1EB;
+        height: 100%;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        grid-template-rows: 20vh 80vh;
+        height: 100%;
+      }
+
+      /* Container for header elements */
+      .header {
+        grid-column: 1 / span 12;
+        display: grid;
+      }
+
+      .header-section {
+        grid-row: 1;
+        display: grid;
+        align-items: center;
+      }
+
+      /* Child containers within header */
+      .left {
+        grid-column: 1 / span 2;
+      }
+
+      .middle {
+        grid-column: 3 / span 6;
+      }
+
+      .right {
+        grid-column: 9 / span 3;
+      }
+
+      /* Define map and sidebar container */
+      .content-section {
+        grid-row: 2;
+      }
+
+      .sidebar {
+        display: flex;
+        grid-column: 10 / span 3;
+        background-color: #F4F1EB;
+        color: #340C2F;
+        padding: 1em;
+        border-top: solid 1.5px #340C2F;
+        border-left: solid 1.5px #340C2F;
+      }
+
+      /* "Submit additional country details" link design */
+      .submitlink {
+        text-align: center;
+        background-color: #20BDC5;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-radius: 6px;
+        padding: 1em;
+        margin: 1em;
+      }
+
+      #submitlink a {
+        color: #F4F1EB;
+      }
+
+      .right a:link {
+        text-decoration: none;
+      }
+
+      .right a:visited {
+        text-decoration: none;
+      }
+
+      /* Total accredited & salaried */
+      #totaltext {
+        color: #340C2F;
+        font-family: Anton;
+        font-size: clamp(1.8rem, 1.046rem + 1.571vw, 2.46rem);
+        overflow-wrap: normal;
+        vertical-align: middle;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        margin-right: 0.3em;
+        line-height: 1.1em;
+
+      }
+
+      #total-accredited-and-salaried {
+        color: #F4F1EB;
+        font-family: Anton;
+        font-size: clamp(2rem, 1.2rem + 1.667vw, 2.7rem);
+        text-align: center;
+        vertical-align: middle;
+        background-color: #9272d9;
+        margin: 0.3em;
+        padding: 0.3em;
+        border-radius: 6px;
+      }
+
+      /* Map positioning */
+      #map {
+        grid-column: 1 / span 9;
+        height: 100%;
+      }
+
+      /* Map overlays */
+      .legend {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: #fff;
+        margin-left: 1em;
+        overflow: auto;
+        border-radius: 4px;
+        padding: .8em;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      }
+
+      #legend {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        line-height: 1.3em;
+        margin-bottom: 2.5em;
+      }
+
+      .legend-key {
+        display: inline-block;
+        border-radius: 20%;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+      }
+
+      .legenditems {
+        display: inline-block;
+      }
+
+      h4 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      /* Popup design */
+      .mapboxgl-popup-content {
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+      }
+
+      /* Sidebar design */
+      #country-name {
+        font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
+        text-transform: uppercase;
+        font-family: Anton;
+        line-height: 1.1em;
+      }
+
+      .country-details * {
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        margin-bottom: .5em;
+        line-height: 1.3em;
+        overflow-wrap: normal;
+        font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
+      }
+
+      #policybutton {
+        margin-top: 1em;
+        width: 100%;
+        display: none;
+      }
+
+      #download-link {
+        margin-top: 1em;
+      }
+
+      #download-link a {
+        color: #340C2F;
+      }
+
+      /* Button design (sidebar buttons) */
+      .buttonsidebar {
+        background-color: #F4F1EB;
+        color: #111111;
+        border: 1px solid #111111;
+        border-radius: 5px;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        white-space: normal;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        font-weight: bold;
+        text-align: center;
+        padding-right: 1em;
+        padding-left: 1em;
+        padding-top: 1em;
+        padding-bottom: 1em;
+        opacity: 1;
+      }
+
+      buttonsidebar:hover {
+        background: #4F2049;
+        color: #F4F1EB;
+        border: 1px solid #4F2049;
+        font-weight: bold;
+        opacity: 1;
+      }
+
+      /* Bottom container of sidebar */
+      .bottom {
+        position: absolute;
+        bottom: 0;
+        padding-right: 1.5em;
+        line-height: 1.3em;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
+      }
+
+      #sidebarsubmitbutton {
+        margin-bottom: 1em;
+        width: 100%;
+      }
+
+      #date-last-updated {
+        font-style: italic;
+      }
+
+      /* Map button design */
+      .button {
+        background-color: #F4F1EB;
+        color: #111111;
+        padding: 10px;
+        border: 1px solid #111111;
+        border-radius: 5px;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        font-weight: bold;
+        text-align: center;
+        padding-right: 1em;
+        padding-left: 1em;
+        padding-top: .5em;
+        padding-bottom: .5em;
+        margin: 0;
+        opacity: 0.8;
+      }
+
+      .button.active {
+        background: #4F2049;
+        color: #F4F1EB;
+        border: 1px solid #4F2049;
+        font-weight: bold;
+        opacity: 1;
+      }
+
+      .buttoncontainer {
+        position: absolute;
+        top: 22%;
+        left: 0;
+        margin-left: 10px;
+      }
+
+      button:hover {
+        background: #4F2049;
+        color: #F4F1EB;
+        font-weight: bold;
+        border: 1px solid #4F2049;
+      }
+
+      /* Button hover (definition) design */
+      .buttondefcontainer {
+        position: absolute;
+        top: 28%;
+        left: 0;
+        margin-left: 10px;
+        width: 30%;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        font-size: .8rem;
+      }
+
+      .accredited-chws-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+        padding: 10px;
+      }
+
+      .salaried-chws-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+        padding: 10px;
+      }
+
+      .accredited-and-salaried-chws-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+        padding: 10px;
+      }
+
+      .policy-expiring-within-18-months-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+        padding: 10px;
+      }
+
+    }
+
+    /* Desktop */
+    @media screen and (min-width: 1280px) and (min-height: 570px) {
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0px;
+        padding: 0px;
+        background-color: #F4F1EB;
+        height: 100%;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        grid-template-rows: 20vh 80vh;
+        height: 100%;
+      }
+
+      /* Container for header elements */
+      .header {
+        grid-column: 1 / span 12;
+        display: grid;
+        align-items: center;
+      }
+
+      .header-section {
+        grid-row: 1;
+      }
+
+      /* Child containers within header */
+      .left {
+        grid-column: 1 / span 2;
+      }
+
+      .middle {
+        grid-column: 3 / span 6;
+      }
+
+      .right {
+        grid-column: 9 / span 3;
+      }
+
+      /* Define map and sidebar container */
+      .content-section {
+        grid-row: 2;
+      }
+
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        grid-column: 10 / span 3;
+        background-color: #F4F1EB;
+        color: #340C2F;
+        padding: 1em;
+        border-top: solid 1.5px #340C2F;
+        border-left: solid 1.5px #340C2F;
+      }
+
+      /* "Submit additional country details" link design */
+      .submitlink {
+        text-align: center;
+        background-color: #20BDC5;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-weight: bold;
+        text-align: center;
+        vertical-align: middle;
+        font-size: clamp(0.6rem, 0.4425rem + .7vw, 1.3rem);
+        text-transform: uppercase;
+        border-radius: 6px;
+        padding: 1em;
+        margin: 1em;
+      }
+
+      #submitlink a {
+        color: #F4F1EB;
+      }
+
+      .right a:link {
+        text-decoration: none;
+      }
+
+      .right a:visited {
+        text-decoration: none;
+      }
+
+      /* Total accredited & salaried */
+      #totaltext {
+        color: #340C2F;
+        font-family: Anton;
+        font-size: clamp(2.4rem, -8.8rem + 14vw, 3.8rem);
+        vertical-align: middle;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        margin-right: 0.3em;
+        line-height: 1.1em;
+
+      }
+
+      #total-accredited-and-salaried {
+        color: #F4F1EB;
+        font-family: Anton;
+        font-size: clamp(2.4rem, -10.4rem + 16vw, 4rem);
+        text-align: center;
+        vertical-align: middle;
+        background-color: #9272d9;
+        margin: 0.3em;
+        padding: 0.3em;
+        border-radius: 6px;
+      }
+
+      /* Map positioning */
+      #map {
+        grid-column: 1 / span 9;
+        height: 100%;
+      }
+
+      /* Map overlays */
+      .legend {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: #fff;
+        margin-left: 1em;
+        overflow: auto;
+        border-radius: 4px;
+        padding: .8em;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      }
+
+      #legend {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        line-height: 1.3em;
+        margin-bottom: 2.5em;
+      }
+
+      .legend-key {
+        display: inline-block;
+        border-radius: 20%;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+      }
+
+      .legenditems {
+        display: inline-block;
+      }
+
+      h4 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      /* Popup design */
+      .mapboxgl-popup-content {
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+      }
+
+      /* Sidebar design */
+      #country-name {
+        font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
+        text-transform: uppercase;
+        font-family: Anton;
+        line-height: 1.1em;
+      }
+
+      .country-details * {
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        margin-bottom: 0.8em;
+        line-height: 1.5em;
+        overflow-wrap: normal;
+        font-size: clamp(.7rem, 0.6325rem + .3vw, 1rem)
+      }
+
+      #policybutton {
+        margin-top: 1em;
+        width: 100%;
+        display: none;
+      }
+
+      #download-link {
+        margin-top: 1em;
+      }
+
+      #download-link a {
+        color: #340C2F;
+      }
+
+      /* Button design (sidebar buttons) */
+      .buttonsidebar {
+        background-color: #F4F1EB;
+        color: #111111;
+        border: 1px solid #111111;
+        border-radius: 5px;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        font-weight: bold;
+        text-align: center;
+        padding-right: 1em;
+        padding-left: 1em;
+        padding-top: 1em;
+        padding-bottom: 1em;
+        opacity: 1;
+      }
+
+      buttonsidebar:hover {
+        background: #4F2049;
+        color: #F4F1EB;
+        border: 1px solid #4F2049;
+        font-weight: bold;
+        opacity: 1;
+      }
+
+      /* Bottom container of sidebar */
+      .bottom {
+        position: absolute;
+        bottom: 0;
+        padding-bottom: 1em;
+        padding-right: 1em;
+        line-height: 1.3em;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: clamp(.7rem, 0.655rem + .2vw, 1rem);
+      }
+
+      #sidebarsubmitbutton {
+        margin-bottom: 1em;
+      }
+
+      #date-last-updated {
+        font-style: italic;
+      }
+
+      /* Map button design */
+      .button {
+        background-color: #F4F1EB;
+        color: #111111;
+        padding: 10px;
+        border: 1px solid #111111;
+        border-radius: 5px;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        font-weight: bold;
+        text-align: center;
+        padding-right: 1em;
+        padding-left: 1em;
+        padding-top: .5em;
+        padding-bottom: .5em;
+        margin: 0;
+        opacity: 0.8;
+      }
+
+      .button.active {
+        background: #4F2049;
+        color: #F4F1EB;
+        border: 1px solid #4F2049;
+        font-weight: bold;
+        opacity: 1;
+      }
+
+      .buttoncontainer {
+        position: absolute;
+        top: 20%;
+        left: 0;
+        margin-left: 10px;
+      }
+
+      button:hover {
+        background: #4F2049;
+        color: #F4F1EB;
+        font-weight: bold;
+        border: 1px solid #4F2049;
+      }
+
+      /* Button hover (definition) design */
+      .buttondefcontainer {
+        position: absolute;
+        top: 25%;
+        left: 0;
+        margin-left: 10px;
+        width: 30%;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        font-size: .8rem;
+      }
+
+      .accredited-chws-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+        padding: 10px;
+      }
+
+      .salaried-chws-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+        padding: 10px;
+      }
+
+      .accredited-and-salaried-chws-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+        padding: 10px;
+      }
+
+      .policy-expiring-within-18-months-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: #111111;
+        color: #F4F1EB;
+        padding: 10px;
+      }
 
-    #submitlink a {
-      color: #F4F1EB;
     }
-
-    .right a:link {
-      text-decoration: none;
-    }
-
-    .right a:visited {
-      text-decoration: none;
-    }
-
-    /* Total accredited & salaried */
-    #totaltext {
-      color: #340C2F;
-      font-family: Anton;
-      font-size: clamp(2.4rem, -8.8rem + 14vw, 3.8rem);
-      vertical-align: middle;
-      margin-top: 0.3em;
-      margin-bottom: 0.3em;
-      margin-right: 0.3em;
-      line-height: 1.1em;
-
-    }
-
-    #total-accredited-and-salaried {
-      color: #F4F1EB;
-      font-family: Anton;
-      font-size: clamp(2.4rem, -10.4rem + 16vw, 4rem);
-      text-align: center;
-      vertical-align: middle;
-      background-color: #9272d9;
-      margin: 0.3em;
-      padding: 0.3em;
-      border-radius: 6px;
-    }
-
-    /* Map positioning */
-    #map {
-      grid-column: 1 / span 9;
-      height: 100%;
-    }
-
-    /* Map overlays */
-    .legend {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      background: #fff;
-      margin-left: 1em;
-      overflow: auto;
-      border-radius: 4px;
-      padding: .8em;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-    }
-
-    #legend {
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      line-height: 1.3em;
-      margin-bottom: 2.5em;
-    }
-
-    .legend-key {
-      display: inline-block;
-      border-radius: 20%;
-      width: 10px;
-      height: 10px;
-      margin-right: 5px;
-    }
-
-    .legenditems {
-      display: inline-block;
-    }
-
-    h4 {
-      margin-top: 5px;
-      margin-bottom: 5px;
-    }
-
-    /* Popup design */
-    .mapboxgl-popup-content {
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-    }
-
-    /* Sidebar design */
-    #country-name {
-      font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
-      text-transform: uppercase;
-      font-family: Anton;
-      line-height: 1.1em;
-    }
-
-    .country-details * {
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      margin-bottom: 0.8em;
-      line-height: 1.5em;
-      overflow-wrap: normal;
-      font-size: clamp(.7rem, 0.6325rem + .3vw, 1rem)
-    }
-
-    #policybutton {
-      margin-top: 1em;
-      width: 100%;
-      display: none;
-    }
-
-    #download-link {
-      margin-top: 1em;
-    }
-
-    #download-link a {
-      color: #340C2F;
-    }
-
-    /* Button design (sidebar buttons) */
-    .buttonsidebar {
-      background-color: #F4F1EB;
-      color: #111111;
-      border: 1px solid #111111;
-      border-radius: 5px;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-      font-weight: bold;
-      text-align: center;
-      padding-right: 1em;
-      padding-left: 1em;
-      padding-top: 1em;
-      padding-bottom: 1em;
-      opacity: 1;
-    }
-
-    buttonsidebar:hover {
-      background: #4F2049;
-      color: #F4F1EB;
-      border: 1px solid #4F2049;
-      font-weight: bold;
-      opacity: 1;
-    }
-
-    /* Bottom container of sidebar */
-    .bottom {
-      position: absolute;
-      bottom: 0;
-      padding-bottom: 1em;
-      padding-right: 1em;
-      line-height: 1.3em;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      font-size: clamp(.7rem, 0.655rem + .2vw, 1rem);
-    }
-
-    #sidebarsubmitbutton {
-      margin-bottom: 1em;
-    }
-
-    #date-last-updated {
-      font-style: italic;
-    }
-
-    /* Map button design */
-    .button {
-      background-color: #F4F1EB;
-      color: #111111;
-      padding: 10px;
-      border: 1px solid #111111;
-      border-radius: 5px;
-      font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-      font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-      font-weight: bold;
-      text-align: center;
-      padding-right: 1em;
-      padding-left: 1em;
-      padding-top: .5em;
-      padding-bottom: .5em;
-      margin: 0;
-      opacity: 0.8;
-    }
-
-    .button.active {
-      background: #4F2049;
-      color: #F4F1EB;
-      border: 1px solid #4F2049;
-      font-weight: bold;
-      opacity: 1;
-    }
-
-    .buttoncontainer {
-      position: absolute;
-      top: 20%;
-      left: 0;
-      margin-left: 10px;
-    }
-
-    button:hover {
-      background: #4F2049;
-      color: #F4F1EB;
-      font-weight: bold;
-      border: 1px solid #4F2049;
-    }
-
-    /* Button hover (definition) design */
-    .buttondefcontainer {
-      position: absolute;
-      top: 25%;
-      left: 0;
-      margin-left: 10px;
-      width: 30%;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      font-size: .8rem;
-    }
-
-    .accredited-chws-button-def {
-      display: none;
-      position: relative;
-      top: 0;
-      left: 0;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-      padding: 10px;
-    }
-
-    .salaried-chws-button-def {
-      display: none;
-      position: relative;
-      top: 0;
-      left: 0;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-      padding: 10px;
-    }
-
-    .accredited-and-salaried-chws-button-def {
-      display: none;
-      position: relative;
-      top: 0;
-      left: 0;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-      padding: 10px;
-    }
-
-    .policy-expiring-within-18-months-button-def {
-      display: none;
-      position: relative;
-      top: 0;
-      left: 0;
-      font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-      opacity: 0.8;
-      background-color: #111111;
-      color: #F4F1EB;
-      padding: 10px;
-    }
-
-  }
 
   </style>
 
