@@ -158,6 +158,65 @@
         margin-left: .5em;
       }
 
+      /* Search bar design */
+      .searchcontainer {
+        position: absolute;
+        top: 22%;
+        left: 0;
+        margin-left: .5em;
+        width: 60%;
+        z-index: 1000;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: .5em;
+        border: 1px solid #111111;
+        border-radius: 3px;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: .6rem;
+        background-color: #F4F1EB;
+        color: #111111;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #4F2049;
+        box-shadow: 0 0 3px rgba(79, 32, 73, 0.3);
+      }
+
+      .search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #F4F1EB;
+        border: 1px solid #111111;
+        border-top: none;
+        border-radius: 0 0 3px 3px;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+        z-index: 1001;
+      }
+
+      .search-result-item {
+        padding: .5em;
+        cursor: pointer;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: .6rem;
+        border-bottom: 1px solid #dbdbdb;
+      }
+
+      .search-result-item:hover {
+        background-color: #4F2049;
+        color: #F4F1EB;
+      }
+
+      .search-result-item:last-child {
+        border-bottom: none;
+      }
+
       /* Legend design */
       .legend {
         position: absolute;
@@ -564,6 +623,66 @@
         margin-left: 10px;
       }
 
+      /* Search bar design */
+      .searchcontainer {
+        position: absolute;
+        top: 28%;
+        left: 0;
+        margin-left: 10px;
+        width: 300px;
+        z-index: 1000;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: .8em;
+        border: 1px solid #111111;
+        border-radius: 5px;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        background-color: #fff;
+        /* background-color: #F4F1EB; */
+        color: #111111;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #4F2049;
+        box-shadow: 0 0 5px rgba(79, 32, 73, 0.3);
+      }
+
+      .search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #FFF;
+        border: 1px solid #111111;
+        border-top: none;
+        border-radius: 0 0 5px 5px;
+        max-height: 250px;
+        overflow-y: auto;
+        display: none;
+        z-index: 1001;
+      }
+
+      .search-result-item {
+        padding: .8em;
+        cursor: pointer;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        border-bottom: 1px solid #dbdbdb;
+      }
+
+      .search-result-item:hover {
+        background-color: #4F2049;
+        color: #F4F1EB;
+      }
+
+      .search-result-item:last-child {
+        border-bottom: none;
+      }
+
       button:hover {
         background: #4F2049;
         color: #F4F1EB;
@@ -903,6 +1022,65 @@
         margin-left: 10px;
       }
 
+      /* Search bar design */
+      .searchcontainer {
+        position: absolute;
+        top: 26%;
+        left: 0;
+        margin-left: 10px;
+        width: 350px;
+        z-index: 1000;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 1em;
+        border: 1px solid #111111;
+        border-radius: 5px;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        background-color: #F4F1EB;
+        color: #111111;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #4F2049;
+        box-shadow: 0 0 5px rgba(79, 32, 73, 0.3);
+      }
+
+      .search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #F4F1EB;
+        border: 1px solid #111111;
+        border-top: none;
+        border-radius: 0 0 5px 5px;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+        z-index: 1001;
+      }
+
+      .search-result-item {
+        padding: 1em;
+        cursor: pointer;
+        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        border-bottom: 1px solid #dbdbdb;
+      }
+
+      .search-result-item:hover {
+        background-color: #4F2049;
+        color: #F4F1EB;
+      }
+
+      .search-result-item:last-child {
+        border-bottom: none;
+      }
+
       button:hover {
         background: #4F2049;
         color: #F4F1EB;
@@ -1018,6 +1196,12 @@
       <button type="button" id="salaried-chws-button" class="button">SALARIED CHWS</button>
       <button type="button" id="accredited-and-salaried-chws-button" class="button">ACCREDITED & SALARIED CHWS</button>
       <button type="button" id="policy-expiring-within-18-months-button" class="button">POLICIES EXPIRED OR EXPIRING</button>
+    </div>
+
+    <!-- Search bar container -->
+    <div id="searchcontainer" class="searchcontainer">
+      <input type="text" id="country-search" placeholder="Search for a country..." class="search-input">
+      <div id="search-results" class="search-results"></div>
     </div>
 
     <!-- Button definitions -->
@@ -1346,7 +1530,8 @@
     };
 
     // Fetch CSV data - this is where CHIC team will update data quarterly
-    const sheetId = '2PACX-1vQan4RTDeRovJT7VqPhh15B6GLNhvxVGTILpyjOIfbfEEf2Sd0Ky5xpPsRlLS9_9GmHeWVIwNcIU5X8'
+    const sheetId = '2PACX-1vRW71f12hsPrtlEglo73Xcit8TgFw1WeyU4HXWNV3M-IasQMjvzhS3zWjlFTgm4NHFs_1KJjHaSPLCZ'
+    // REAL SPREADSHEET const sheetId = '2PACX-1vQan4RTDeRovJT7VqPhh15B6GLNhvxVGTILpyjOIfbfEEf2Sd0Ky5xpPsRlLS9_9GmHeWVIwNcIU5X8'
     fetch(`https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`)
       .catch(err => console.error(err))
       .then(resp => resp.text())
@@ -1404,6 +1589,106 @@
       const submitlink = "https://docs.google.com/forms/d/e/1FAIpQLSeQfSZ9YG6ecSnWiBoUshtKBRGXVyYPt4Hfo_nx4ugBFkaEww/viewform"
       window.open(submitlink)
     })
+
+    // Search functionality
+    const searchInput = document.getElementById('country-search');
+    const searchResults = document.getElementById('search-results');
+    
+    console.log('Search input element:', searchInput);
+    console.log('Search results element:', searchResults);
+
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase().trim();
+      
+      if (searchTerm.length === 0) {
+        searchResults.style.display = 'none';
+        return;
+      }
+
+      // Filter countries based on search term
+      const filteredCountries = csvData.filter(country => 
+        country.country.toLowerCase().includes(searchTerm)
+      ).slice(0, 10); // Limit to 10 results
+
+      if (filteredCountries.length > 0) {
+        searchResults.innerHTML = '';
+        filteredCountries.forEach(country => {
+          const resultItem = document.createElement('div');
+          resultItem.className = 'search-result-item';
+          resultItem.textContent = country.country;
+          resultItem.addEventListener('click', function() {
+            // Find the country data and populate the sidebar
+            const thisCountry = csvData.find(row => row.ISO_A3 === country.ISO_A3);
+            
+            if (thisCountry) {
+              // Populate the sidebar with country information
+              $("#country-name").text(thisCountry.country);
+              $("#num-groups").text("# of CHW groups: " + thisCountry.group_count);
+              $("#num-paid-accredited-chw-groups").text("# of salaried & accredited CHW groups: " + thisCountry.paid_accredited_count);
+              $("#group-names-combined").text("Group name(s): " + thisCountry.group_names_combined);
+              $("#chw-policy-implementation").text("CHW policy implementation: " + thisCountry.implementation_combined);
+              $("#policy-status").text("Policy status: " + thisCountry.policy_status);
+              $("#policy-years-covered").text("Policy years covered: " + thisCountry.policy_years_covered);
+              $("#date-last-updated").text("Date last updated: " + thisCountry.date_last_updated);
+              
+              // Handle policy link
+              if (thisCountry.policy_link != "Out of scope" && thisCountry.policy_link != "Data not available") {
+                $("#policy-link").hide();
+                policybutton.style.display = "inline-block";
+                $("#policybutton").unbind('click');
+                $("#policybutton").click(function(){
+                  const link = thisCountry.policy_link;
+                  window.open(link);
+                });
+              } else {
+                $("#policy-link").show();
+                $("#policy-link").text("Policy link not available");
+                $("#policybutton").hide();
+              }
+              
+              // Fly to the country using coordinates from CSV data
+              if (thisCountry.longitude && thisCountry.latitude) {
+                const lng = parseFloat(thisCountry.longitude);
+                const lat = parseFloat(thisCountry.latitude);
+                
+                if (!isNaN(lng) && !isNaN(lat)) {
+                  map.flyTo({
+                    center: [lng, lat],
+                    zoom: 3.5,
+                    duration: 500,
+                    essential: true
+                  });
+                }
+              }
+            }
+            
+            // Clear search
+            searchInput.value = '';
+            searchResults.style.display = 'none';
+          });
+          searchResults.appendChild(resultItem);
+        });
+        searchResults.style.display = 'block';
+      } else {
+        searchResults.innerHTML = '<div class="search-result-item">No countries found</div>';
+        searchResults.style.display = 'block';
+      }
+    });
+
+    // Hide search results when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // Hide search results when pressing Escape
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        searchResults.style.display = 'none';
+        this.blur();
+      }
+    });
 
     // Populate sidebar upon click
     map.on('click', 'country-boundaries', (e) => {
