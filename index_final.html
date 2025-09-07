@@ -13,6 +13,46 @@
   <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
 
   <style>
+    /* CSS Variables - Design System */
+    :root {
+      /* Colors */
+      --color-primary: #4F2049;
+      --color-primary-light: #340C2F;
+      --color-secondary: #9272d9;
+      --color-accent: #20BDC5;
+      --color-warning: #F36744;
+      --color-neutral: #999999;
+      --color-light-gray: #dbdbdb;
+      --color-background: #F4F1EB;
+      --color-white: #ffffff;
+      --color-black: #111111;
+      
+      /* Typography */
+      --font-primary: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      --font-display: 'Anton', sans-serif;
+      
+      /* Spacing */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      
+      /* Border radius */
+      --radius-sm: 3px;
+      --radius-md: 5px;
+      --radius-lg: 6px;
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+      
+      /* Transitions */
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.2s ease;
+      --transition-slow: 0.3s ease;
+    }
+
     /* Mobile */
     @media screen and (max-width: 768px) {
 
@@ -23,7 +63,7 @@
       body {
         margin: 0px;
         padding: 0px;
-        background-color: #F4F1EB;
+        background-color: var(--color-background);
       }
 
       .container {
@@ -69,8 +109,8 @@
 
       /* Total accredited & salaried */
       #totaltext {
-        color: #340C2F;
-        font-family: Anton;
+        color: var(--color-primary-light);
+        font-family: var(--font-display);
         font-size: 4.4vw;
         overflow-wrap: normal;
         vertical-align: middle;
@@ -81,33 +121,33 @@
       }
 
       #total-accredited-and-salaried {
-        color: #F4F1EB;
-        font-family: Anton;
+        color: var(--color-background);
+        font-family: var(--font-display);
         font-size: 4vw;
         text-align: center;
         vertical-align: middle;
-        background-color: #9272d9;
+        background-color: var(--color-secondary);
         margin: .5rem;
         padding: .5rem;
-        border-radius: 3px;
+        border-radius: var(--radius-sm);
       }
 
       /* "Submit additional country details" link design */
       .submitlink {
         place-self: center;
-        background-color: #20BDC5;
-        font-family: "Helvetica Neue", "Arial Narrow", sans-serif;
+        background-color: var(--color-accent);
+        font-family: var(--font-primary);
         vertical-align: middle;
         font-size: .6rem;
         font-weight: bold;
         text-transform: uppercase;
-        border-radius: 6px;
+        border-radius: var(--radius-lg);
         padding: .25rem;
         width: 100%;
       }
 
       #submitlink a {
-        color: #F4F1EB;
+        color: var(--color-background);
       }
 
       .right a:link {
@@ -127,15 +167,15 @@
 
       /* Button design (map buttons) */
       .button {
-        background-color: #F4F1EB;
-        color: #111111;
+        background-color: var(--color-background);
+        color: var(--color-black);
         padding-top: .25em;
         padding-bottom: .25em;
         padding-right: .5em;
         padding-left: .5em;
-        border: 1px solid #111111;
-        border-radius: 3px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-sm);
+        font-family: var(--font-primary);
         font-size: .5rem;
         font-weight: bold;
         text-align: center;
@@ -144,9 +184,9 @@
       }
 
       .button.active {
-        background: #4F2049;
-        color: #F4F1EB;
-        border: 1px solid #4F2049;
+        background: var(--color-primary);
+        color: var(--color-background);
+        border: 1px solid var(--color-primary);
         font-weight: bold;
         opacity: 1;
       }
@@ -161,7 +201,7 @@
       /* Search bar design */
       .searchcontainer {
         position: absolute;
-        top: 22%;
+        top: 24%;
         left: 0;
         margin-left: .5em;
         width: 60%;
@@ -171,17 +211,17 @@
       .search-input {
         width: 100%;
         padding: .5em;
-        border: 1px solid #111111;
-        border-radius: 3px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-sm);
+        font-family: var(--font-primary);
         font-size: .6rem;
-        background-color: #F4F1EB;
-        color: #111111;
+        background-color: var(--color-background);
+        color: var(--color-black);
       }
 
       .search-input:focus {
         outline: none;
-        border-color: #4F2049;
+        border-color: var(--color-primary);
         box-shadow: 0 0 3px rgba(79, 32, 73, 0.3);
       }
 
@@ -190,10 +230,10 @@
         top: 100%;
         left: 0;
         right: 0;
-        background-color: #F4F1EB;
-        border: 1px solid #111111;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-black);
         border-top: none;
-        border-radius: 0 0 3px 3px;
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
         max-height: 200px;
         overflow-y: auto;
         display: none;
@@ -203,14 +243,14 @@
       .search-result-item {
         padding: .5em;
         cursor: pointer;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-family: var(--font-primary);
         font-size: .6rem;
-        border-bottom: 1px solid #dbdbdb;
+        border-bottom: 1px solid var(--color-light-gray);
       }
 
       .search-result-item:hover {
-        background-color: #4F2049;
-        color: #F4F1EB;
+        background-color: var(--color-primary);
+        color: var(--color-background);
       }
 
       .search-result-item:last-child {
@@ -223,16 +263,16 @@
         top: 47%;
         right: 3%;
         width: 40%;
-        background: #fff;
+        background: var(--color-white);
         margin-right: .5rem;
         overflow: auto;
         padding: .6em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        font-family: var(--font-primary);
         font-size: .45rem;
       }
 
       #legend {
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-sm);
         line-height: 1.1em;
         margin-bottom: 1rem;
       }
@@ -259,18 +299,18 @@
         flex-direction: column;
         grid-column: 1 / span 4;
         grid-row: 4 / span 1;
-        bottom: 0;
-        background-color: #F4F1EB;
-        color: #340C2F;
+        background-color: var(--color-background);
+        color: var(--color-primary-light);
         padding: 2em;
         font-size: .8rem;
-        overflow: scroll;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
-        border-top: solid 1px #340C2F;
+        overflow-y: auto;
+        max-height: 100%;
+        font-family: var(--font-primary);
+        border-top: solid 1px var(--color-primary-light);
       }
 
       .country-details * {
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-family: var(--font-primary);
         margin-bottom: .5em;
         line-height: 1.3em;
         overflow-wrap: normal;
@@ -283,20 +323,28 @@
       #country-name {
         font-size: 1.2rem;
         text-transform: uppercase;
-        font-family: Anton;
+        font-family: var(--font-display);
+      }
+
+      .out-of-scope-text {
+        font-style: italic;
+        font-family: var(--font-primary);
+        font-size: .8rem;
+        color: var(--color-primary-light);
+        margin-bottom: 1em;
       }
 
       /* Button design (sidebar buttons) */
       .buttonsidebar {
-        background-color: #F4F1EB;
-        color: #111111;
+        background-color: var(--color-background);
+        color: var(--color-black);
         padding-top: .25em;
         padding-bottom: .25em;
         padding-right: .5em;
         padding-left: .5em;
-        border: 1px solid #111111;
-        border-radius: 3px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-sm);
+        font-family: var(--font-primary);
         font-size: .6rem;
         font-weight: bold;
         text-align: center;
@@ -305,42 +353,268 @@
       }
 
       .buttonsidebar.active {
-        background: #4F2049;
-        color: #F4F1EB;
-        border: 1px solid #4F2049;
+        background: var(--color-primary);
+        color: var(--color-background);
+        border: 1px solid var(--color-primary);
         font-weight: bold;
         opacity: 1;
       }
 
-      #policybutton {
-        margin-top: 1em;
-        display: none;
-      }
 
       #download-link {
         margin-top: 1em;
       }
 
       #download-link a {
-        color: #340C2F;
+        color: var(--color-primary-light);
       }
 
       /* Bottom container of sidebar */
       #bottom {
-        flex: 0 0 50px;
         margin-top: auto;
+        padding-top: 1em;
         line-height: 1.5em;
         font-size: .8rem;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-family: var(--font-primary);
       }
 
-      #sidebarsubmitbutton {
-        margin-bottom: 1em;
-      }
 
       #date-last-updated {
         font-style: italic;
       }
+
+      /* CHW Cards design */
+      .chw-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+        margin: 1em 0;
+      }
+
+      .chw-card {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-sm);
+        padding: .5em;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s ease;
+        width: 100%;
+      }
+
+      .chw-card:hover {
+        background-color: var(--color-primary-light);
+        color: var(--color-background);
+      }
+
+      .chw-card-number {
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: .2em;
+      }
+
+      .chw-card-number-not-available {
+        font-family: var(--font-primary);
+        font-style: italic;
+        font-size: .6rem;
+      }
+
+      .chw-card-label {
+        font-family: var(--font-primary);
+        font-size: .6rem;
+        font-weight: normal;
+      }
+
+      .chw-popups-container {
+        margin-top: .2em;
+      }
+
+      .chw-popup {
+        display: none;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-sm);
+        padding: .5em;
+        margin-bottom: .5em;
+        font-family: var(--font-primary);
+        font-size: .6rem;
+        width: 100%;
+      }
+
+      .chw-popup-title {
+        font-weight: bold;
+        margin-bottom: .3em;
+        color: var(--color-primary-light);
+      }
+
+      .chw-popup-list {
+        list-style-type: disc;
+        margin-left: 1em;
+        padding-left: 0;
+      }
+
+      .chw-popup-list li {
+        margin-bottom: .2em;
+      }
+
+      /* Policy Status Card */
+      .policy-status-card {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-sm);
+        padding: .5em;
+        margin: .5em 0;
+        font-family: var(--font-primary);
+        font-size: .6rem;
+        width: 100%;
+      }
+
+      .policy-status-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: .5em;
+      }
+
+      .policy-status-title {
+        font-weight: bold;
+        color: var(--color-background);
+      }
+
+      .policy-status-badge {
+        padding: .2em .4em;
+        border-radius: var(--radius-sm);
+        font-weight: bold;
+        font-size: .5rem;
+        text-transform: uppercase;
+      }
+
+      .policy-status-badge.out-of-scope {
+        background-color: var(--color-neutral);
+        color: var(--color-background);
+      }
+
+      .policy-status-badge.data-not-available {
+        background-color: var(--color-light-gray);
+        color: var(--color-primary-light);
+      }
+
+      .policy-status-badge.expired,
+      .policy-status-badge.expiring {
+        background-color: var(--color-warning);
+        color: var(--color-background);
+      }
+
+      .policy-status-badge.active {
+        background-color: var(--color-secondary);
+        color: var(--color-background);
+      }
+
+      .policy-status-content {
+        font-size: .6rem;
+      }
+
+      .policy-status-line {
+        margin-bottom: .1em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .policy-status-label {
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .policy-status-value {
+        text-align: right;
+        word-wrap: break-word;
+        flex: 1;
+        margin-left: 1em;
+      }
+
+      .policy-status-divider {
+        height: 1px;
+        background-color: rgba(244, 241, 235, 0.5);
+        margin: .5em auto;
+        width: 85%;
+        display: block;
+      }
+
+      .policy-link {
+        color: var(--color-background);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .policy-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Accreditation Section */
+      .accreditation-section {
+        background-color: transparent;
+        border: none;
+        border-radius: var(--radius-sm);
+        margin: .3em 0;
+        width: 100%;
+      }
+
+      .accreditation-section-header {
+        background-color: transparent;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: .5em;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .accreditation-section-header:hover {
+        background-color: rgba(79, 32, 73, 0.1);
+      }
+
+      .accreditation-section-title {
+        font-family: var(--font-display);
+        font-size: .6rem;
+        color: var(--color-primary-light);
+        text-transform: uppercase;
+        font-weight: bold;
+        line-height: 1.2;
+      }
+
+      .accreditation-section-arrow {
+        color: var(--color-neutral);
+        font-weight: bold;
+        font-size: .8rem;
+        margin-left: .5em;
+        transition: transform 0.2s ease;
+      }
+
+      .accreditation-section.expanded .accreditation-section-arrow {
+        transform: rotate(90deg);
+      }
+
+      .accreditation-section-content {
+        padding: .5em;
+        background-color: rgba(79, 32, 73, 0.05);
+        border-radius: var(--radius-sm);
+        margin-top: .2em;
+      }
+
+      .accreditation-section-text {
+        font-family: var(--font-primary);
+        font-size: .6rem;
+        color: var(--color-primary-light);
+      }
+
 
       /* Button hover (definition) design */
       .buttondefcontainer {
@@ -359,7 +633,7 @@
       body {
         margin: 0px;
         padding: 0px;
-        background-color: #F4F1EB;
+        background-color: var(--color-background);
         height: 100%;
       }
 
@@ -402,31 +676,34 @@
 
       .sidebar {
         display: flex;
-        grid-column: 10 / span 3;
-        background-color: #F4F1EB;
-        color: #340C2F;
+        flex-direction: column;
+        grid-column: 9 / span 4;
+        background-color: var(--color-background);
+        color: var(--color-primary-light);
         padding: 1em;
-        border-top: solid 1.5px #340C2F;
-        border-left: solid 1.5px #340C2F;
+        border-top: solid 1.5px var(--color-primary-light);
+        border-left: solid 1.5px var(--color-primary-light);
+        overflow-y: auto;
+        max-height: 100%;
       }
 
       /* "Submit additional country details" link design */
       .submitlink {
         text-align: center;
-        background-color: #20BDC5;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        background-color: var(--color-accent);
+        font-family: var(--font-primary);
         text-align: center;
         vertical-align: middle;
         font-size: 1rem;
         font-weight: bold;
         text-transform: uppercase;
-        border-radius: 6px;
+        border-radius: var(--radius-lg);
         padding: 1em;
         margin: 1em;
       }
 
       #submitlink a {
-        color: #F4F1EB;
+        color: var(--color-background);
       }
 
       .right a:link {
@@ -439,8 +716,8 @@
 
       /* Total accredited & salaried */
       #totaltext {
-        color: #340C2F;
-        font-family: Anton;
+        color: var(--color-primary-light);
+        font-family: var(--font-display);
         font-size: clamp(1.8rem, 1.046rem + 1.571vw, 2.46rem);
         overflow-wrap: normal;
         vertical-align: middle;
@@ -452,20 +729,20 @@
       }
 
       #total-accredited-and-salaried {
-        color: #F4F1EB;
-        font-family: Anton;
+        color: var(--color-background);
+        font-family: var(--font-display);
         font-size: clamp(2rem, 1.2rem + 1.667vw, 2.7rem);
         text-align: center;
         vertical-align: middle;
-        background-color: #9272d9;
+        background-color: var(--color-secondary);
         margin: 0.3em;
         padding: 0.3em;
-        border-radius: 6px;
+        border-radius: var(--radius-lg);
       }
 
       /* Map positioning */
       #map {
-        grid-column: 1 / span 9;
+        grid-column: 1 / span 8;
         height: 100%;
       }
 
@@ -510,30 +787,32 @@
       .mapboxgl-popup-content {
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
       }
 
       /* Sidebar design */
       #country-name {
         font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
         text-transform: uppercase;
-        font-family: Anton;
+        font-family: var(--font-display);
         line-height: 1.1em;
       }
 
+      .out-of-scope-text {
+        font-style: italic;
+        font-family: var(--font-primary);
+        font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
+        color: var(--color-primary-light);
+        margin-bottom: 1em;
+      }
+
       .country-details * {
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-family: var(--font-primary);
         margin-bottom: .5em;
         line-height: 1.3em;
         overflow-wrap: normal;
         font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
-      }
-
-      #policybutton {
-        margin-top: 1em;
-        width: 100%;
-        display: none;
       }
 
       #download-link {
@@ -541,16 +820,16 @@
       }
 
       #download-link a {
-        color: #340C2F;
+        color: var(--color-primary-light);
       }
 
       /* Button design (sidebar buttons) */
       .buttonsidebar {
-        background-color: #F4F1EB;
-        color: #111111;
-        border: 1px solid #111111;
-        border-radius: 5px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        background-color: var(--color-background);
+        color: var(--color-black);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        font-family: var(--font-primary);
         white-space: normal;
         font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
         font-weight: bold;
@@ -564,39 +843,113 @@
 
       buttonsidebar:hover {
         background: #4F2049;
-        color: #F4F1EB;
-        border: 1px solid #4F2049;
+        color: var(--color-background);
+        border: 1px solid var(--color-primary);
         font-weight: bold;
         opacity: 1;
       }
 
       /* Bottom container of sidebar */
       .bottom {
-        position: absolute;
-        bottom: 0;
-        padding-right: 1.5em;
+        margin-top: auto;
+        padding-top: 1em;
         line-height: 1.3em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-family: var(--font-primary);
         font-size: clamp(0.6rem, 0.371rem + 0.476vw, 0.8rem);
       }
 
-      #sidebarsubmitbutton {
-        margin-bottom: 1em;
-        width: 100%;
-      }
 
       #date-last-updated {
         font-style: italic;
       }
 
+      /* CHW Cards design */
+      .chw-cards-container {
+        display: flex;
+        flex-direction: row;
+        gap: .5em;
+        margin: 1em 0;
+        flex-wrap: wrap;
+      }
+
+      .chw-card {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        padding: .8em;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s ease;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .chw-card:hover {
+        background-color: var(--color-primary-light);
+        color: var(--color-background);
+      }
+
+      .chw-card-number {
+        font-family: var(--font-display);
+        font-size: clamp(1rem, 0.8rem + 0.5vw, 1.5rem);
+        font-weight: bold;
+        margin-bottom: .3em;
+      }
+
+      .chw-card-number-not-available {
+        font-family: var(--font-primary);
+        font-style: italic;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      }
+
+      .chw-card-label {
+        font-family: var(--font-primary);
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        font-weight: normal;
+      }
+
+      .chw-popups-container {
+        margin-top: .2em;
+      }
+
+      .chw-popup {
+        display: none;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        padding: .8em;
+        margin-bottom: .5em;
+        font-family: var(--font-primary);
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        width: 100%;
+      }
+
+      .chw-popup-title {
+        font-weight: bold;
+        margin-bottom: .5em;
+        color: var(--color-primary-light);
+      }
+
+      .chw-popup-list {
+        list-style-type: disc;
+        margin-left: 1em;
+        padding-left: 0;
+      }
+
+      .chw-popup-list li {
+        margin-bottom: .3em;
+      }
+
+
       /* Map button design */
       .button {
-        background-color: #F4F1EB;
-        color: #111111;
+        background-color: var(--color-background);
+        color: var(--color-black);
         padding: 10px;
-        border: 1px solid #111111;
-        border-radius: 5px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        font-family: var(--font-primary);
         font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
         font-weight: bold;
         text-align: center;
@@ -610,10 +963,166 @@
 
       .button.active {
         background: #4F2049;
-        color: #F4F1EB;
-        border: 1px solid #4F2049;
+        color: var(--color-background);
+        border: 1px solid var(--color-primary);
         font-weight: bold;
         opacity: 1;
+      }
+
+      /* Policy Status Card */
+      .policy-status-card {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        padding: .8em;
+        margin: .5em 0;
+        font-family: var(--font-primary);
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        width: 100%;
+      }
+
+      .policy-status-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: .5em;
+      }
+
+      .policy-status-title {
+        font-weight: bold;
+        color: var(--color-background);
+      }
+
+      .policy-status-badge {
+        padding: .3em .6em;
+        border-radius: var(--radius-md);
+        font-weight: bold;
+        font-size: clamp(0.4rem, 0.2875rem + .4vw, 0.8rem);
+        text-transform: uppercase;
+      }
+
+      .policy-status-badge.out-of-scope {
+        background-color: var(--color-neutral);
+        color: var(--color-background);
+      }
+
+      .policy-status-badge.data-not-available {
+        background-color: var(--color-light-gray);
+        color: var(--color-primary-light);
+      }
+
+      .policy-status-badge.expired,
+      .policy-status-badge.expiring {
+        background-color: var(--color-warning);
+        color: var(--color-background);
+      }
+
+      .policy-status-badge.active {
+        background-color: var(--color-secondary);
+        color: var(--color-background);
+      }
+
+      .policy-status-content {
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      }
+
+      .policy-status-line {
+        margin-bottom: .1em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .policy-status-label {
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .policy-status-value {
+        text-align: right;
+        word-wrap: break-word;
+        flex: 1;
+        margin-left: 1em;
+      }
+
+      .policy-status-divider {
+        height: 1px;
+        background-color: rgba(244, 241, 235, 0.5);
+        margin: .5em auto;
+        width: 85%;
+        display: block;
+      }
+
+      .policy-link {
+        color: var(--color-background);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .policy-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Accreditation Section */
+      .accreditation-section {
+        background-color: transparent;
+        border: none;
+        border-radius: var(--radius-md);
+        margin: .3em 0;
+        width: 100%;
+      }
+
+      .accreditation-section-header {
+        background-color: transparent;
+        border: none;
+        border-radius: var(--radius-md);
+        padding: .8em;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .accreditation-section-header:hover {
+        background-color: rgba(79, 32, 73, 0.1);
+      }
+
+      .accreditation-section-title {
+        font-family: var(--font-display);
+        font-size: clamp(0.5rem, 0.3875rem + .4vw, 0.9rem);
+        color: var(--color-primary-light);
+        text-transform: uppercase;
+        font-weight: bold;
+        line-height: 1.2;
+      }
+
+      .accreditation-section-arrow {
+        color: var(--color-neutral);
+        font-weight: bold;
+        font-size: .8rem;
+        margin-left: .5em;
+        transition: transform 0.2s ease;
+      }
+
+      .accreditation-section.expanded .accreditation-section-arrow {
+        transform: rotate(90deg);
+      }
+
+      .accreditation-section-content {
+        padding: .8em;
+        background-color: rgba(79, 32, 73, 0.05);
+        border-radius: var(--radius-md);
+        margin-top: .2em;
+      }
+
+      .accreditation-section-text {
+        font-family: var(--font-primary);
+        font-size: clamp(0.5rem, 0.3875rem + .4vw, 0.9rem);
+        color: var(--color-primary-light);
       }
 
       .buttoncontainer {
@@ -636,18 +1145,18 @@
       .search-input {
         width: 100%;
         padding: .8em;
-        border: 1px solid #111111;
-        border-radius: 5px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        font-family: var(--font-primary);
         font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-        background-color: #fff;
+        background-color: var(--color-white);
         /* background-color: #F4F1EB; */
-        color: #111111;
+        color: var(--color-black);
       }
 
       .search-input:focus {
         outline: none;
-        border-color: #4F2049;
+        border-color: var(--color-primary);
         box-shadow: 0 0 5px rgba(79, 32, 73, 0.3);
       }
 
@@ -657,7 +1166,7 @@
         left: 0;
         right: 0;
         background-color: #FFF;
-        border: 1px solid #111111;
+        border: 1px solid var(--color-black);
         border-top: none;
         border-radius: 0 0 5px 5px;
         max-height: 250px;
@@ -669,14 +1178,14 @@
       .search-result-item {
         padding: .8em;
         cursor: pointer;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-family: var(--font-primary);
         font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-        border-bottom: 1px solid #dbdbdb;
+        border-bottom: 1px solid var(--color-light-gray);
       }
 
       .search-result-item:hover {
-        background-color: #4F2049;
-        color: #F4F1EB;
+        background-color: var(--color-primary);
+        color: var(--color-background);
       }
 
       .search-result-item:last-child {
@@ -685,9 +1194,9 @@
 
       button:hover {
         background: #4F2049;
-        color: #F4F1EB;
+        color: var(--color-background);
         font-weight: bold;
-        border: 1px solid #4F2049;
+        border: 1px solid var(--color-primary);
       }
 
       /* Button hover (definition) design */
@@ -707,8 +1216,8 @@
         top: 0;
         left: 0;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
         padding: 10px;
       }
 
@@ -719,8 +1228,8 @@
         left: 0;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
         padding: 10px;
       }
 
@@ -731,20 +1240,20 @@
         left: 0;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
         padding: 10px;
       }
 
-      .policy-expiring-within-18-months-button-def {
+      .policy-status-button-def {
         display: none;
         position: relative;
         top: 0;
         left: 0;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
         padding: 10px;
       }
 
@@ -760,7 +1269,7 @@
       body {
         margin: 0px;
         padding: 0px;
-        background-color: #F4F1EB;
+        background-color: var(--color-background);
         height: 100%;
       }
 
@@ -803,31 +1312,33 @@
       .sidebar {
         display: flex;
         flex-direction: column;
-        grid-column: 10 / span 3;
-        background-color: #F4F1EB;
-        color: #340C2F;
+        grid-column: 9 / span 4;
+        background-color: var(--color-background);
+        color: var(--color-primary-light);
         padding: 1em;
-        border-top: solid 1.5px #340C2F;
-        border-left: solid 1.5px #340C2F;
+        border-top: solid 1.5px var(--color-primary-light);
+        border-left: solid 1.5px var(--color-primary-light);
+        overflow-y: auto;
+        max-height: 100%;
       }
 
       /* "Submit additional country details" link design */
       .submitlink {
         text-align: center;
-        background-color: #20BDC5;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        background-color: var(--color-accent);
+        font-family: var(--font-primary);
         font-weight: bold;
         text-align: center;
         vertical-align: middle;
         font-size: clamp(0.6rem, 0.4425rem + .7vw, 1.3rem);
         text-transform: uppercase;
-        border-radius: 6px;
+        border-radius: var(--radius-lg);
         padding: 1em;
         margin: 1em;
       }
 
       #submitlink a {
-        color: #F4F1EB;
+        color: var(--color-background);
       }
 
       .right a:link {
@@ -840,8 +1351,8 @@
 
       /* Total accredited & salaried */
       #totaltext {
-        color: #340C2F;
-        font-family: Anton;
+        color: var(--color-primary-light);
+        font-family: var(--font-display);
         font-size: clamp(2.4rem, -8.8rem + 14vw, 3.8rem);
         vertical-align: middle;
         margin-top: 0.3em;
@@ -852,20 +1363,20 @@
       }
 
       #total-accredited-and-salaried {
-        color: #F4F1EB;
-        font-family: Anton;
+        color: var(--color-background);
+        font-family: var(--font-display);
         font-size: clamp(2.4rem, -10.4rem + 16vw, 4rem);
         text-align: center;
         vertical-align: middle;
-        background-color: #9272d9;
+        background-color: var(--color-secondary);
         margin: 0.3em;
         padding: 0.3em;
-        border-radius: 6px;
+        border-radius: var(--radius-lg);
       }
 
       /* Map positioning */
       #map {
-        grid-column: 1 / span 9;
+        grid-column: 1 / span 8;
         height: 100%;
       }
 
@@ -910,30 +1421,32 @@
       .mapboxgl-popup-content {
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
       }
 
       /* Sidebar design */
       #country-name {
         font-size: clamp(1rem, 0.25rem + 2vw, 3rem);
         text-transform: uppercase;
-        font-family: Anton;
+        font-family: var(--font-display);
         line-height: 1.1em;
       }
 
+      .out-of-scope-text {
+        font-style: italic;
+        font-family: var(--font-primary);
+        font-size: clamp(.7rem, 0.6325rem + .3vw, 1rem);
+        color: var(--color-primary-light);
+        margin-bottom: 1em;
+      }
+
       .country-details * {
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-family: var(--font-primary);
         margin-bottom: 0.8em;
         line-height: 1.5em;
         overflow-wrap: normal;
         font-size: clamp(.7rem, 0.6325rem + .3vw, 1rem)
-      }
-
-      #policybutton {
-        margin-top: 1em;
-        width: 100%;
-        display: none;
       }
 
       #download-link {
@@ -941,16 +1454,16 @@
       }
 
       #download-link a {
-        color: #340C2F;
+        color: var(--color-primary-light);
       }
 
       /* Button design (sidebar buttons) */
       .buttonsidebar {
-        background-color: #F4F1EB;
-        color: #111111;
-        border: 1px solid #111111;
-        border-radius: 5px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        background-color: var(--color-background);
+        color: var(--color-black);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        font-family: var(--font-primary);
         font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
         font-weight: bold;
         text-align: center;
@@ -963,39 +1476,113 @@
 
       buttonsidebar:hover {
         background: #4F2049;
-        color: #F4F1EB;
-        border: 1px solid #4F2049;
+        color: var(--color-background);
+        border: 1px solid var(--color-primary);
         font-weight: bold;
         opacity: 1;
       }
 
       /* Bottom container of sidebar */
       .bottom {
-        position: absolute;
-        bottom: 0;
-        padding-bottom: 1em;
-        padding-right: 1em;
+        margin-top: auto;
+        padding-top: 1em;
         line-height: 1.3em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-family: var(--font-primary);
         font-size: clamp(.7rem, 0.655rem + .2vw, 1rem);
       }
 
-      #sidebarsubmitbutton {
-        margin-bottom: 1em;
-      }
 
       #date-last-updated {
         font-style: italic;
       }
 
+      /* CHW Cards design */
+      .chw-cards-container {
+        display: flex;
+        flex-direction: row;
+        gap: .5em;
+        margin: 1em 0;
+        flex-wrap: wrap;
+      }
+
+      .chw-card {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        padding: 1em;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s ease;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .chw-card:hover {
+        background-color: var(--color-primary-light);
+        color: var(--color-background);
+      }
+
+      .chw-card-number {
+        font-family: var(--font-display);
+        font-size: clamp(1.2rem, 1rem + 0.5vw, 1.8rem);
+        font-weight: bold;
+        margin-bottom: .3em;
+      }
+
+      .chw-card-number-not-available {
+        font-family: var(--font-primary);
+        font-style: italic;
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      }
+
+      .chw-card-label {
+        font-family: var(--font-primary);
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        font-weight: normal;
+      }
+
+      .chw-popups-container {
+        margin-top: .2em;
+      }
+
+      .chw-popup {
+        display: none;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        padding: 1em;
+        margin-bottom: .5em;
+        font-family: var(--font-primary);
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        width: 100%;
+      }
+
+      .chw-popup-title {
+        font-weight: bold;
+        margin-bottom: .5em;
+        color: var(--color-primary-light);
+      }
+
+      .chw-popup-list {
+        list-style-type: disc;
+        margin-left: 1em;
+        padding-left: 0;
+      }
+
+      .chw-popup-list li {
+        margin-bottom: .3em;
+      }
+
+
       /* Map button design */
       .button {
-        background-color: #F4F1EB;
-        color: #111111;
+        background-color: var(--color-background);
+        color: var(--color-black);
         padding: 10px;
-        border: 1px solid #111111;
-        border-radius: 5px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        font-family: var(--font-primary);
         font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
         font-weight: bold;
         text-align: center;
@@ -1009,10 +1596,166 @@
 
       .button.active {
         background: #4F2049;
-        color: #F4F1EB;
-        border: 1px solid #4F2049;
+        color: var(--color-background);
+        border: 1px solid var(--color-primary);
         font-weight: bold;
         opacity: 1;
+      }
+
+      /* Policy Status Card */
+      .policy-status-card {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        padding: 1em;
+        margin: .5em 0;
+        font-family: var(--font-primary);
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+        width: 100%;
+      }
+
+      .policy-status-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: .5em;
+      }
+
+      .policy-status-title {
+        font-weight: bold;
+        color: var(--color-background);
+      }
+
+      .policy-status-badge {
+        padding: .3em .6em;
+        border-radius: var(--radius-md);
+        font-weight: bold;
+        font-size: clamp(0.4rem, 0.2875rem + .4vw, 0.8rem);
+        text-transform: uppercase;
+      }
+
+      .policy-status-badge.out-of-scope {
+        background-color: var(--color-neutral);
+        color: var(--color-background);
+      }
+
+      .policy-status-badge.data-not-available {
+        background-color: var(--color-light-gray);
+        color: var(--color-primary-light);
+      }
+
+      .policy-status-badge.expired,
+      .policy-status-badge.expiring {
+        background-color: var(--color-warning);
+        color: var(--color-background);
+      }
+
+      .policy-status-badge.active {
+        background-color: var(--color-secondary);
+        color: var(--color-background);
+      }
+
+      .policy-status-content {
+        font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
+      }
+
+      .policy-status-line {
+        margin-bottom: .1em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .policy-status-label {
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .policy-status-value {
+        text-align: right;
+        word-wrap: break-word;
+        flex: 1;
+        margin-left: 1em;
+      }
+
+      .policy-status-divider {
+        height: 1px;
+        background-color: rgba(244, 241, 235, 0.5);
+        margin: .5em auto;
+        width: 85%;
+        display: block;
+      }
+
+      .policy-link {
+        color: var(--color-background);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .policy-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Accreditation Section */
+      .accreditation-section {
+        background-color: transparent;
+        border: none;
+        border-radius: var(--radius-md);
+        margin: .3em 0;
+        width: 100%;
+      }
+
+      .accreditation-section-header {
+        background-color: transparent;
+        border: none;
+        border-radius: var(--radius-md);
+        padding: 1em;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .accreditation-section-header:hover {
+        background-color: rgba(79, 32, 73, 0.1);
+      }
+
+      .accreditation-section-title {
+        font-family: var(--font-display);
+        font-size: clamp(0.5rem, 0.3875rem + .4vw, 0.9rem);
+        color: var(--color-primary-light);
+        text-transform: uppercase;
+        font-weight: bold;
+        line-height: 1.2;
+      }
+
+      .accreditation-section-arrow {
+        color: var(--color-neutral);
+        font-weight: bold;
+        font-size: .8rem;
+        margin-left: .5em;
+        transition: transform 0.2s ease;
+      }
+
+      .accreditation-section.expanded .accreditation-section-arrow {
+        transform: rotate(90deg);
+      }
+
+      .accreditation-section-content {
+        padding: 1em;
+        background-color: rgba(79, 32, 73, 0.05);
+        border-radius: var(--radius-md);
+        margin-top: .2em;
+      }
+
+      .accreditation-section-text {
+        font-family: var(--font-primary);
+        font-size: clamp(0.5rem, 0.3875rem + .4vw, 0.9rem);
+        color: var(--color-primary-light);
       }
 
       .buttoncontainer {
@@ -1035,17 +1778,17 @@
       .search-input {
         width: 100%;
         padding: 1em;
-        border: 1px solid #111111;
-        border-radius: 5px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        border: 1px solid var(--color-black);
+        border-radius: var(--radius-md);
+        font-family: var(--font-primary);
         font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-        background-color: #F4F1EB;
-        color: #111111;
+        background-color: var(--color-background);
+        color: var(--color-black);
       }
 
       .search-input:focus {
         outline: none;
-        border-color: #4F2049;
+        border-color: var(--color-primary);
         box-shadow: 0 0 5px rgba(79, 32, 73, 0.3);
       }
 
@@ -1054,8 +1797,8 @@
         top: 100%;
         left: 0;
         right: 0;
-        background-color: #F4F1EB;
-        border: 1px solid #111111;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-black);
         border-top: none;
         border-radius: 0 0 5px 5px;
         max-height: 300px;
@@ -1067,14 +1810,14 @@
       .search-result-item {
         padding: 1em;
         cursor: pointer;
-        font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+        font-family: var(--font-primary);
         font-size: clamp(0.5rem, 0.3875rem + .5vw, 1rem);
-        border-bottom: 1px solid #dbdbdb;
+        border-bottom: 1px solid var(--color-light-gray);
       }
 
       .search-result-item:hover {
-        background-color: #4F2049;
-        color: #F4F1EB;
+        background-color: var(--color-primary);
+        color: var(--color-background);
       }
 
       .search-result-item:last-child {
@@ -1083,9 +1826,9 @@
 
       button:hover {
         background: #4F2049;
-        color: #F4F1EB;
+        color: var(--color-background);
         font-weight: bold;
-        border: 1px solid #4F2049;
+        border: 1px solid var(--color-primary);
       }
 
       /* Button hover (definition) design */
@@ -1106,8 +1849,8 @@
         left: 0;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
         padding: 10px;
       }
 
@@ -1118,8 +1861,8 @@
         left: 0;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
         padding: 10px;
       }
 
@@ -1130,20 +1873,20 @@
         left: 0;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
         padding: 10px;
       }
 
-      .policy-expiring-within-18-months-button-def {
+      .policy-status-button-def {
         display: none;
         position: relative;
         top: 0;
         left: 0;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
         opacity: 0.8;
-        background-color: #111111;
-        color: #F4F1EB;
+        background-color: var(--color-black);
+        color: var(--color-background);
         padding: 10px;
       }
 
@@ -1195,7 +1938,7 @@
       <button type="button" id="accredited-chws-button" class="button">ACCREDITED CHWS</button>
       <button type="button" id="salaried-chws-button" class="button">SALARIED CHWS</button>
       <button type="button" id="accredited-and-salaried-chws-button" class="button">ACCREDITED & SALARIED CHWS</button>
-      <button type="button" id="policy-expiring-within-18-months-button" class="button">POLICIES EXPIRED OR EXPIRING</button>
+      <button type="button" id="policy-status-button" class="button">POLICY STATUS</button>
     </div>
 
     <!-- Search bar container -->
@@ -1219,8 +1962,7 @@
       <div class="accredited-chws-button-def">Does the country policy document explicitly recognize
         roles, qualifications, and competencies for CHWs?
       </div>
-      <div class="policy-expiring-within-18-months-button-def">Does the country have a policy that is 
-        already expired or is expiring? (Policy expiration date details are updated every 6 months). 
+      <div class="policy-status-button-def">What is the status of the country's policy? (Policy expiration date details are updated every 6 months). 
       </div>
     </div>
 
@@ -1231,30 +1973,106 @@
       <div id='country-details' class='country-details'>
 
         <div id="country-name">Select a country to see details</div>
-        <div id="num-groups"></div>
-        <div id="num-paid-accredited-chw-groups"></div>
-        <div id="group-names-combined"></div>
-        <div id="chw-policy-implementation"></div>
-        <div id="policy-status"></div>
-        <div id="policy-years-covered"></div>
-        <button type="button" id="policybutton" class="buttonsidebar">SEE THE POLICY HERE</button>
-        <div id="policy-link"></div>
-
-        <!-- Raw data download link -->
-        <div id="download-link">
-          <a
-            href="https://docs.google.com/spreadsheets/d/1LTB8mJ566h_z1RJEn3D2StMElgN0MMfripYmhaeSQ3Y/export?format=csv">
-            Download the raw data here.
-          </a>
+        <div id="out-of-scope-message" class="out-of-scope-text" style="display: none;">
+          Out of Scope
         </div>
-
-      </div>
-
-      <!-- Bottom part of the sidebar -->
+        
+        <!-- CHW Cards Container -->
+        <div id="chw-cards-container" class="chw-cards-container" style="display: none;">
+          <!-- Total CHW Groups Card -->
+          <div id="total-chw-groups-card" class="chw-card">
+            <div id="total-chw-groups-number" class="chw-card-number"></div>
+            <div class="chw-card-label">Total CHW Groups</div>
+          </div>
+          
+          <!-- Salaried & Accredited Card -->
+          <div id="salaried-accredited-card" class="chw-card">
+            <div id="salaried-accredited-number" class="chw-card-number"></div>
+            <div class="chw-card-label">Salaried & Accredited</div>
+          </div>
+          
+          <!-- CHW Associations Card -->
+          <div id="chw-associations-card" class="chw-card">
+            <div id="chw-associations-number" class="chw-card-number"></div>
+            <div class="chw-card-label">CHW Associations</div>
+          </div>
+        </div>
+        
+        <!-- CHW Popups Container -->
+        <div id="chw-popups-container" class="chw-popups-container">
+          <div id="total-chw-groups-popup" class="chw-popup">
+            <div class="chw-popup-title">All CHW Group(s):</div>
+            <ul id="total-chw-groups-list" class="chw-popup-list"></ul>
+          </div>
+          
+          <div id="salaried-accredited-popup" class="chw-popup">
+            <div class="chw-popup-title">Salaried & Accredited Group(s):</div>
+            <ul id="salaried-accredited-list" class="chw-popup-list"></ul>
+          </div>
+          
+          <div id="chw-associations-popup" class="chw-popup">
+            <div class="chw-popup-title">CHW Association(s):</div>
+            <ul id="chw-associations-list" class="chw-popup-list"></ul>
+          </div>
+        </div>
+        
+        <!-- Policy Status Card -->
+        <div id="policy-status-card" class="policy-status-card" style="display: none;">
+          <div class="policy-status-header">
+            <div class="policy-status-title">Policy Status</div>
+            <div id="policy-status-badge" class="policy-status-badge"></div>
+          </div>
+          <div class="policy-status-content">
+            <div class="policy-status-line">
+              <span class="policy-status-label">Implementation</span>
+              <span id="policy-implementation-text" class="policy-status-value"></span>
+            </div>
+            <div class="policy-status-line">
+              <span class="policy-status-label">Policy Years</span>
+              <span id="policy-years-text" class="policy-status-value"></span>
+            </div>
+            <div class="policy-status-divider"></div>
+            <div id="policy-link-container" class="policy-link-container">
+              <a id="policy-link" href="#" target="_blank" class="policy-link">View policy document →</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Single Clickable Section -->
+        <div id="accreditation-section" class="accreditation-section" style="display: none;">
+          <div class="accreditation-section-header">
+            <div class="accreditation-section-title">ACCREDITATION, SALARY, SUPERVISION, SKILLS, & SUPPLIES</div>
+            <div class="accreditation-section-arrow">></div>
+          </div>
+          <div class="accreditation-section-content" style="display: none;">
+            <div class="accreditation-section-text">test</div>
+          </div>
+        </div>
+        
+        <!-- Policy Implementation Section -->
+        <div id="policy-implementation-section" class="accreditation-section" style="display: none;">
+          <div class="accreditation-section-header">
+            <div class="accreditation-section-title">POLICY IMPLEMENTATION</div>
+            <div class="accreditation-section-arrow">></div>
+          </div>
+          <div class="accreditation-section-content" style="display: none;">
+            <div class="accreditation-section-text">test</div>
+          </div>
+        </div>
+        
+        <!-- Policy Timeline Section -->
+        <div id="policy-timeline-section" class="accreditation-section" style="display: none;">
+          <div class="accreditation-section-header">
+            <div class="accreditation-section-title">POLICY TIMELINE</div>
+            <div class="accreditation-section-arrow">></div>
+          </div>
+          <div class="accreditation-section-content" style="display: none;">
+            <div class="accreditation-section-text">test</div>
+          </div>
+        </div>
+        
+        <!-- Bottom part of the sidebar -->
       <div id="bottom" class="bottom">
-
-        <!-- Submit button in sidebar -->
-        <button type="button" id="sidebarsubmitbutton" class="buttonsidebar">SEE SOMETHING MISSING? SUBMIT IT FOR REVIEW BY THE CHIC TEAM</button>
 
         <!-- Date last updated -->
         <div id="date-last-updated"></div>
@@ -1306,8 +2124,8 @@
     // Initialize arrays for the map colors, the legend colors, and the legend values
     var caseExpression = []
 
-    // If indicator is paid_accredited_cat:
-    if (indicatorName == "paid_accredited_cat") {
+    // If indicator is salaried_accredited_cat:
+    if (indicatorName == "salaried_accredited_cat") {
 
       // Initialize arrays for all possible values of this indicator
       let bothArray = []
@@ -1431,24 +2249,24 @@
 
     }
 
-    // Else if indicator is policy_expiring_within_18_months:
-    if (indicatorName == "policy_expiring_within_18_months") {
+    // Else if indicator is policy_status:
+    if (indicatorName == "policy_status") {
 
       // Initialize arrays for all possible values of this indicator
-      let noArray = []
+      let activeArray = []
       let expiringArray = []
       let expiredArray = []
       let naArray = []
 
       // Push ISO codes from csv data to arrays based on values
       csvData.forEach((row) => {
-        if (row[indicatorName] == "No") {
-          noArray.push(row.ISO_A3)
+        if (row[indicatorName] == "Active") {
+          activeArray.push(row.ISO_A3)
         }
-        if (row[indicatorName] == "Yes") {
+        if (row[indicatorName] == "Expiring within 18 months") {
           expiringArray.push(row.ISO_A3)
         }
-        if (row[indicatorName] == "Already expired") {
+        if (row[indicatorName] == "Expired") {
           expiredArray.push(row.ISO_A3)
         }
         if (row[indicatorName] == "Data not available") {
@@ -1459,7 +2277,7 @@
       // Set Mapbox colors based on arrays
       var caseExpression = [
         'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", noArray]], "#9272d9",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", activeArray]], "#9272d9",
         ["in", ["get", "iso_3166_1_alpha_3"], ["literal", expiringArray]], "#20bdc5",
         ["in", ["get", "iso_3166_1_alpha_3"], ["literal", expiredArray]], "#F36744",
         ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
@@ -1467,9 +2285,9 @@
       ]
 
       // Set legend title, colors and values manually
-      $('#legend-title').text("Is the country policy expired or expiring?")
+      $('#legend-title').text("What is the country policy's status?")
       const legendColors = ["#9272d9", "#20bdc5", "#F36744", "#999999", "#dbdbdb"]
-      const legendValues = ["No", "Expiring", "Already expired", "Data not available", "Out of scope"]
+      const legendValues = ["Active", "Expiring within 18 months", "Expired", "Data not available", "Out of scope"]
 
       // Now build legend
       buildLegend(legendColors, legendValues)
@@ -1533,7 +2351,7 @@
     const sheetId = '2PACX-1vRW71f12hsPrtlEglo73Xcit8TgFw1WeyU4HXWNV3M-IasQMjvzhS3zWjlFTgm4NHFs_1KJjHaSPLCZ'
     // REAL SPREADSHEET const sheetId = '2PACX-1vQan4RTDeRovJT7VqPhh15B6GLNhvxVGTILpyjOIfbfEEf2Sd0Ky5xpPsRlLS9_9GmHeWVIwNcIU5X8'
     fetch(`https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`)
-      .catch(err => console.error(err))
+      .catch(err => {})
       .then(resp => resp.text())
       .then(response => {
         csv().fromString(response)
@@ -1541,12 +2359,12 @@
             csvData = rows
 
             // Add scorecard at top based on csv data
-            const totalAccreditedAndSalaried = sumIndicators("at_least_1_paid_accredited")
-            const totalDenominator = denominator("at_least_1_paid_accredited")
+            const totalAccreditedAndSalaried = sumIndicators("at_least_1_salaried_accredited")
+            const totalDenominator = denominator("at_least_1_salaried_accredited")
             $('#total-accredited-and-salaried').text(totalAccreditedAndSalaried + "/" + totalDenominator)
 
             // Initialize map with data for proCHW indicator
-            setColorsToMap("paid_accredited_cat")
+            setColorsToMap("salaried_accredited_cat")
 
             // Add button active state
             $('#accredited-and-salaried-chws-button').addClass('active');
@@ -1572,30 +2390,21 @@
     })
 
     $("#accredited-and-salaried-chws-button").click(function () {
-      setColorsToMap("paid_accredited_cat")
+      setColorsToMap("salaried_accredited_cat")
       $('.button').removeClass('active')
       $(this).addClass('active')
     })
 
-    $("#policy-expiring-within-18-months-button").click(function () {
-      setColorsToMap("policy_expiring_within_18_months")
+    $("#policy-status-button").click(function () {
+      setColorsToMap("policy_status")
       $('.button').removeClass('active')
       $(this).addClass('active')
     })
 
-    // Add event listener for click on "see something missing" button
-    $("#sidebarsubmitbutton").click(function () {
-      sidebarsubmitbutton.style.display = "inline-block";
-      const submitlink = "https://docs.google.com/forms/d/e/1FAIpQLSeQfSZ9YG6ecSnWiBoUshtKBRGXVyYPt4Hfo_nx4ugBFkaEww/viewform"
-      window.open(submitlink)
-    })
 
     // Search functionality
     const searchInput = document.getElementById('country-search');
     const searchResults = document.getElementById('search-results');
-    
-    console.log('Search input element:', searchInput);
-    console.log('Search results element:', searchResults);
 
     searchInput.addEventListener('input', function() {
       const searchTerm = this.value.toLowerCase().trim();
@@ -1623,28 +2432,10 @@
             if (thisCountry) {
               // Populate the sidebar with country information
               $("#country-name").text(thisCountry.country);
-              $("#num-groups").text("# of CHW groups: " + thisCountry.group_count);
-              $("#num-paid-accredited-chw-groups").text("# of salaried & accredited CHW groups: " + thisCountry.paid_accredited_count);
-              $("#group-names-combined").text("Group name(s): " + thisCountry.group_names_combined);
-              $("#chw-policy-implementation").text("CHW policy implementation: " + thisCountry.implementation_combined);
-              $("#policy-status").text("Policy status: " + thisCountry.policy_status);
-              $("#policy-years-covered").text("Policy years covered: " + thisCountry.policy_years_covered);
               $("#date-last-updated").text("Date last updated: " + thisCountry.date_last_updated);
               
-              // Handle policy link
-              if (thisCountry.policy_link != "Out of scope" && thisCountry.policy_link != "Data not available") {
-                $("#policy-link").hide();
-                policybutton.style.display = "inline-block";
-                $("#policybutton").unbind('click');
-                $("#policybutton").click(function(){
-                  const link = thisCountry.policy_link;
-                  window.open(link);
-                });
-              } else {
-                $("#policy-link").show();
-                $("#policy-link").text("Policy link not available");
-                $("#policybutton").hide();
-              }
+              // Populate the entire sidebar
+              populateSidebar(thisCountry);
               
               // Fly to the country using coordinates from CSV data
               if (thisCountry.longitude && thisCountry.latitude) {
@@ -1690,6 +2481,261 @@
       }
     });
 
+    // CHW Cards functionality
+    function populateCHWCards(countryData) {
+      // Hide all popups when switching countries
+      document.getElementById('total-chw-groups-popup').style.display = 'none';
+      document.getElementById('salaried-accredited-popup').style.display = 'none';
+      document.getElementById('chw-associations-popup').style.display = 'none';
+      
+      // Clear any existing "Data not available" text from popup titles
+      const popupTitles = document.querySelectorAll('.chw-popup-title');
+      popupTitles.forEach(title => {
+        const dataNotAvailableText = title.querySelector('.data-not-available-text');
+        if (dataNotAvailableText) {
+          dataNotAvailableText.remove();
+        }
+      });
+      
+      // Check if country is out of scope
+      if (countryData.countdown_country === "No") {
+        document.getElementById('chw-cards-container').style.display = 'none';
+        document.getElementById('out-of-scope-message').style.display = 'block';
+        return;
+      }
+
+      // Show cards and hide out of scope message
+      document.getElementById('chw-cards-container').style.display = 'flex';
+      document.getElementById('out-of-scope-message').style.display = 'none';
+
+      // Helper function to check if data is available
+      function isDataAvailable(value) {
+        return value && value !== "Data not available" && value !== "";
+      }
+
+      // Helper function to create list items from semicolon-separated string
+      function createListItems(dataString, listElement) {
+        listElement.innerHTML = '';
+        if (isDataAvailable(dataString)) {
+          const items = dataString.split(';').map(item => item.trim()).filter(item => item);
+          items.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            listElement.appendChild(li);
+          });
+        } else {
+          // For "Data not available", add italicized text after the title instead of bullets
+          const popup = listElement.closest('.chw-popup');
+          const title = popup.querySelector('.chw-popup-title');
+          if (title && !title.querySelector('.data-not-available-text')) {
+            const dataNotAvailableSpan = document.createElement('span');
+            dataNotAvailableSpan.className = 'data-not-available-text';
+            dataNotAvailableSpan.style.fontWeight = 'normal';
+            dataNotAvailableSpan.style.fontStyle = 'italic';
+            dataNotAvailableSpan.textContent = ' Data not available';
+            title.appendChild(dataNotAvailableSpan);
+          }
+        }
+      }
+
+      // Populate Total CHW Groups Card
+      const totalGroupsNumber = document.getElementById('total-chw-groups-number');
+      const totalGroupsList = document.getElementById('total-chw-groups-list');
+      
+      if (isDataAvailable(countryData.group_count)) {
+        totalGroupsNumber.textContent = countryData.group_count;
+        totalGroupsNumber.className = 'chw-card-number';
+      } else {
+        totalGroupsNumber.textContent = 'Data not available';
+        totalGroupsNumber.className = 'chw-card-number chw-card-number-not-available';
+      }
+      createListItems(countryData.group_names, totalGroupsList);
+
+      // Populate Salaried & Accredited Card
+      const salariedAccreditedNumber = document.getElementById('salaried-accredited-number');
+      const salariedAccreditedList = document.getElementById('salaried-accredited-list');
+      
+      if (isDataAvailable(countryData.salaried_accredited_count)) {
+        salariedAccreditedNumber.textContent = countryData.salaried_accredited_count;
+        salariedAccreditedNumber.className = 'chw-card-number';
+      } else {
+        salariedAccreditedNumber.textContent = 'Data not available';
+        salariedAccreditedNumber.className = 'chw-card-number chw-card-number-not-available';
+      }
+      createListItems(countryData.group_names_salaried_accredited, salariedAccreditedList);
+
+      // Populate CHW Associations Card
+      const associationsNumber = document.getElementById('chw-associations-number');
+      const associationsList = document.getElementById('chw-associations-list');
+      
+      if (isDataAvailable(countryData.chw_associations_count)) {
+        associationsNumber.textContent = countryData.chw_associations_count;
+        associationsNumber.className = 'chw-card-number';
+      } else {
+        associationsNumber.textContent = 'Data not available';
+        associationsNumber.className = 'chw-card-number chw-card-number-not-available';
+      }
+      createListItems(countryData.chw_association_names, associationsList);
+
+      // Populate Policy Status Card
+      const policyStatusBadge = document.getElementById('policy-status-badge');
+      const policyStatus = countryData.policy_status || 'Data not available';
+      
+      // Remove existing classes
+      policyStatusBadge.className = 'policy-status-badge';
+      
+      // Add appropriate class and text based on policy status
+      if (policyStatus === 'Out of Scope') {
+        policyStatusBadge.classList.add('out-of-scope');
+        policyStatusBadge.textContent = 'OUT OF SCOPE';
+      } else if (policyStatus === 'Data not available') {
+        policyStatusBadge.classList.add('data-not-available');
+        policyStatusBadge.textContent = 'DATA NOT AVAILABLE';
+      } else if (policyStatus === 'Expired' || policyStatus === 'Expiring within 18 months') {
+        policyStatusBadge.classList.add('expired');
+        policyStatusBadge.textContent = policyStatus.toUpperCase();
+      } else if (policyStatus === 'Active') {
+        policyStatusBadge.classList.add('active');
+        policyStatusBadge.textContent = 'ACTIVE';
+      } else {
+        policyStatusBadge.classList.add('data-not-available');
+        policyStatusBadge.textContent = policyStatus.toUpperCase();
+      }
+      
+      // Populate implementation text
+      const implementationText = document.getElementById('policy-implementation-text');
+      implementationText.textContent = countryData.implementation_combined || 'Data not available';
+      
+      // Populate policy years text
+      const policyYearsText = document.getElementById('policy-years-text');
+      policyYearsText.textContent = countryData.policy_years_covered || 'Data not available';
+      
+      // Handle policy link
+      const policyLink = document.getElementById('policy-link');
+      const policyLinkContainer = document.getElementById('policy-link-container');
+      
+      if (countryData.policy_link && countryData.policy_link !== 'Data not available') {
+        policyLink.href = countryData.policy_link;
+        policyLink.textContent = 'View policy document →';
+        policyLink.style.display = 'inline';
+      } else {
+        policyLink.style.display = 'none';
+        policyLinkContainer.innerHTML = '<span class="policy-link" style="color: #999999;">Policy not available</span>';
+      }
+    }
+
+    // Add click event listeners for CHW cards
+    document.getElementById('total-chw-groups-card').addEventListener('click', function() {
+      // Hide all other popups first
+      document.getElementById('salaried-accredited-popup').style.display = 'none';
+      document.getElementById('chw-associations-popup').style.display = 'none';
+      
+      // Toggle the clicked popup
+      const popup = document.getElementById('total-chw-groups-popup');
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.getElementById('salaried-accredited-card').addEventListener('click', function() {
+      // Hide all other popups first
+      document.getElementById('total-chw-groups-popup').style.display = 'none';
+      document.getElementById('chw-associations-popup').style.display = 'none';
+      
+      // Toggle the clicked popup
+      const popup = document.getElementById('salaried-accredited-popup');
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.getElementById('chw-associations-card').addEventListener('click', function() {
+      // Hide all other popups first
+      document.getElementById('total-chw-groups-popup').style.display = 'none';
+      document.getElementById('salaried-accredited-popup').style.display = 'none';
+      
+      // Toggle the clicked popup
+      const popup = document.getElementById('chw-associations-popup');
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Add click event listener for accreditation section
+    const accreditationSection = document.getElementById('accreditation-section');
+    if (accreditationSection) {
+      accreditationSection.addEventListener('click', function() {
+        const content = this.querySelector('.accreditation-section-content');
+        const isExpanded = this.classList.contains('expanded');
+        
+        if (isExpanded) {
+          content.style.display = 'none';
+          this.classList.remove('expanded');
+        } else {
+          content.style.display = 'block';
+          this.classList.add('expanded');
+        }
+      });
+    }
+
+    // Add click event listener for policy implementation section
+    const policyImplementationSection = document.getElementById('policy-implementation-section');
+    if (policyImplementationSection) {
+      policyImplementationSection.addEventListener('click', function() {
+        const content = this.querySelector('.accreditation-section-content');
+        const isExpanded = this.classList.contains('expanded');
+        
+        if (isExpanded) {
+          content.style.display = 'none';
+          this.classList.remove('expanded');
+        } else {
+          content.style.display = 'block';
+          this.classList.add('expanded');
+        }
+      });
+    }
+
+    // Add click event listener for policy timeline section
+    const policyTimelineSection = document.getElementById('policy-timeline-section');
+    if (policyTimelineSection) {
+      policyTimelineSection.addEventListener('click', function() {
+        const content = this.querySelector('.accreditation-section-content');
+        const isExpanded = this.classList.contains('expanded');
+        
+        if (isExpanded) {
+          content.style.display = 'none';
+          this.classList.remove('expanded');
+        } else {
+          content.style.display = 'block';
+          this.classList.add('expanded');
+        }
+      });
+    }
+
+    // Function to populate the entire sidebar
+    function populateSidebar(countryData) {
+      if (countryData.countdown_country === "No") {
+        // Country is out of scope - show only out of scope message
+        document.getElementById('out-of-scope-message').style.display = 'block';
+        document.getElementById('out-of-scope-message').textContent = "This country is not a Countdown to 2030 country, so it is out of scope for this dashboard.";
+        
+        // Hide all other elements
+        document.getElementById('chw-cards-container').style.display = 'none';
+        document.getElementById('chw-popups-container').style.display = 'none';
+        document.getElementById('policy-status-card').style.display = 'none';
+        document.getElementById('accreditation-section').style.display = 'none';
+        document.getElementById('policy-implementation-section').style.display = 'none';
+        document.getElementById('policy-timeline-section').style.display = 'none';
+      } else {
+        // Country is in scope - show everything
+        document.getElementById('out-of-scope-message').style.display = 'none';
+        
+        // Show all elements
+        document.getElementById('chw-cards-container').style.display = 'flex';
+        document.getElementById('policy-status-card').style.display = 'block';
+        document.getElementById('accreditation-section').style.display = 'block';
+        document.getElementById('policy-implementation-section').style.display = 'block';
+        document.getElementById('policy-timeline-section').style.display = 'block';
+        
+        // Populate CHW cards and policy status
+        populateCHWCards(countryData);
+      }
+    }
+
     // Populate sidebar upon click
     map.on('click', 'country-boundaries', (e) => {
 
@@ -1698,32 +2744,10 @@
       if (thisCountry) {
 
         $("#country-name").text(thisCountry.country)
-        $("#num-groups").text("# of CHW groups: " + thisCountry.group_count)
-        $("#num-paid-accredited-chw-groups").text("# of salaried & accredited CHW groups: " + thisCountry.paid_accredited_count)
-        $("#group-names-combined").text("Group name(s): " + thisCountry.group_names_combined)
-        $("#chw-policy-implementation").text("CHW policy implementation: " + thisCountry.implementation_combined)
-        $("#policy-status").text("Policy status: " + thisCountry.policy_status)
-        $("#policy-years-covered").text("Policy years covered: " + thisCountry.policy_years_covered)
         $("#date-last-updated").text("Date last updated: " + thisCountry.date_last_updated)
-        // For policy links, first determine if the link is available
-        if (thisCountry.policy_link != "Out of scope" && thisCountry.policy_link != "Data not available") {
-          // If available, show button and link policy
-          $("#policy-link").hide()
-          policybutton.style.display = "inline-block";
-          $("#policybutton").unbind('click')
-          // Upon click, go to the policy link
-          $(function(){
-            $("#policybutton").click(function(){
-              const link = thisCountry.policy_link
-              window.open(link)
-            });
-          });
-        } else {
-          // If link not available, return "Policy link not available"
-          $("#policy-link").show()
-          $("#policy-link").text("Policy link not available")
-          $("#policybutton").hide()
-        }
+        
+        // Populate the entire sidebar
+        populateSidebar(thisCountry)
       }
 
     });
@@ -1786,10 +2810,10 @@
       $('.accredited-and-salaried-chws-button-def').hide();
     })
 
-    $("#policy-expiring-within-18-months-button").hover(function () {
-      $('.policy-expiring-within-18-months-button-def').show()
+    $("#policy-status-button").hover(function () {
+      $('.policy-status-button-def').show()
     }, function () {
-      $('.policy-expiring-within-18-months-button-def').hide();
+      $('.policy-status-button-def').hide();
     })
 
   });
