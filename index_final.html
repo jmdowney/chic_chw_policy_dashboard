@@ -132,22 +132,35 @@
         border-radius: var(--radius-sm);
       }
 
-      /* "Submit additional country details" link design */
-      .submitlink {
+      /* How to Use Dashboard button design */
+      .how-to-use-button {
         place-self: center;
-        background-color: var(--color-accent);
+        background-color: var(--color-primary);
+        color: var(--color-background);
         font-family: var(--font-primary);
         vertical-align: middle;
         font-size: .6rem;
         font-weight: bold;
         text-transform: uppercase;
         border-radius: var(--radius-lg);
+        border: 1px solid var(--color-primary);
         padding: .25rem;
         width: 100%;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3em;
       }
 
-      #submitlink a {
-        color: var(--color-background);
+      .how-to-use-button:hover {
+        background-color: var(--color-primary-light);
+        border-color: var(--color-primary-light);
+      }
+
+      .play-icon {
+        font-size: 0.8em;
       }
 
       .right a:link {
@@ -702,10 +715,143 @@
         color: var(--color-primary);
       }
 
+      /* Policy Timeline Styles */
+      .policy-timeline {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 .5em;
+        margin: 1em 0;
+      }
+
+      /* The horizontal line */
+      .policy-timeline::before {
+        content: "";
+        position: absolute;
+        top: 15px; /* center of the dots */
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: var(--color-primary);
+        z-index: 0;
+      }
+
+      .timeline-item {
+        position: relative;
+        text-align: center;
+        flex: 1 1 0;
+      }
+
+      /* The dot */
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        top: 9px; /* align with the line */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: var(--color-primary);
+        border: 2px solid var(--color-light-gray);
+        z-index: 1;
+      }
+
+      .timeline-year {
+        font-family: 'Anton', sans-serif;
+        font-size: .7rem;
+        color: var(--color-primary);
+        margin-top: 1.5em;
+        margin-bottom: .3em;
+        text-align: center;
+      }
+
+      .timeline-milestone {
+        font-family: var(--font-primary);
+        font-size: .5rem;
+        color: var(--color-primary-light);
+        text-align: center;
+        line-height: 1.3;
+        max-width: 120px;
+        margin: 0 auto;
+      }
+
+      .timeline-milestone a {
+        color: var(--color-primary-light);
+        text-decoration: underline;
+      }
+
+      .timeline-milestone a:hover {
+        color: var(--color-primary);
+      }
 
       /* Button hover (definition) design */
       .buttondefcontainer {
         display: none;
+      }
+
+      /* Popup styles */
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+      }
+
+      .popup-content {
+        background-color: var(--color-background);
+        border-radius: var(--radius-lg);
+        padding: 1.5em;
+        max-width: 90%;
+        max-height: 80%;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1em;
+        border-bottom: 1px solid var(--color-light-gray);
+        padding-bottom: 0.5em;
+      }
+
+      .popup-header h3 {
+        margin: 0;
+        font-family: var(--font-display);
+        color: var(--color-primary);
+        font-size: 1.2rem;
+      }
+
+      .close-button {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--color-primary);
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .close-button:hover {
+        color: var(--color-primary-light);
+      }
+
+      .popup-body {
+        font-family: var(--font-primary);
+        color: var(--color-primary-light);
+        line-height: 1.5;
       }
 
     }
@@ -774,10 +920,11 @@
         max-height: 100%;
       }
 
-      /* "Submit additional country details" link design */
-      .submitlink {
+      /* How to Use Dashboard button design */
+      .how-to-use-button {
         text-align: center;
-        background-color: var(--color-accent);
+        background-color: var(--color-primary);
+        color: var(--color-background);
         font-family: var(--font-primary);
         text-align: center;
         vertical-align: middle;
@@ -785,12 +932,24 @@
         font-weight: bold;
         text-transform: uppercase;
         border-radius: var(--radius-lg);
+        border: 1px solid var(--color-primary);
         padding: 1em;
         margin: 1em;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
       }
 
-      #submitlink a {
-        color: var(--color-background);
+      .how-to-use-button:hover {
+        background-color: var(--color-primary-light);
+        border-color: var(--color-primary-light);
+      }
+
+      .play-icon {
+        font-size: 0.8em;
       }
 
       .right a:link {
@@ -1299,6 +1458,76 @@
         color: var(--color-primary);
       }
 
+      /* Policy Timeline Styles - Laptop */
+      .policy-timeline {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 .8em;
+        margin: 1.2em 0;
+      }
+
+      /* The horizontal line */
+      .policy-timeline::before {
+        content: "";
+        position: absolute;
+        top: 18px; /* center of the dots */
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: var(--color-primary);
+        z-index: 0;
+      }
+
+      .timeline-item {
+        position: relative;
+        text-align: center;
+        flex: 1 1 0;
+      }
+
+      /* The dot */
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        top: 11px; /* align with the line */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: var(--color-primary);
+        border: 3px solid var(--color-light-gray);
+        z-index: 1;
+      }
+
+      .timeline-year {
+        font-family: 'Anton', sans-serif;
+        font-size: .8rem;
+        color: var(--color-primary);
+        margin-top: 1.8em;
+        margin-bottom: .4em;
+        text-align: center;
+      }
+
+      .timeline-milestone {
+        font-family: var(--font-primary);
+        font-size: .6rem;
+        color: var(--color-primary-light);
+        text-align: center;
+        line-height: 1.4;
+        max-width: 150px;
+        margin: 0 auto;
+      }
+
+      .timeline-milestone a {
+        color: var(--color-primary-light);
+        text-decoration: underline;
+      }
+
+      .timeline-milestone a:hover {
+        color: var(--color-primary);
+      }
+
       .buttoncontainer {
         position: absolute;
         top: 22%;
@@ -1431,6 +1660,83 @@
         padding: 10px;
       }
 
+      .implementation-evidence-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: var(--color-black);
+        color: var(--color-background);
+        padding: 10px;
+      }
+
+      /* Popup styles */
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+      }
+
+      .popup-content {
+        background-color: var(--color-background);
+        border-radius: var(--radius-lg);
+        padding: 2em;
+        max-width: 80%;
+        max-height: 80%;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5em;
+        border-bottom: 1px solid var(--color-light-gray);
+        padding-bottom: 0.5em;
+      }
+
+      .popup-header h3 {
+        margin: 0;
+        font-family: var(--font-display);
+        color: var(--color-primary);
+        font-size: 1.5rem;
+      }
+
+      .close-button {
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        color: var(--color-primary);
+        cursor: pointer;
+        padding: 0;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .close-button:hover {
+        color: var(--color-primary-light);
+      }
+
+      .popup-body {
+        font-family: var(--font-primary);
+        color: var(--color-primary-light);
+        line-height: 1.6;
+        font-size: 1rem;
+      }
+
     }
 
     /* Desktop */
@@ -1496,10 +1802,11 @@
         max-height: 100%;
       }
 
-      /* "Submit additional country details" link design */
-      .submitlink {
+      /* How to Use Dashboard button design */
+      .how-to-use-button {
         text-align: center;
-        background-color: var(--color-accent);
+        background-color: var(--color-primary);
+        color: var(--color-background);
         font-family: var(--font-primary);
         font-weight: bold;
         text-align: center;
@@ -1507,12 +1814,24 @@
         font-size: clamp(0.6rem, 0.4425rem + .7vw, 1.3rem);
         text-transform: uppercase;
         border-radius: var(--radius-lg);
+        border: 1px solid var(--color-primary);
         padding: 1em;
         margin: 1em;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
       }
 
-      #submitlink a {
-        color: var(--color-background);
+      .how-to-use-button:hover {
+        background-color: var(--color-primary-light);
+        border-color: var(--color-primary-light);
+      }
+
+      .play-icon {
+        font-size: 0.8em;
       }
 
       .right a:link {
@@ -2019,6 +2338,76 @@
         color: var(--color-primary);
       }
 
+      /* Policy Timeline Styles - Desktop */
+      .policy-timeline {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 1em;
+        margin: 1.5em 0;
+      }
+
+      /* The horizontal line */
+      .policy-timeline::before {
+        content: "";
+        position: absolute;
+        top: 20px; /* center of the dots */
+        left: 0;
+        right: 0;
+        height: 4px;
+        background-color: var(--color-primary);
+        z-index: 0;
+      }
+
+      .timeline-item {
+        position: relative;
+        text-align: center;
+        flex: 1 1 0;
+      }
+
+      /* The dot */
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        top: 12px; /* align with the line */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: var(--color-primary);
+        border: 4px solid var(--color-light-gray);
+        z-index: 1;
+      }
+
+      .timeline-year {
+        font-family: 'Anton', sans-serif;
+        font-size: .9rem;
+        color: var(--color-primary);
+        margin-top: 2em;
+        margin-bottom: .5em;
+        text-align: center;
+      }
+
+      .timeline-milestone {
+        font-family: var(--font-primary);
+        font-size: .7rem;
+        color: var(--color-primary-light);
+        text-align: center;
+        line-height: 1.5;
+        max-width: 180px;
+        margin: 0 auto;
+      }
+
+      .timeline-milestone a {
+        color: var(--color-primary-light);
+        text-decoration: underline;
+      }
+
+      .timeline-milestone a:hover {
+        color: var(--color-primary);
+      }
+
       .buttoncontainer {
         position: absolute;
         top: 20%;
@@ -2151,6 +2540,83 @@
         padding: 10px;
       }
 
+      .implementation-evidence-button-def {
+        display: none;
+        position: relative;
+        top: 0;
+        left: 0;
+        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        opacity: 0.8;
+        background-color: var(--color-black);
+        color: var(--color-background);
+        padding: 10px;
+      }
+
+      /* Popup styles */
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+      }
+
+      .popup-content {
+        background-color: var(--color-background);
+        border-radius: var(--radius-lg);
+        padding: 2.5em;
+        max-width: 70%;
+        max-height: 80%;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2em;
+        border-bottom: 1px solid var(--color-light-gray);
+        padding-bottom: 0.5em;
+      }
+
+      .popup-header h3 {
+        margin: 0;
+        font-family: var(--font-display);
+        color: var(--color-primary);
+        font-size: 1.8rem;
+      }
+
+      .close-button {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--color-primary);
+        cursor: pointer;
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .close-button:hover {
+        color: var(--color-primary-light);
+      }
+
+      .popup-body {
+        font-family: var(--font-primary);
+        color: var(--color-primary-light);
+        line-height: 1.7;
+        font-size: 1.1rem;
+      }
+
     }
 
   </style>
@@ -2175,14 +2641,25 @@
 
       <!-- Right side of header -->
       <div class="header-section right">
-        <div id="submitlink" class="submitlink">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQfSZ9YG6ecSnWiBoUshtKBRGXVyYPt4Hfo_nx4ugBFkaEww/viewform"
-            target="_blank">
-            SUBMIT ADDITIONAL COUNTRY DETAILS HERE
-          </a>
-        </div>
+        <button type="button" id="how-to-use-button" class="how-to-use-button">
+          <span class="play-icon">▶</span>
+          HOW TO USE THE DASHBOARD
+        </button>
       </div>
 
+    </div>
+
+    <!-- How to Use Dashboard Popup -->
+    <div id="how-to-use-popup" class="popup-overlay">
+      <div class="popup-content">
+        <div class="popup-header">
+          <h3>How to Use the Dashboard</h3>
+          <button type="button" id="close-popup" class="close-button">&times;</button>
+        </div>
+        <div class="popup-body">
+          <p>[INSTRUCTIONAL VIDEO GOES HERE]</p>
+        </div>
+      </div>
     </div>
 
     <!-- Map container with map inside -->
@@ -2200,6 +2677,7 @@
       <button type="button" id="salaried-chws-button" class="button">SALARIED CHWS</button>
       <button type="button" id="accredited-and-salaried-chws-button" class="button">ACCREDITED & SALARIED CHWS</button>
       <button type="button" id="policy-status-button" class="button">POLICY STATUS</button>
+      <button type="button" id="implementation-evidence-button" class="button">IMPLEMENTATION EVIDENCE</button>
     </div>
 
     <!-- Search bar container -->
@@ -2224,6 +2702,8 @@
         roles, qualifications, and competencies for CHWs?
       </div>
       <div class="policy-status-button-def">What is the status of the country's policy? (Policy expiration date details are updated every 6 months). 
+      </div>
+      <div class="implementation-evidence-button-def">Is there any evidence of CHW policy implementation, as measured by the presence of any one of five proxy indicators?
       </div>
     </div>
 
@@ -2454,7 +2934,25 @@
             <div class="accreditation-section-arrow">></div>
           </div>
           <div class="accreditation-section-content" style="display: none;">
-            <div class="accreditation-section-text">test</div>
+            <div class="policy-timeline">
+              <!-- Timeline Point 1 -->
+              <div class="timeline-item">
+                <div class="timeline-year" id="timeline-year-1"></div>
+                <div class="timeline-milestone" id="timeline-milestone-1"></div>
+              </div>
+              
+              <!-- Timeline Point 2 -->
+              <div class="timeline-item">
+                <div class="timeline-year" id="timeline-year-2"></div>
+                <div class="timeline-milestone" id="timeline-milestone-2"></div>
+              </div>
+              
+              <!-- Timeline Point 3 -->
+              <div class="timeline-item">
+                <div class="timeline-year" id="timeline-year-3"></div>
+                <div class="timeline-milestone" id="timeline-milestone-3"></div>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -2681,6 +3179,46 @@
 
       }
 
+    // Else if indicator is any_implementation_evidence:
+    if (indicatorName == "any_implementation_evidence") {
+
+      // Initialize arrays for all possible values of this indicator
+      let yArray = []
+      let nArray = []
+      let naArray = []
+
+      // Push ISO codes from csv data to arrays based on values
+      csvData.forEach((row) => {
+        if (row[indicatorName] == "Yes") {
+          yArray.push(row.ISO_A3)
+        }
+        if (row[indicatorName] == "No") {
+          nArray.push(row.ISO_A3)
+        }
+        if (row[indicatorName] == "Data not available") {
+          naArray.push(row.ISO_A3)
+        }
+      })
+
+      // Set Mapbox colors based on arrays
+      var caseExpression = [
+        'case',
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", yArray]], "#9272d9",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", nArray]], "#F36744",
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
+        "#dbdbdb"
+      ]
+
+      // Set legend title, colors and values manually
+      $('#legend-title').text("Is there any evidence of CHW policy implementation, as measured by the presence of any one of five proxy indicators?")
+      const legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
+      const legendValues = ["Yes", "No", "Data not available", "Out of scope"]
+
+      // Now build legend
+      buildLegend(legendColors, legendValues)
+
+      }
+
     // Now, based on results of if statements and indicator selected, set map colors 
     map.setPaintProperty('country-boundaries', 'fill-color', caseExpression)
 
@@ -2784,6 +3322,12 @@
 
     $("#policy-status-button").click(function () {
       setColorsToMap("policy_status")
+      $('.button').removeClass('active')
+      $(this).addClass('active')
+    })
+
+    $("#implementation-evidence-button").click(function () {
+      setColorsToMap("any_implementation_evidence")
       $('.button').removeClass('active')
       $(this).addClass('active')
     })
@@ -3031,6 +3575,9 @@
       
       // Populate Policy Implementation Subsections
       populatePolicyImplementationSubsections(countryData);
+      
+      // Populate Policy Timeline
+      populatePolicyTimeline(countryData);
     }
 
     // Function to populate accreditation subsections
@@ -3285,6 +3832,61 @@
       );
     }
 
+    // Function to populate policy timeline
+    function populatePolicyTimeline(countryData) {
+      // Helper function to set timeline milestone
+      function setTimelineMilestone(yearElement, milestoneElement, year, milestoneText, milestoneLink) {
+        // Set year
+        if (year && year !== "Data not available" && year !== "") {
+          yearElement.textContent = year;
+        } else {
+          yearElement.textContent = '';
+        }
+
+        // Set milestone text and link
+        if (milestoneText && milestoneText !== "Data not available" && milestoneText !== "" && 
+            milestoneLink && milestoneLink !== "Data not available" && milestoneLink !== "") {
+          milestoneElement.innerHTML = `<a href="${milestoneLink}" target="_blank">${milestoneText}</a>`;
+          // Add click event listener to prevent event bubbling
+          const link = milestoneElement.querySelector('a');
+          if (link) {
+            link.addEventListener('click', function(e) {
+              e.stopPropagation();
+            });
+          }
+        } else {
+          milestoneElement.textContent = '';
+        }
+      }
+
+      // Timeline Point 1
+      setTimelineMilestone(
+        document.getElementById('timeline-year-1'),
+        document.getElementById('timeline-milestone-1'),
+        countryData.policy_timeline_year_1,
+        countryData.policy_timeline_milestone_1,
+        countryData.policy_timeline_milestone_1_link
+      );
+
+      // Timeline Point 2
+      setTimelineMilestone(
+        document.getElementById('timeline-year-2'),
+        document.getElementById('timeline-milestone-2'),
+        countryData.policy_timeline_year_2,
+        countryData.policy_timeline_milestone_2,
+        countryData.policy_timeline_milestone_2_link
+      );
+
+      // Timeline Point 3
+      setTimelineMilestone(
+        document.getElementById('timeline-year-3'),
+        document.getElementById('timeline-milestone-3'),
+        countryData.policy_timeline_year_3,
+        countryData.policy_timeline_milestone_3,
+        countryData.policy_timeline_milestone_3_link
+      );
+    }
+
     // Add click event listeners for CHW cards
     document.getElementById('total-chw-groups-card').addEventListener('click', function() {
       // Hide all other popups first
@@ -3436,6 +4038,20 @@
           source.textContent = '';
         }
       });
+
+      // Clear policy timeline
+      const timelineElements = [
+        'timeline-year-1', 'timeline-milestone-1',
+        'timeline-year-2', 'timeline-milestone-2', 
+        'timeline-year-3', 'timeline-milestone-3'
+      ];
+      
+      timelineElements.forEach(elementId => {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.textContent = '';
+        }
+      });
     }
 
     // Function to populate the entire sidebar
@@ -3549,6 +4165,35 @@
     }, function () {
       $('.policy-status-button-def').hide();
     })
+
+    $("#implementation-evidence-button").hover(function () {
+      $('.implementation-evidence-button-def').show()
+    }, function () {
+      $('.implementation-evidence-button-def').hide();
+    })
+
+    // How to Use Dashboard popup functionality
+    $("#how-to-use-button").click(function () {
+      $("#how-to-use-popup").css("display", "flex");
+    });
+
+    $("#close-popup").click(function () {
+      $("#how-to-use-popup").css("display", "none");
+    });
+
+    // Close popup when clicking outside of it
+    $("#how-to-use-popup").click(function (e) {
+      if (e.target === this) {
+        $(this).css("display", "none");
+      }
+    });
+
+    // Close popup with Escape key
+    $(document).keydown(function (e) {
+      if (e.key === "Escape" && $("#how-to-use-popup").css("display") === "flex") {
+        $("#how-to-use-popup").css("display", "none");
+      }
+    });
 
   });
 
