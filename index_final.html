@@ -1722,74 +1722,51 @@
         border: 1px solid var(--color-primary);
       }
 
-      /* Button hover (definition) design */
-      .buttondefcontainer {
-        position: absolute;
-        top: 28%;
-        left: 0;
-        margin-left: 10px;
-        width: 30%;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: .8rem;
-      }
-
-      .accredited-chws-button-def {
-        display: none;
+      /* Button hover (definition) design - Individual button positioning */
+      .button-with-tooltip {
         position: relative;
-        top: 0;
-        left: 0;
-        opacity: 0.8;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 10px;
+        display: inline-block;
       }
 
-      .salaried-chws-button-def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 10px;
-      }
-
-      .accredited-and-salaried-chws-button-def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 10px;
-      }
-
-      .policy-status-button-def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 10px;
-      }
-
+      .accredited-chws-button-def,
+      .salaried-chws-button-def,
+      .accredited-and-salaried-chws-button-def,
+      .policy-status-button-def,
       .implementation-evidence-button-def {
         display: none;
-        position: relative;
-        top: 0;
-        left: 0;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 8px;
+        max-width: 280px;
+        min-width: 180px;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
+        font-size: 0.8rem;
+        line-height: 1.4;
         background-color: var(--color-black);
         color: var(--color-background);
-        padding: 10px;
+        padding: 10px 14px;
+        border-radius: 6px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        opacity: 1;
+        z-index: 2001;
+        pointer-events: none;
+      }
+
+      /* Tooltip arrow */
+      .accredited-chws-button-def::after,
+      .salaried-chws-button-def::after,
+      .accredited-and-salaried-chws-button-def::after,
+      .policy-status-button-def::after,
+      .implementation-evidence-button-def::after {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-bottom-color: var(--color-black);
       }
 
       /* Popup styles */
@@ -2659,75 +2636,51 @@
         border: 1px solid var(--color-primary);
       }
 
-      /* Button hover (definition) design */
-      .buttondefcontainer {
-        position: absolute;
-        top: 25%;
-        left: 0;
-        margin-left: 10px;
-        width: 30%;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: .8rem;
-      }
-
-      .accredited-chws-button-def {
-        display: none;
+      /* Button hover (definition) design - Individual button positioning */
+      .button-with-tooltip {
         position: relative;
-        top: 0;
-        left: 0;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 10px;
+        display: inline-block;
       }
 
-      .salaried-chws-button-def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 10px;
-      }
-
-      .accredited-and-salaried-chws-button-def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 10px;
-      }
-
-      .policy-status-button-def {
-        display: none;
-        position: relative;
-        top: 0;
-        left: 0;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 10px;
-      }
-
+      .accredited-chws-button-def,
+      .salaried-chws-button-def,
+      .accredited-and-salaried-chws-button-def,
+      .policy-status-button-def,
       .implementation-evidence-button-def {
         display: none;
-        position: relative;
-        top: 0;
-        left: 0;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 8px;
+        max-width: 300px;
+        min-width: 200px;
         font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
+        font-size: 0.85rem;
+        line-height: 1.4;
         background-color: var(--color-black);
         color: var(--color-background);
-        padding: 10px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        opacity: 1;
+        z-index: 2001;
+        pointer-events: none;
+      }
+
+      /* Tooltip arrow */
+      .accredited-chws-button-def::after,
+      .salaried-chws-button-def::after,
+      .accredited-and-salaried-chws-button-def::after,
+      .policy-status-button-def::after,
+      .implementation-evidence-button-def::after {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 6px solid transparent;
+        border-bottom-color: var(--color-black);
       }
 
       /* Popup styles */
@@ -2873,11 +2826,38 @@
     <!-- Button container -->
     <div id="buttoncontainer" class="buttoncontainer">
       <div class="button-row">
-        <button type="button" id="accredited-chws-button" class="button">ACCREDITED CHWS</button>
-        <button type="button" id="salaried-chws-button" class="button">SALARIED CHWS</button>
-        <button type="button" id="accredited-and-salaried-chws-button" class="button">ACCREDITED & SALARIED CHWS</button>
-        <button type="button" id="policy-status-button" class="button">POLICY STATUS</button>
-        <button type="button" id="implementation-evidence-button" class="button">IMPLEMENTATION EVIDENCE</button>
+        <div class="button-with-tooltip">
+          <button type="button" id="accredited-chws-button" class="button">ACCREDITED CHWS</button>
+          <div class="accredited-chws-button-def">Does the country policy document explicitly recognize
+            roles, qualifications, and competencies for CHWs?
+          </div>
+        </div>
+        <div class="button-with-tooltip">
+          <button type="button" id="salaried-chws-button" class="button">SALARIED CHWS</button>
+          <div class="salaried-chws-button-def">Does the policy document provide for CHWs to be compensated
+            through government wage bills? (Policies that stipulate CHW remuneration via performance-based
+            incentives, stipends, and/or non-financial incentives like gumboots, t-shirts, soap, and
+            batteries were coded as "No".)
+          </div>
+        </div>
+        <div class="button-with-tooltip">
+          <button type="button" id="accredited-and-salaried-chws-button" class="button">ACCREDITED & SALARIED CHWS</button>
+          <div class="accredited-and-salaried-chws-button-def">For purposes of
+            this dashboard, we focus on two of the eight best practices that are indicative of formal,
+            fulfilling, and dignified labor conditions and for which sufficient data exists in policy
+            documents: accreditation and compensation.
+          </div>
+        </div>
+        <div class="button-with-tooltip">
+          <button type="button" id="policy-status-button" class="button">POLICY STATUS</button>
+          <div class="policy-status-button-def">What is the status of the country's policy? (Policy expiration date details are updated every 6 months). 
+          </div>
+        </div>
+        <div class="button-with-tooltip">
+          <button type="button" id="implementation-evidence-button" class="button">IMPLEMENTATION EVIDENCE</button>
+          <div class="implementation-evidence-button-def">Is there any evidence of CHW policy implementation, as measured by the presence of any one of five proxy indicators?
+          </div>
+        </div>
       </div>
       
       <!-- Search bar container -->
@@ -2885,27 +2865,7 @@
         <input type="text" id="country-search" placeholder="Search for a country..." class="search-input">
         <div id="search-results" class="search-results"></div>
       </div>
-    </div>
 
-    <!-- Button definitions -->
-    <div class="buttondefcontainer">
-      <div class="accredited-and-salaried-chws-button-def">For purposes of
-        this dashboard, we focus on two of the eight best practices that are indicative of formal,
-        fulfilling, and dignified labor conditions and for which sufficient data exists in policy
-        documents: accreditation and compensation.
-      </div>
-      <div class="salaried-chws-button-def">Does the policy document provide for CHWs to be compensated
-        through government wage bills? (Policies that stipulate CHW remuneration via performance-based
-        incentives, stipends, and/or non-financial incentives like gumboots, t-shirts, soap, and
-        batteries were coded as “No”.)
-      </div>
-      <div class="accredited-chws-button-def">Does the country policy document explicitly recognize
-        roles, qualifications, and competencies for CHWs?
-      </div>
-      <div class="policy-status-button-def">What is the status of the country's policy? (Policy expiration date details are updated every 6 months). 
-      </div>
-      <div class="implementation-evidence-button-def">Is there any evidence of CHW policy implementation, as measured by the presence of any one of five proxy indicators?
-      </div>
     </div>
 
     <!-- Sidebar -->
@@ -4342,7 +4302,7 @@
 
     });
 
-    // Create hover on buttons with definitions
+    // Create hover on buttons with definitions - Fixed z-index approach
     $("#accredited-chws-button").hover(function () {
       $('.accredited-chws-button-def').show();
     }, function () {
@@ -4350,25 +4310,25 @@
     })
 
     $("#salaried-chws-button").hover(function () {
-      $('.salaried-chws-button-def').show()
+      $('.salaried-chws-button-def').show();
     }, function () {
       $('.salaried-chws-button-def').hide();
     })
 
     $("#accredited-and-salaried-chws-button").hover(function () {
-      $('.accredited-and-salaried-chws-button-def').show()
+      $('.accredited-and-salaried-chws-button-def').show();
     }, function () {
       $('.accredited-and-salaried-chws-button-def').hide();
     })
 
     $("#policy-status-button").hover(function () {
-      $('.policy-status-button-def').show()
+      $('.policy-status-button-def').show();
     }, function () {
       $('.policy-status-button-def').hide();
     })
 
     $("#implementation-evidence-button").hover(function () {
-      $('.implementation-evidence-button-def').show()
+      $('.implementation-evidence-button-def').show();
     }, function () {
       $('.implementation-evidence-button-def').hide();
     })
