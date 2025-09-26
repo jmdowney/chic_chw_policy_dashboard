@@ -340,6 +340,7 @@
         font-size: .45rem;
         box-shadow: var(--shadow-sm);
         flex: 0 1 auto;
+        width: 280px;
         max-width: 60%;
       }
 
@@ -363,6 +364,13 @@
       h4 {
         margin-top: 5px;
         margin-bottom: 5px;
+      }
+
+      #legend-title {
+        word-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+        line-height: 1.2;
       }
 
       .sidebar {
@@ -847,9 +855,18 @@
         color: var(--color-primary);
       }
 
-      /* Button hover (definition) design */
+      /* Button hover (definition) design - Hidden on mobile */
       .buttondefcontainer {
         display: none;
+      }
+
+      /* Hide all tooltips on mobile */
+      .accredited-chws-button-def,
+      .salaried-chws-button-def,
+      .accredited-and-salaried-chws-button-def,
+      .policy-status-button-def,
+      .implementation-evidence-button-def {
+        display: none !important;
       }
 
       /* Popup styles */
@@ -1080,6 +1097,7 @@
         font-size: clamp(0.5rem, 0.4rem + 0.5vw, 1rem);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         flex: 0 1 auto;
+        width: 280px;
         max-width: 60%;
       }
 
@@ -1134,6 +1152,13 @@
       h4 {
         margin-top: 5px;
         margin-bottom: 5px;
+      }
+
+      #legend-title {
+        word-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+        line-height: 1.2;
       }
 
       /* Popup design */
@@ -1996,6 +2021,7 @@
         font-size: clamp(0.5rem, 0.4rem + 0.5vw, 1rem);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         flex: 0 1 auto;
+        width: 280px;
         max-width: 60%;
       }
 
@@ -2050,6 +2076,13 @@
       h4 {
         margin-top: 5px;
         margin-bottom: 5px;
+      }
+
+      #legend-title {
+        word-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+        line-height: 1.2;
       }
 
       /* Popup design */
@@ -4302,36 +4335,39 @@
 
     });
 
-    // Create hover on buttons with definitions - Fixed z-index approach
-    $("#accredited-chws-button").hover(function () {
-      $('.accredited-chws-button-def').show();
-    }, function () {
-      $('.accredited-chws-button-def').hide();
-    })
+    // Create hover on buttons with definitions - Desktop only
+    // Check if device supports hover (desktop/laptop)
+    if (window.matchMedia('(hover: hover)').matches) {
+      $("#accredited-chws-button").hover(function () {
+        $('.accredited-chws-button-def').show();
+      }, function () {
+        $('.accredited-chws-button-def').hide();
+      })
 
-    $("#salaried-chws-button").hover(function () {
-      $('.salaried-chws-button-def').show();
-    }, function () {
-      $('.salaried-chws-button-def').hide();
-    })
+      $("#salaried-chws-button").hover(function () {
+        $('.salaried-chws-button-def').show();
+      }, function () {
+        $('.salaried-chws-button-def').hide();
+      })
 
-    $("#accredited-and-salaried-chws-button").hover(function () {
-      $('.accredited-and-salaried-chws-button-def').show();
-    }, function () {
-      $('.accredited-and-salaried-chws-button-def').hide();
-    })
+      $("#accredited-and-salaried-chws-button").hover(function () {
+        $('.accredited-and-salaried-chws-button-def').show();
+      }, function () {
+        $('.accredited-and-salaried-chws-button-def').hide();
+      })
 
-    $("#policy-status-button").hover(function () {
-      $('.policy-status-button-def').show();
-    }, function () {
-      $('.policy-status-button-def').hide();
-    })
+      $("#policy-status-button").hover(function () {
+        $('.policy-status-button-def').show();
+      }, function () {
+        $('.policy-status-button-def').hide();
+      })
 
-    $("#implementation-evidence-button").hover(function () {
-      $('.implementation-evidence-button-def').show();
-    }, function () {
-      $('.implementation-evidence-button-def').hide();
-    })
+      $("#implementation-evidence-button").hover(function () {
+        $('.implementation-evidence-button-def').show();
+      }, function () {
+        $('.implementation-evidence-button-def').hide();
+      })
+    }
 
     // How to Use Dashboard popup functionality
     $("#how-to-use-button").click(function () {
