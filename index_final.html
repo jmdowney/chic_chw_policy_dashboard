@@ -3368,8 +3368,8 @@
 
     }
 
-    // Else if indicator is policy_status:
-    if (indicatorName == "policy_status") {
+    // Else if indicator is policy status:
+    if (indicatorName == "doc_status") {
 
       // Initialize arrays for all possible values of this indicator
       let activeArray = []
@@ -3555,7 +3555,7 @@
     })
 
     $("#policy-status-button").click(function () {
-      setColorsToMap("policy_status")
+      setColorsToMap("doc_status")
       $('.button').removeClass('active')
       $(this).addClass('active')
     })
@@ -3747,7 +3747,7 @@
 
       // Populate Policy Status Card
       const policyStatusBadge = document.getElementById('policy-status-badge');
-      const policyStatus = countryData.policy_status || 'Data not available';
+      const policyStatus = countryData.doc_status || 'Data not available';
       
       // Remove existing status classes
       policyStatusBadge.classList.remove('out-of-scope', 'data-not-available', 'expired', 'active');
@@ -3776,14 +3776,14 @@
       
       // Populate policy years text
       const policyYearsText = document.getElementById('policy-years-text');
-      policyYearsText.textContent = countryData.policy_years_covered || 'Data not available';
+      policyYearsText.textContent = countryData.doc_years_covered || 'Data not available';
       
       // Handle policy link
       const policyLink = document.getElementById('policy-link');
       const policyLinkContainer = document.getElementById('policy-link-container');
       
-      if (countryData.policy_link && countryData.policy_link !== 'Data not available') {
-        policyLink.href = countryData.policy_link;
+      if (countryData.document_link && countryData.document_link !== 'Data not available') {
+        policyLink.href = countryData.document_link;
         policyLink.textContent = 'View policy document →';
         policyLink.style.display = 'inline';
         policyLink.style.color = '';
@@ -3818,11 +3818,11 @@
     function populateAccreditationSubsections(countryData) {
       // Helper function to create indicator
       function createIndicator(value, indicatorElement, textElement) {
-        if (value === "Yes") {
+        if (value === "Yes" || value === "yes") {
           indicatorElement.className = 'indicator-circle yes';
           indicatorElement.innerHTML = '✓';
           textElement.textContent = 'YES';
-        } else if (value === "No") {
+        } else if (value === "No" || value === "no") {
           indicatorElement.className = 'indicator-circle no';
           indicatorElement.innerHTML = '✗';
           textElement.textContent = 'NO';
@@ -3944,11 +3944,11 @@
     function populatePolicyImplementationSubsections(countryData) {
       // Helper function to create indicator
       function createIndicator(value, indicatorElement, textElement) {
-        if (value === "Yes") {
+        if (value === "Yes" || value === "yes") {
           indicatorElement.className = 'indicator-circle yes';
           indicatorElement.innerHTML = '✓';
           textElement.textContent = 'YES';
-        } else if (value === "No") {
+        } else if (value === "No" || value === "no") {
           indicatorElement.className = 'indicator-circle no';
           indicatorElement.innerHTML = '✗';
           textElement.textContent = 'NO';
