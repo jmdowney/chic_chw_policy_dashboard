@@ -725,6 +725,7 @@
         color: var(--color-primary-light);
         line-height: 1.2;
         padding: 0;
+        margin-bottom: .3em;
       }
 
       .accreditation-subsection-description {
@@ -1549,6 +1550,7 @@
         text-transform: uppercase;
         color: var(--color-primary-light);
         line-height: 1.2;
+        margin-bottom: .4em;
       }
 
       .accreditation-subsection-description {
@@ -2489,6 +2491,7 @@
         text-transform: uppercase;
         color: var(--color-primary-light);
         line-height: 1.2;
+        margin-bottom: .4em;
       }
 
       .accreditation-subsection-description {
@@ -2879,6 +2882,27 @@
       </div>
     </div>
 
+    <!-- Submit for Review popup -->
+    <div id="submit-review-popup" class="popup-overlay">
+      <div class="popup-content">
+        <div class="popup-header">
+          <h3 style="font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.05em;">SUBMIT FOR REVIEW</h3>
+          <button type="button" id="close-submit-review-popup" class="close-button">&times;</button>
+        </div>
+        <div class="popup-body">
+          <p style="margin-bottom: 1.5em; color: var(--color-primary-light); font-size: 0.72rem;">What would you like to submit for review?</p>
+          <div style="display: flex; flex-direction: column; gap: 1em;">
+            <button type="button" id="submit-correction-button" class="buttonsidebar" style="width: 100%; padding: 1em; cursor: pointer; text-transform: uppercase;">
+              correction to dashboard information
+            </button>
+            <button type="button" id="submit-policy-button" class="buttonsidebar" style="width: 100%; padding: 1em; cursor: pointer; text-transform: uppercase;">
+              CHW policy document
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Map container with map inside -->
     <div id="map" class="content-section map">
       <!-- Legend and Download Container -->
@@ -3189,6 +3213,11 @@
             </div>
           </div>
         </div>
+        
+        <!-- Submit for Review Button -->
+        <button type="button" id="submit-review-button" class="buttonsidebar" style="display: none; margin-top: 1.5em; width: 100%; cursor: pointer; text-transform: uppercase;">
+          See something missing? Submit it for review by the CHIC team
+        </button>
         
         <!-- Bottom part of the sidebar -->
       <div id="bottom" class="bottom">
@@ -4215,6 +4244,9 @@
       document.getElementById('policy-implementation-section').querySelector('.accreditation-section-content').style.display = 'none';
       document.getElementById('policy-timeline-section').classList.remove('expanded');
       document.getElementById('policy-timeline-section').querySelector('.accreditation-section-content').style.display = 'none';
+      
+      // Hide submit button (will be shown again when new country is selected)
+      document.getElementById('submit-review-button').style.display = 'none';
     }
 
     // Function to clear all subsections (accreditation and policy implementation)
@@ -4302,6 +4334,9 @@
         document.getElementById('accreditation-section').style.display = 'none';
         document.getElementById('policy-implementation-section').style.display = 'none';
         document.getElementById('policy-timeline-section').style.display = 'none';
+        
+        // Show submit button
+        document.getElementById('submit-review-button').style.display = 'block';
       } else {
         // Country is in scope - show everything
         document.getElementById('out-of-scope-message').style.display = 'none';
@@ -4312,6 +4347,9 @@
         document.getElementById('accreditation-section').style.display = 'block';
         document.getElementById('policy-implementation-section').style.display = 'block';
         document.getElementById('policy-timeline-section').style.display = 'block';
+        
+        // Show submit button
+        document.getElementById('submit-review-button').style.display = 'block';
         
         // Populate CHW cards and policy status
         populateCHWCards(countryData);
@@ -4441,10 +4479,43 @@
       }
     });
 
+    // Submit for Review popup functionality
+    $("#submit-review-button").click(function () {
+      $("#submit-review-popup").css("display", "flex");
+    });
+
+    $("#close-submit-review-popup").click(function () {
+      $("#submit-review-popup").css("display", "none");
+    });
+
+    // Close submit review popup when clicking outside of it
+    $("#submit-review-popup").click(function (e) {
+      if (e.target === this) {
+        $(this).css("display", "none");
+      }
+    });
+
+    // Handle submission button clicks
+    $("#submit-correction-button").click(function () {
+      window.open("https://forms.gle/your-correction-form-link", "_blank");
+    });
+
+    $("#submit-policy-button").click(function () {
+      window.open("https://forms.gle/your-policy-form-link", "_blank");
+    });
+
     // Close popup with Escape key
     $(document).keydown(function (e) {
-      if (e.key === "Escape" && $("#how-to-use-popup").css("display") === "flex") {
-        $("#how-to-use-popup").css("display", "none");
+      if (e.key === "Escape") {
+        if ($("#how-to-use-popup").css("display") === "flex") {
+          $("#how-to-use-popup").css("display", "none");
+        }
+        if ($("#download-popup").css("display") === "flex") {
+          $("#download-popup").css("display", "none");
+        }
+        if ($("#submit-review-popup").css("display") === "flex") {
+          $("#submit-review-popup").css("display", "none");
+        }
       }
     });
 
