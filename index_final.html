@@ -764,6 +764,11 @@
         color: var(--color-light-gray);
       }
 
+      .indicator-circle.na {
+        background-color: var(--color-neutral);
+        color: var(--color-light-gray);
+      }
+
       .indicator-text {
         font-family: var(--font-primary);
         font-size: .45rem;
@@ -1629,6 +1634,11 @@
 
       .indicator-circle.no {
         background-color: var(--color-warning);
+        color: var(--color-light-gray);
+      }
+
+      .indicator-circle.na {
+        background-color: var(--color-neutral);
         color: var(--color-light-gray);
       }
 
@@ -2615,6 +2625,11 @@
         color: var(--color-light-gray);
       }
 
+      .indicator-circle.na {
+        background-color: var(--color-neutral);
+        color: var(--color-light-gray);
+      }
+
       .indicator-text {
         font-family: var(--font-primary);
         font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
@@ -3032,6 +3047,9 @@
             <button type="button" id="submit-policy-button" class="buttonsidebar" style="width: 100%; padding: 1em; cursor: pointer; text-transform: uppercase;">
               CHW policy document
             </button>
+            <button type="button" id="submit-association-button" class="buttonsidebar" style="width: 100%; padding: 1em; cursor: pointer; text-transform: uppercase;">
+              CHW association information
+            </button>
           </div>
         </div>
       </div>
@@ -3079,12 +3097,12 @@
         </div>
         <div class="button-with-tooltip">
           <button type="button" id="policy-status-button" class="button">POLICY STATUS</button>
-          <div class="policy-status-button-def">What is the status of the country's policy? (Policy expiration date details are updated every 6 months). 
+          <div class="policy-status-button-def">What is the status of the country's policy?
           </div>
         </div>
         <div class="button-with-tooltip">
           <button type="button" id="implementation-evidence-button" class="button">IMPLEMENTATION EVIDENCE</button>
-          <div class="implementation-evidence-button-def">Is there any evidence of CHW policy implementation, as measured by the presence of any one of five proxy indicators?
+          <div class="implementation-evidence-button-def">Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?
           </div>
         </div>
       </div>
@@ -3461,7 +3479,7 @@
         if (row[indicatorName] == "Neither") {
           neitherArray.push(row.ISO_A3)
         }
-        if (row[indicatorName] == "Data not available") {
+        if (row[indicatorName] == "No document available" || row[indicatorName] == "Not specified in documents reviewed") {
           naArray.push(row.ISO_A3)
         }
       })
@@ -3479,7 +3497,7 @@
       // Set legend title, colors and values manually
       $('#legend-title').text("Is at least one CHW group salaried & accredited?")
       const legendColors = ["#9272d9", "#20bdc5", "#F36744", "#999999", "#dbdbdb"]
-      const legendValues = ["Both", "Only salaried or only accredited", "Neither", "Data not available", "Out of scope"]
+      const legendValues = ["Both", "Only salaried or only accredited", "Neither", "No document available or not specified in documents reviewed", "Out of scope"]
 
       // Now build legend
       buildLegend(legendColors, legendValues)
@@ -3502,7 +3520,7 @@
         if (row[indicatorName] == "No") {
           nArray.push(row.ISO_A3)
         }
-        if (row[indicatorName] == "Data not available") {
+        if (row[indicatorName] == "No document available" || row[indicatorName] == "Not specified in documents reviewed") {
           naArray.push(row.ISO_A3)
         }
       })
@@ -3519,7 +3537,7 @@
       // Set legend title, colors and values manually
       $('#legend-title').text("Is at least one CHW group accredited?")
       var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
-      var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
+      var legendValues = ["Yes", "No", "No document available or not specified in documents reviewed", "Out of scope"]
 
       // Now build legend
       buildLegend(legendColors, legendValues)
@@ -3542,7 +3560,7 @@
         if (row[indicatorName] == "No") {
           nArray.push(row.ISO_A3)
         }
-        if (row[indicatorName] == "Data not available") {
+        if (row[indicatorName] == "No document available" || row[indicatorName] == "Not specified in documents reviewed") {
           naArray.push(row.ISO_A3)
         }
       })
@@ -3559,7 +3577,7 @@
       // Set legend title, colors and values manually
       $('#legend-title').text("Is at least one CHW group salaried?")
       var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
-      var legendValues = ["Yes", "No", "Data not available", "Out of scope"]
+      var legendValues = ["Yes", "No", "No document available or not specified in documents reviewed", "Out of scope"]
 
       // Now build legend
       buildLegend(legendColors, legendValues)
@@ -3580,13 +3598,13 @@
         if (row[indicatorName] == "Active") {
           activeArray.push(row.ISO_A3)
         }
-        if (row[indicatorName] == "Expiring within 18 months") {
+        if (row[indicatorName] == "Expiring within 2 years") {
           expiringArray.push(row.ISO_A3)
         }
         if (row[indicatorName] == "Expired") {
           expiredArray.push(row.ISO_A3)
         }
-        if (row[indicatorName] == "Data not available") {
+        if (row[indicatorName] == "No document available") {
           naArray.push(row.ISO_A3)
         }
       })
@@ -3604,7 +3622,7 @@
       // Set legend title, colors and values manually
       $('#legend-title').text("What is the country policy's status?")
       const legendColors = ["#9272d9", "#20bdc5", "#F36744", "#999999", "#dbdbdb"]
-      const legendValues = ["Active", "Expiring within 18 months", "Expired", "Data not available", "Out of scope"]
+      const legendValues = ["Active", "Expiring within 2 years", "Expired", "No document available", "Out of scope"]
 
       // Now build legend
       buildLegend(legendColors, legendValues)
@@ -3627,7 +3645,7 @@
         if (row[indicatorName] == "No") {
           nArray.push(row.ISO_A3)
         }
-        if (row[indicatorName] == "Data not available") {
+        if (row[indicatorName] == "No document available" || row[indicatorName] == "Not specified in documents reviewed") {
           naArray.push(row.ISO_A3)
         }
       })
@@ -3642,9 +3660,9 @@
       ]
 
       // Set legend title, colors and values manually
-      $('#legend-title').text("Is there any evidence of CHW policy implementation, as measured by the presence of any one of five proxy indicators?")
+      $('#legend-title').text("Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?")
       const legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
-      const legendValues = ["Yes", "No", "Data not available", "Out of scope"]
+      const legendValues = ["Yes", "No", "No document available or not specified in documents reviewed", "Out of scope"]
 
       // Now build legend
       buildLegend(legendColors, legendValues)
@@ -3706,8 +3724,9 @@
 
     // Fetch CSV data - this is where CHIC team will update data quarterly
     // WORKING VERSION: const sheetId = '2PACX-1vRW71f12hsPrtlEglo73Xcit8TgFw1WeyU4HXWNV3M-IasQMjvzhS3zWjlFTgm4NHFs_1KJjHaSPLCZ'
-    // NEW BQ VERSION:
-    const sheetId = '2PACX-1vSKosFU0tUSzF1esBHsppzU9fcGVytdbUSsp9jE48i4PXZP6hrq-KPf3Bhom5rly2Kdseawyiwm3PQj'
+    // NEW BQ VERSION: const sheetId = '2PACX-1vSKosFU0tUSzF1esBHsppzU9fcGVytdbUSsp9jE48i4PXZP6hrq-KPf3Bhom5rly2Kdseawyiwm3PQj'
+    // NEW SNOWFLAKE VERSION:
+    const sheetId = '2PACX-1vQywgpExVZxfgBYhfqWB6DdBJc2jfC-2bDQJ3g0N8M-YGP5Jn1rkAO2rp2tRZob2sTmObPucw0bIBlS'
     // REAL SPREADSHEET const sheetId = '2PACX-1vQan4RTDeRovJT7VqPhh15B6GLNhvxVGTILpyjOIfbfEEf2Sd0Ky5xpPsRlLS9_9GmHeWVIwNcIU5X8'
     fetch(`https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`)
       .catch(err => {})
@@ -3866,7 +3885,7 @@
       });
       
       // Check if country is out of scope
-      if (countryData.countdown_country === "No") {
+      if (countryData.countdown_country === "FALSE") {
         document.getElementById('chw-cards-container').style.display = 'none';
         document.getElementById('out-of-scope-message').style.display = 'block';
         return;
@@ -3878,7 +3897,7 @@
 
       // Helper function to check if data is available
       function isDataAvailable(value) {
-        return value && value !== "Data not available" && value !== "";
+        return value && value !== "Not specified in documents reviewed" && value !== "No document available" && value !== "";
       }
 
       // Helper function to create list items from semicolon-separated string
@@ -3900,7 +3919,7 @@
             dataNotAvailableSpan.className = 'data-not-available-text';
             dataNotAvailableSpan.style.fontWeight = 'normal';
             dataNotAvailableSpan.style.fontStyle = 'italic';
-            dataNotAvailableSpan.textContent = ' Data not available';
+            dataNotAvailableSpan.textContent = ' No document available or not specified in documents reviewed';
             title.appendChild(dataNotAvailableSpan);
           }
         }
@@ -3914,7 +3933,7 @@
         totalGroupsNumber.textContent = countryData.group_count;
         totalGroupsNumber.className = 'chw-card-number';
       } else {
-        totalGroupsNumber.textContent = 'Data not available';
+        totalGroupsNumber.textContent = 'No document available or not specified in documents reviewed';
         totalGroupsNumber.className = 'chw-card-number chw-card-number-not-available';
       }
       createListItems(countryData.group_names, totalGroupsList);
@@ -3927,7 +3946,7 @@
         salariedAccreditedNumber.textContent = countryData.num_groups_salaried_accredited;
         salariedAccreditedNumber.className = 'chw-card-number';
       } else {
-        salariedAccreditedNumber.textContent = 'Data not available';
+        salariedAccreditedNumber.textContent = 'No document available or not specified in documents reviewed';
         salariedAccreditedNumber.className = 'chw-card-number chw-card-number-not-available';
       }
       createListItems(countryData.group_names_salaried_accredited, salariedAccreditedList);
@@ -3936,18 +3955,45 @@
       const associationsNumber = document.getElementById('chw-associations-number');
       const associationsList = document.getElementById('chw-associations-list');
       
-      if (isDataAvailable(countryData.count_chw_associations)) {
+      if (isDataAvailable(countryData.count_chw_associations) && parseInt(countryData.count_chw_associations) > 0) {
         associationsNumber.textContent = countryData.count_chw_associations;
         associationsNumber.className = 'chw-card-number';
-      } else {
-        associationsNumber.textContent = 'Data not available';
-        associationsNumber.className = 'chw-card-number chw-card-number-not-available';
+        createListItems(countryData.chw_association_names, associationsList);
+      } else if (countryData.count_chw_associations === "0" || !isDataAvailable(countryData.count_chw_associations)) {
+        // Show count as 0 or "No document available"
+        if (countryData.count_chw_associations === "0") {
+          associationsNumber.textContent = countryData.count_chw_associations;
+          associationsNumber.className = 'chw-card-number';
+        } else {
+          associationsNumber.textContent = 'No document available or not specified in documents reviewed';
+          associationsNumber.className = 'chw-card-number chw-card-number-not-available';
+        }
+        
+        // Clear the list and add custom message with link
+        associationsList.innerHTML = '';
+        const messageP = document.createElement('p');
+        messageP.style.fontStyle = 'italic';
+        messageP.style.padding = '0.5em 0';
+        messageP.style.color = '#000000';
+        messageP.innerHTML = 'CHIC is not aware of any CHW associations in this country. If you know of one, please <a href="#" id="submit-association-link" style="color: #4F2049; text-decoration: underline;">submit information here</a>.';
+        associationsList.appendChild(messageP);
+        
+        // Add click event to the link
+        setTimeout(() => {
+          const link = document.getElementById('submit-association-link');
+          if (link) {
+            link.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              window.open('https://forms.gle/your-association-form-link', '_blank');
+            });
+          }
+        }, 0);
       }
-      createListItems(countryData.chw_association_names, associationsList);
 
       // Populate Policy Status Card
       const policyStatusBadge = document.getElementById('policy-status-badge');
-      const policyStatus = countryData.doc_status || 'Data not available';
+      const policyStatus = countryData.doc_status || 'No document available';
       
       // Remove existing status classes
       policyStatusBadge.classList.remove('out-of-scope', 'data-not-available', 'expired', 'active');
@@ -3956,10 +4002,10 @@
       if (policyStatus === 'Out of Scope') {
         policyStatusBadge.classList.add('out-of-scope');
         policyStatusBadge.textContent = 'OUT OF SCOPE';
-      } else if (policyStatus === 'Data not available') {
+      } else if (policyStatus === 'No document available') {
         policyStatusBadge.classList.add('data-not-available');
-        policyStatusBadge.textContent = 'DATA NOT AVAILABLE';
-      } else if (policyStatus === 'Expired' || policyStatus === 'Expiring within 18 months') {
+        policyStatusBadge.textContent = 'NO DOCUMENT AVAILABLE';
+      } else if (policyStatus === 'Expired' || policyStatus === 'Expiring within 2 years') {
         policyStatusBadge.classList.add('expired');
         policyStatusBadge.textContent = policyStatus.toUpperCase();
       } else if (policyStatus === 'Active') {
@@ -3972,17 +4018,17 @@
       
       // Populate implementation text
       const implementationText = document.getElementById('policy-implementation-text');
-      implementationText.textContent = countryData.implementation_combined || 'Data not available';
+      implementationText.textContent = countryData.implementation_combined || 'Unknown';
       
       // Populate policy years text
       const policyYearsText = document.getElementById('policy-years-text');
-      policyYearsText.textContent = countryData.doc_years_covered || 'Data not available';
+      policyYearsText.textContent = countryData.doc_years_covered || 'No document available';
       
       // Handle policy link
       const policyLink = document.getElementById('policy-link');
       const policyLinkContainer = document.getElementById('policy-link-container');
       
-      if (countryData.document_link && countryData.document_link !== 'Data not available') {
+      if (countryData.document_link && countryData.document_link !== 'No document available') {
         policyLink.href = countryData.document_link;
         policyLink.textContent = 'View policy document →';
         policyLink.style.display = 'inline';
@@ -4017,6 +4063,34 @@
       populateAISummary(countryData);
     }
 
+    // Helper function to format quote text with line breaks and bullets
+    function formatQuoteText(text) {
+      if (!text) return text;
+      
+      // Replace line breaks (from Cmd+Enter in Google Sheets) with <br> tags
+      let formatted = text.replace(/\n/g, '<br>');
+      
+      // Handle bullet points (lines starting with hyphen)
+      // Split by <br>, check each line, and rebuild
+      let lines = formatted.split('<br>');
+      lines = lines.map(line => {
+        let trimmedLine = line.trim();
+        // If line starts with hyphen, replace with bullet and add spacing
+        if (trimmedLine.startsWith('- ')) {
+          // Replace the leading "- " with bullet character
+          let bulletLine = trimmedLine.replace(/^-\s*/, '• ');
+          return '<span style="display: block; margin-left: 1em;">' + bulletLine + '</span>';
+        } else if (trimmedLine.startsWith('-')) {
+          // Handle case where there's no space after hyphen
+          let bulletLine = trimmedLine.replace(/^-/, '• ');
+          return '<span style="display: block; margin-left: 1em;">' + bulletLine + '</span>';
+        }
+        return line;
+      });
+      
+      return lines.join('<br>');
+    }
+
     // Function to populate accreditation subsections
     function populateAccreditationSubsections(countryData) {
       // Helper function to create indicator
@@ -4030,26 +4104,42 @@
           indicatorElement.innerHTML = '✗';
           textElement.textContent = 'NO';
         } else {
-          indicatorElement.className = 'indicator-circle no';
+          indicatorElement.className = 'indicator-circle na';
           indicatorElement.innerHTML = '?';
           textElement.textContent = 'N/A';
         }
       }
 
       // Helper function to set description with quotes
-      function setDescription(descriptionElement, value) {
-        if (value && value !== "Data not available" && value !== "") {
-          descriptionElement.textContent = `"${value}"`;
+      function setDescription(descriptionElement, indicatorValue, quoteValue, sourceText) {
+        // Check if indicator is "No" and quote/source are blank
+        if ((indicatorValue === "No" || indicatorValue === "no") && 
+            (!quoteValue || quoteValue === "" || quoteValue === "No document available" || quoteValue === "Not specified in documents reviewed") &&
+            (!sourceText || sourceText === "" || sourceText === "No document available" || sourceText === "Not specified in documents reviewed")) {
+          descriptionElement.textContent = 'No evidence of this indicator was found in the documents reviewed';
+        } 
+        // Check if indicator is N/A (not specified or no document available)
+        else if (indicatorValue !== "Yes" && indicatorValue !== "yes" && indicatorValue !== "No" && indicatorValue !== "no") {
+          descriptionElement.textContent = 'No document available or not specified in documents reviewed';
+        }
+        // Otherwise show the quote with formatting
+        else if (quoteValue && quoteValue !== "No document available" && quoteValue !== "Not specified in documents reviewed" && quoteValue !== "") {
+          descriptionElement.innerHTML = formatQuoteText(quoteValue);
         } else {
-          descriptionElement.textContent = 'Data not available';
+          descriptionElement.textContent = 'No document available or not specified in documents reviewed';
         }
       }
 
       // Helper function to set source link
-      function setSource(sourceElement, sourceText, sourceLink) {
-        if (sourceText && sourceText !== "Data not available" && sourceText !== "" && 
-            sourceLink && sourceLink !== "Data not available" && sourceLink !== "") {
-          sourceElement.innerHTML = `<a href="${sourceLink}" target="_blank">${sourceText}</a>`;
+      function setSource(sourceElement, sourceText, sourceLink, pageNumber) {
+        if (sourceText && sourceText !== "No document available" && sourceText !== "Not specified in documents reviewed" && sourceText !== "" && 
+            sourceLink && sourceLink !== "No document available" && sourceLink !== "Not specified in documents reviewed" && sourceLink !== "") {
+          // Format source text with page number if available
+          let displayText = sourceText;
+          if (pageNumber && pageNumber !== "" && pageNumber !== "No document available" && pageNumber !== "Not specified in documents reviewed") {
+            displayText = `${sourceText} (${pageNumber})`;
+          }
+          sourceElement.innerHTML = `<a href="${sourceLink}" target="_blank">${displayText}</a>`;
           // Add click event listener to prevent event bubbling
           const link = sourceElement.querySelector('a');
           if (link) {
@@ -4064,82 +4154,97 @@
 
       // Accreditation (Column Z for yes/no, Column AA for description)
       createIndicator(
-        countryData.accreditation_policy || 'Data not available',
+        countryData.accreditation_policy || 'No document available or not specified in documents reviewed',
         document.getElementById('accreditation-indicator'),
         document.getElementById('accreditation-text')
       );
       setDescription(
         document.getElementById('accreditation-description'),
-        countryData.accreditation_quote
+        countryData.accreditation_policy,
+        countryData.accreditation_quote,
+        countryData.accreditation_quote_source
       );
       setSource(
         document.getElementById('accreditation-source'),
         countryData.accreditation_quote_source,
-        countryData.accreditation_quote_source_link
+        countryData.accreditation_quote_source_link,
+        countryData.accreditation_quote_page
       );
 
       // Salary (Column AD for yes/no, Column AE for description)
       createIndicator(
-        countryData.salary_policy || 'Data not available',
+        countryData.salary_policy || 'No document available or not specified in documents reviewed',
         document.getElementById('salary-indicator'),
         document.getElementById('salary-text')
       );
       setDescription(
         document.getElementById('salary-description'),
-        countryData.salary_quote
+        countryData.salary_policy,
+        countryData.salary_quote,
+        countryData.salary_quote_source
       );
       setSource(
         document.getElementById('salary-source'),
         countryData.salary_quote_source,
-        countryData.salary_quote_source_link
+        countryData.salary_quote_source_link,
+        countryData.salaried_quote_page
       );
 
       // Supervision (Column AH for yes/no, Column AI for description)
       createIndicator(
-        countryData.supervision_policy || 'Data not available',
+        countryData.supervision_policy || 'No document available or not specified in documents reviewed',
         document.getElementById('supervision-indicator'),
         document.getElementById('supervision-text')
       );
       setDescription(
         document.getElementById('supervision-description'),
-        countryData.supervision_quote
+        countryData.supervision_policy,
+        countryData.supervision_quote,
+        countryData.supervision_quote_source
       );
       setSource(
         document.getElementById('supervision-source'),
         countryData.supervision_quote_source,
-        countryData.supervision_quote_source_link
+        countryData.supervision_quote_source_link,
+        countryData.supervision_quote_page
       );
 
       // Skills (Column AL for yes/no, Column AM for description)
       createIndicator(
-        countryData.skills_policy || 'Data not available',
+        countryData.skills_policy || 'No document available or not specified in documents reviewed',
         document.getElementById('skills-indicator'),
         document.getElementById('skills-text')
       );
       setDescription(
         document.getElementById('skills-description'),
-        countryData.skills_quote
+        countryData.skills_policy,
+        countryData.skills_quote,
+        countryData.skills_quote_source
       );
       setSource(
         document.getElementById('skills-source'),
         countryData.skills_quote_source,
-        countryData.skills_quote_source_link
+        countryData.skills_quote_source_link,
+        countryData.skills_quote_page
       );
 
       // Supplies (Column AP for yes/no, Column AQ for description)
       createIndicator(
-        countryData.supplies_policy || 'Data not available',
+        countryData.supplies_policy || 'No document available or not specified in documents reviewed',
         document.getElementById('supplies-indicator'),
         document.getElementById('supplies-text')
       );
       setDescription(
         document.getElementById('supplies-description'),
-        countryData.supplies_quote
+        countryData.supplies_policy,
+        countryData.supplies_quote,
+        countryData.supplies_quote_source
       );
       setSource(
         document.getElementById('supplies-source'),
         countryData.supplies_quote_source,
-        countryData.supplies_quote_source_link
+        countryData.supplies_quote_source_link,
+        countryData.supplies_quote_page
       );
     }
 
@@ -4156,26 +4261,42 @@
           indicatorElement.innerHTML = '✗';
           textElement.textContent = 'NO';
         } else {
-          indicatorElement.className = 'indicator-circle no';
+          indicatorElement.className = 'indicator-circle na';
           indicatorElement.innerHTML = '?';
           textElement.textContent = 'N/A';
         }
       }
 
       // Helper function to set description with quotes
-      function setDescription(descriptionElement, value) {
-        if (value && value !== "Data not available" && value !== "") {
-          descriptionElement.textContent = `"${value}"`;
+      function setDescription(descriptionElement, indicatorValue, quoteValue, sourceText) {
+        // Check if indicator is "No" and quote/source are blank
+        if ((indicatorValue === "No" || indicatorValue === "no") && 
+            (!quoteValue || quoteValue === "" || quoteValue === "No document available" || quoteValue === "Not specified in documents reviewed") &&
+            (!sourceText || sourceText === "" || sourceText === "No document available" || sourceText === "Not specified in documents reviewed")) {
+          descriptionElement.textContent = 'No evidence of this indicator was found in the documents reviewed';
+        } 
+        // Check if indicator is N/A (not specified or no document available)
+        else if (indicatorValue !== "Yes" && indicatorValue !== "yes" && indicatorValue !== "No" && indicatorValue !== "no") {
+          descriptionElement.textContent = 'No document available or not specified in documents reviewed';
+        }
+        // Otherwise show the quote with formatting
+        else if (quoteValue && quoteValue !== "No document available" && quoteValue !== "Not specified in documents reviewed" && quoteValue !== "") {
+          descriptionElement.innerHTML = formatQuoteText(quoteValue);
         } else {
-          descriptionElement.textContent = 'Data not available';
+          descriptionElement.textContent = 'No document available or not specified in documents reviewed';
         }
       }
 
       // Helper function to set source link
-      function setSource(sourceElement, sourceText, sourceLink) {
-        if (sourceText && sourceText !== "Data not available" && sourceText !== "" && 
-            sourceLink && sourceLink !== "Data not available" && sourceLink !== "") {
-          sourceElement.innerHTML = `<a href="${sourceLink}" target="_blank">${sourceText}</a>`;
+      function setSource(sourceElement, sourceText, sourceLink, pageNumber) {
+        if (sourceText && sourceText !== "No document available" && sourceText !== "Not specified in documents reviewed" && sourceText !== "" && 
+            sourceLink && sourceLink !== "No document available" && sourceLink !== "Not specified in documents reviewed" && sourceLink !== "") {
+          // Format source text with page number if available
+          let displayText = sourceText;
+          if (pageNumber && pageNumber !== "" && pageNumber !== "No document available" && pageNumber !== "Not specified in documents reviewed") {
+            displayText = `${sourceText} (${pageNumber})`;
+          }
+          sourceElement.innerHTML = `<a href="${sourceLink}" target="_blank">${displayText}</a>`;
           // Add click event listener to prevent event bubbling
           const link = sourceElement.querySelector('a');
           if (link) {
@@ -4190,131 +4311,157 @@
 
       // Domestic Financing Commitment
       createIndicator(
-        countryData.domestic_financing_commitment || 'Data not available',
+        countryData.domestic_financing_commitment || 'No document available or not specified in documents reviewed',
         document.getElementById('domestic-financing-commitment-indicator'),
         document.getElementById('domestic-financing-commitment-text')
       );
       setDescription(
         document.getElementById('domestic-financing-commitment-description'),
-        countryData.domestic_financing_commitment_quote
+        countryData.domestic_financing_commitment,
+        countryData.domestic_financing_commitment_quote,
+        countryData.domestic_financing_commitment_quote_source
       );
       setSource(
         document.getElementById('domestic-financing-commitment-source'),
         countryData.domestic_financing_commitment_quote_source,
-        countryData.domestic_financing_commitment_quote_source_link
+        countryData.domestic_financing_commitment_quote_source_link,
+        countryData.domestic_financing_commitment_quote_page
       );
 
       // CHW Budget Line Item
       createIndicator(
-        countryData.chw_budget_line_item || 'Data not available',
+        countryData.chw_budget_line_item || 'No document available or not specified in documents reviewed',
         document.getElementById('chw-budget-line-item-indicator'),
         document.getElementById('chw-budget-line-item-text')
       );
       setDescription(
         document.getElementById('chw-budget-line-item-description'),
-        countryData.chw_budget_line_item_quote
+        countryData.chw_budget_line_item,
+        countryData.chw_budget_line_item_quote,
+        countryData.chw_budget_line_item_quote_source
       );
       setSource(
         document.getElementById('chw-budget-line-item-source'),
         countryData.chw_budget_line_item_quote_source,
-        countryData.chw_budget_line_item_quote_source_link
+        countryData.chw_budget_line_item_quote_source_link,
+        countryData.chw_budget_line_item_quote_page
       );
 
       // Data Systems / Feedback Loops
       createIndicator(
-        countryData.data_systems || 'Data not available',
+        countryData.data_systems || 'No document available or not specified in documents reviewed',
         document.getElementById('data-systems-indicator'),
         document.getElementById('data-systems-text')
       );
       setDescription(
         document.getElementById('data-systems-description'),
-        countryData.data_systems_quote
+        countryData.data_systems,
+        countryData.data_systems_quote,
+        countryData.data_systems_quote_source
       );
       setSource(
         document.getElementById('data-systems-source'),
         countryData.data_systems_quote_source,
-        countryData.data_systems_quote_source_link
+        countryData.data_systems_quote_source_link,
+        countryData.data_systems_quote_page
       );
 
       // MERL / M&E Framework
       createIndicator(
-        countryData.merl || 'Data not available',
+        countryData.merl || 'No document available or not specified in documents reviewed',
         document.getElementById('merl-indicator'),
         document.getElementById('merl-text')
       );
       setDescription(
         document.getElementById('merl-description'),
-        countryData.merl_quote
+        countryData.merl,
+        countryData.merl_quote,
+        countryData.merl_quote_source
       );
       setSource(
         document.getElementById('merl-source'),
         countryData.merl_quote_source,
-        countryData.merl_quote_source_link
+        countryData.merl_quote_source_link,
+        countryData.merl_quote_page
       );
 
       // CHW Registry
       createIndicator(
-        countryData.chw_registry || 'Data not available',
+        countryData.chw_registry || 'No document available or not specified in documents reviewed',
         document.getElementById('chw-registry-indicator'),
         document.getElementById('chw-registry-text')
       );
       setDescription(
         document.getElementById('chw-registry-description'),
-        countryData.chw_registry_quote
+        countryData.chw_registry,
+        countryData.chw_registry_quote,
+        countryData.chw_registry_quote_source
       );
       setSource(
         document.getElementById('chw-registry-source'),
         countryData.chw_registry_quote_source,
-        countryData.chw_registry_quote_source_link
+        countryData.chw_registry_quote_source_link,
+        countryData.chw_registry_quote_page
       );
 
       // Costed Documentation
       createIndicator(
-        countryData.costed || 'Data not available',
+        countryData.costed || 'No document available or not specified in documents reviewed',
         document.getElementById('costed-documentation-indicator'),
         document.getElementById('costed-documentation-text')
       );
       setDescription(
         document.getElementById('costed-documentation-description'),
-        countryData.costed_quote
+        countryData.costed,
+        countryData.costed_quote,
+        countryData.costed_quote_source
       );
       setSource(
         document.getElementById('costed-documentation-source'),
         countryData.costed_quote_source,
-        countryData.costed_quote_source_link
+        countryData.costed_quote_source_link,
+        countryData.costed_quote_page
       );
 
       // Operational Materials
       createIndicator(
-        countryData.operational || 'Data not available',
+        countryData.operational || 'No document available or not specified in documents reviewed',
         document.getElementById('operational-materials-indicator'),
         document.getElementById('operational-materials-text')
       );
       setDescription(
         document.getElementById('operational-materials-description'),
-        countryData.operational_quote
+        countryData.operational,
+        countryData.operational_quote,
+        countryData.operational_quote_source
       );
       setSource(
         document.getElementById('operational-materials-source'),
         countryData.operational_quote_source,
-        countryData.operational_quote_source_link
+        countryData.operational_quote_source_link,
+        countryData.operational_quote_page
       );
     }
 
     // Function to populate policy timeline
     function populatePolicyTimeline(countryData) {
+      // Helper function to check if data is available
+      function hasData(value) {
+        return value && value !== "No document available" && value !== "Not specified in documents reviewed" && value !== "";
+      }
+      
       // Helper function to set timeline milestone
       function setTimelineMilestone(yearElement, milestoneElement, year, milestoneText, milestoneLink) {
         // Set year
-        if (year && year !== "Data not available" && year !== "") {
+        if (hasData(year)) {
           yearElement.textContent = year;
         } else {
           yearElement.textContent = '';
         }
 
         // Set milestone text and link
-        if (milestoneText && milestoneText !== "Data not available" && milestoneText !== "") {
-          if (milestoneLink && milestoneLink !== "Data not available" && milestoneLink !== "") {
+        if (hasData(milestoneText)) {
+          if (hasData(milestoneLink)) {
             milestoneElement.innerHTML = `<a href="${milestoneLink}" target="_blank">${milestoneText}</a>`;
             // Add click event listener to prevent event bubbling
             const link = milestoneElement.querySelector('a');
@@ -4331,32 +4478,51 @@
         }
       }
 
-      // Timeline Point 1
-      setTimelineMilestone(
-        document.getElementById('timeline-year-1'),
-        document.getElementById('timeline-milestone-1'),
-        countryData.policy_timeline_year_1,
-        countryData.policy_timeline_milestone_1,
-        countryData.policy_timeline_milestone_1_link
-      );
+      // Check if any milestone data exists
+      const hasMilestone1 = hasData(countryData.policy_timeline_milestone_1);
+      const hasMilestone2 = hasData(countryData.policy_timeline_milestone_2);
+      const hasMilestone3 = hasData(countryData.policy_timeline_milestone_3);
+      const hasAnyMilestones = hasMilestone1 || hasMilestone2 || hasMilestone3;
+      
+      const timelineSection = document.getElementById('policy-timeline-section');
+      
+      if (hasAnyMilestones) {
+        // Timeline Point 1
+        setTimelineMilestone(
+          document.getElementById('timeline-year-1'),
+          document.getElementById('timeline-milestone-1'),
+          countryData.policy_timeline_year_1,
+          countryData.policy_timeline_milestone_1,
+          countryData.policy_timeline_milestone_1_link
+        );
 
-      // Timeline Point 2
-      setTimelineMilestone(
-        document.getElementById('timeline-year-2'),
-        document.getElementById('timeline-milestone-2'),
-        countryData.policy_timeline_year_2,
-        countryData.policy_timeline_milestone_2,
-        countryData.policy_timeline_milestone_2_link
-      );
+        // Timeline Point 2
+        setTimelineMilestone(
+          document.getElementById('timeline-year-2'),
+          document.getElementById('timeline-milestone-2'),
+          countryData.policy_timeline_year_2,
+          countryData.policy_timeline_milestone_2,
+          countryData.policy_timeline_milestone_2_link
+        );
 
-      // Timeline Point 3
-      setTimelineMilestone(
-        document.getElementById('timeline-year-3'),
-        document.getElementById('timeline-milestone-3'),
-        countryData.policy_timeline_year_3,
-        countryData.policy_timeline_milestone_3,
-        countryData.policy_timeline_milestone_3_link
-      );
+        // Timeline Point 3
+        setTimelineMilestone(
+          document.getElementById('timeline-year-3'),
+          document.getElementById('timeline-milestone-3'),
+          countryData.policy_timeline_year_3,
+          countryData.policy_timeline_milestone_3,
+          countryData.policy_timeline_milestone_3_link
+        );
+        
+        if (timelineSection) {
+          timelineSection.style.display = 'block';
+        }
+      } else {
+        // Hide the timeline section if no milestone data exists
+        if (timelineSection) {
+          timelineSection.style.display = 'none';
+        }
+      }
     }
 
     // Function to populate AI summary
@@ -4365,9 +4531,13 @@
       const summarySection = document.getElementById('ai-summary-section');
       
       if (summaryElement && summarySection) {
-        // Check if summary data is available
-        if (countryData.summary && countryData.summary !== "Data not available" && countryData.summary !== "") {
-          summaryElement.textContent = countryData.summary;
+        // Check if document is available and summary data exists
+        if (countryData.doc_status !== "No document available" && 
+            countryData.ai_summary_sentences && 
+            countryData.ai_summary_sentences !== "No document available" && 
+            countryData.ai_summary_sentences !== "Not specified in documents reviewed" && 
+            countryData.ai_summary_sentences !== "") {
+          summaryElement.innerHTML = formatQuoteText(countryData.ai_summary_sentences);
           summarySection.style.display = 'block';
         } else {
           summarySection.style.display = 'none';
@@ -4552,7 +4722,7 @@
 
     // Function to populate the entire sidebar
     function populateSidebar(countryData) {
-      if (countryData.countdown_country === "No") {
+      if (countryData.countdown_country === "FALSE") {
         // Country is out of scope - show only out of scope message
         document.getElementById('out-of-scope-message').style.display = 'block';
         document.getElementById('out-of-scope-message').textContent = "This country is not a Countdown to 2030 country, so it is out of scope for this dashboard.";
@@ -4732,6 +4902,10 @@
 
     $("#submit-policy-button").click(function () {
       window.open("https://forms.gle/your-policy-form-link", "_blank");
+    });
+
+    $("#submit-association-button").click(function () {
+      window.open("https://forms.gle/your-association-form-link", "_blank");
     });
 
     // Handle download button clicks
