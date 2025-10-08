@@ -798,16 +798,23 @@
 
       /* Policy Timeline Styles */
       .policy-timeline {
+        overflow-x: auto;
+        overflow-y: visible;
+        padding-bottom: 1em;
+        margin: 1em 0;
+      }
+
+      .timeline-inner-wrapper {
         position: relative;
         display: flex;
         justify-content: space-between;
         gap: 2em;
-        padding: 0 .5em;
-        margin: 1em 0;
+        min-width: 100%;
+        width: fit-content;
       }
 
       /* The horizontal line */
-      .policy-timeline::before {
+      .timeline-inner-wrapper::before {
         content: "";
         position: absolute;
         top: 12px; /* center of the dots */
@@ -846,6 +853,12 @@
         margin-top: 2.2em;
         margin-bottom: .3em;
         text-align: center;
+      }
+
+      .timeline-milestones-container {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
       }
 
       .timeline-milestone {
@@ -992,7 +1005,7 @@
     }
 
     /* Laptop */
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 768px) and (max-width: 1279px) {
 
       * {
         box-sizing: border-box;
@@ -1671,16 +1684,23 @@
 
       /* Policy Timeline Styles - Laptop */
       .policy-timeline {
+        overflow-x: auto;
+        overflow-y: visible;
+        padding-bottom: 1em;
+        margin: 1.2em 0;
+      }
+
+      .timeline-inner-wrapper {
         position: relative;
         display: flex;
         justify-content: space-between;
         gap: 2em;
-        padding: 0 .8em;
-        margin: 1.2em 0;
+        min-width: 100%;
+        width: fit-content;
       }
 
       /* The horizontal line */
-      .policy-timeline::before {
+      .timeline-inner-wrapper::before {
         content: "";
         position: absolute;
         top: 14px; /* center of the dots */
@@ -1719,6 +1739,12 @@
         margin-top: 2.5em;
         margin-bottom: .4em;
         text-align: center;
+      }
+
+      .timeline-milestones-container {
+        display: flex;
+        flex-direction: column;
+        gap: .6em;
       }
 
       .timeline-milestone {
@@ -2658,16 +2684,23 @@
 
       /* Policy Timeline Styles - Desktop */
       .policy-timeline {
+        overflow-x: auto;
+        overflow-y: visible;
+        padding-bottom: 1em;
+        margin: 1.5em 0;
+      }
+
+      .timeline-inner-wrapper {
         position: relative;
         display: flex;
         justify-content: space-between;
         gap: 2em;
-        padding: 0 1em;
-        margin: 1.5em 0;
+        min-width: 100%;
+        width: fit-content;
       }
 
       /* The horizontal line */
-      .policy-timeline::before {
+      .timeline-inner-wrapper::before {
         content: "";
         position: absolute;
         top: 16px; /* center of the dots */
@@ -2706,6 +2739,12 @@
         margin-top: 2.8em;
         margin-bottom: .5em;
         text-align: center;
+      }
+
+      .timeline-milestones-container {
+        display: flex;
+        flex-direction: column;
+        gap: .7em;
       }
 
       .timeline-milestone {
@@ -3370,24 +3409,8 @@
             <div class="accreditation-section-arrow">></div>
           </div>
           <div class="accreditation-section-content" style="display: none;">
-            <div class="policy-timeline">
-              <!-- Timeline Point 1 -->
-              <div class="timeline-item">
-                <div class="timeline-year" id="timeline-year-1"></div>
-                <div class="timeline-milestone" id="timeline-milestone-1"></div>
-              </div>
-              
-              <!-- Timeline Point 2 -->
-              <div class="timeline-item">
-                <div class="timeline-year" id="timeline-year-2"></div>
-                <div class="timeline-milestone" id="timeline-milestone-2"></div>
-              </div>
-              
-              <!-- Timeline Point 3 -->
-              <div class="timeline-item">
-                <div class="timeline-year" id="timeline-year-3"></div>
-                <div class="timeline-milestone" id="timeline-milestone-3"></div>
-              </div>
+            <div class="policy-timeline" id="policy-timeline-container">
+              <!-- Timeline items will be dynamically generated here -->
             </div>
           </div>
         </div>
@@ -4478,41 +4501,114 @@
         }
       }
 
-      // Check if any milestone data exists
-      const hasMilestone1 = hasData(countryData.policy_timeline_milestone_1);
-      const hasMilestone2 = hasData(countryData.policy_timeline_milestone_2);
-      const hasMilestone3 = hasData(countryData.policy_timeline_milestone_3);
-      const hasAnyMilestones = hasMilestone1 || hasMilestone2 || hasMilestone3;
-      
+      // Dynamically build timeline based on available milestone data
       const timelineSection = document.getElementById('policy-timeline-section');
+      const timelineContainer = document.getElementById('policy-timeline-container');
       
-      if (hasAnyMilestones) {
-        // Timeline Point 1
-        setTimelineMilestone(
-          document.getElementById('timeline-year-1'),
-          document.getElementById('timeline-milestone-1'),
-          countryData.policy_timeline_year_1,
-          countryData.policy_timeline_milestone_1,
-          countryData.policy_timeline_milestone_1_link
-        );
-
-        // Timeline Point 2
-        setTimelineMilestone(
-          document.getElementById('timeline-year-2'),
-          document.getElementById('timeline-milestone-2'),
-          countryData.policy_timeline_year_2,
-          countryData.policy_timeline_milestone_2,
-          countryData.policy_timeline_milestone_2_link
-        );
-
-        // Timeline Point 3
-        setTimelineMilestone(
-          document.getElementById('timeline-year-3'),
-          document.getElementById('timeline-milestone-3'),
-          countryData.policy_timeline_year_3,
-          countryData.policy_timeline_milestone_3,
-          countryData.policy_timeline_milestone_3_link
-        );
+      // Clear any existing timeline items
+      if (timelineContainer) {
+        timelineContainer.innerHTML = '';
+      }
+      
+      // Check all 8 possible milestones and collect the ones with data
+      const milestones = [];
+      for (let i = 1; i <= 8; i++) {
+        const milestoneKey = `policy_timeline_milestone_${i}`;
+        const yearKey = `policy_timeline_year_${i}`;
+        const linkKey = `policy_timeline_milestone_${i}_link`;
+        
+        if (hasData(countryData[milestoneKey])) {
+          milestones.push({
+            year: countryData[yearKey],
+            text: countryData[milestoneKey],
+            link: countryData[linkKey]
+          });
+        }
+      }
+      
+      // Show timeline section only if there are milestones
+      if (milestones.length > 0) {
+        // Group milestones by year
+        const milestonesByYear = {};
+        milestones.forEach(milestone => {
+          const year = milestone.year || 'Unknown';
+          if (!milestonesByYear[year]) {
+            milestonesByYear[year] = [];
+          }
+          milestonesByYear[year].push(milestone);
+        });
+        
+        // Sort years chronologically
+        const sortedYears = Object.keys(milestonesByYear).sort((a, b) => {
+          // Handle 'Unknown' year
+          if (a === 'Unknown') return 1;
+          if (b === 'Unknown') return -1;
+          return parseInt(a) - parseInt(b);
+        });
+        
+        // Create inner wrapper for timeline items (for the horizontal line)
+        const timelineInnerWrapper = document.createElement('div');
+        timelineInnerWrapper.className = 'timeline-inner-wrapper';
+        
+        // Create timeline items for each unique year
+        sortedYears.forEach((year, index) => {
+          const yearMilestones = milestonesByYear[year];
+          
+          // Create timeline item container
+          const timelineItem = document.createElement('div');
+          timelineItem.className = 'timeline-item';
+          
+          // Create year element
+          const yearElement = document.createElement('div');
+          yearElement.className = 'timeline-year';
+          yearElement.id = `timeline-year-${index + 1}`;
+          yearElement.textContent = year;
+          
+          // Create container for milestones
+          const milestonesContainer = document.createElement('div');
+          milestonesContainer.className = 'timeline-milestones-container';
+          
+          // Add each milestone for this year
+          yearMilestones.forEach((milestone, milestoneIndex) => {
+            const milestoneElement = document.createElement('div');
+            milestoneElement.className = 'timeline-milestone';
+            milestoneElement.id = `timeline-milestone-${index + 1}-${milestoneIndex + 1}`;
+            
+            // Set milestone content
+            if (hasData(milestone.text)) {
+              if (hasData(milestone.link)) {
+                const link = document.createElement('a');
+                link.href = milestone.link;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = milestone.text;
+                link.style.color = 'inherit';
+                link.style.textDecoration = 'underline';
+                
+                // Prevent event bubbling to accordion
+                link.addEventListener('click', function(e) {
+                  e.stopPropagation();
+                });
+                
+                milestoneElement.appendChild(link);
+              } else {
+                milestoneElement.textContent = milestone.text;
+              }
+            }
+            
+            milestonesContainer.appendChild(milestoneElement);
+          });
+          
+          // Append to timeline item
+          timelineItem.appendChild(yearElement);
+          timelineItem.appendChild(milestonesContainer);
+          
+          // Append to inner wrapper instead of directly to container
+          timelineInnerWrapper.appendChild(timelineItem);
+        });
+        
+        // Append the inner wrapper to the container
+        timelineContainer.appendChild(timelineInnerWrapper);
         
         if (timelineSection) {
           timelineSection.style.display = 'block';
