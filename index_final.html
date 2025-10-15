@@ -3043,8 +3043,20 @@
           <h3>HOW TO USE THE DASHBOARD</h3>
           <button type="button" id="close-popup" class="close-button">&times;</button>
         </div>
-        <div class="popup-body">
-          <p>[INSTRUCTIONAL VIDEO GOES HERE]</p>
+        <div class="popup-body" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+          <p style="margin-bottom: 1.5em;">This dashboard provides comprehensive data on proCHW policies in Countdown to 2030 countries. Scroll past the map to see methods and definitions for dashboard information.</p>
+          
+          <h4 style="font-weight: bold; text-transform: uppercase; color: #4B0082; margin-top: 1.5em; margin-bottom: 0.5em;">Getting Started</h4>
+          <p style="margin-bottom: 1.5em;">Use the buttons at the top of the map to view different indicators, including accredited CHWs, salaried CHWs, accredited and salaried CHWs, policy status, and evidence for CHW policy implementation. Download a high-resolution photo of the map or the raw data using the download button in the bottom right hand corner of the map.</p>
+          
+          <h4 style="font-weight: bold; text-transform: uppercase; color: #4B0082; margin-top: 1.5em; margin-bottom: 0.5em;">Map Interaction</h4>
+          <p style="margin-bottom: 1.5em;">Click on countries to view detailed policy information in the sidebar, or use the search bar to quickly find specific countries. The legend at the bottom left explains the color coding for each indicator.</p>
+          
+          <h4 style="font-weight: bold; text-transform: uppercase; color: #4B0082; margin-top: 1.5em; margin-bottom: 0.5em;">Sidebar Features</h4>
+          <p style="margin-bottom: 1.5em;">The sidebar shows detailed country information including CHW group information; policy or other government document details; evidence for commitments to professional CHWs including accreditation, salary, supervision, skills, and supplies; evidence for policy implementation; where available, a timeline of policy milestones; and AI-generated summaries for each country. Click on the expandable sections to view this information.</p>
+          
+          <h4 style="font-weight: bold; text-transform: uppercase; color: #4B0082; margin-top: 1.5em; margin-bottom: 0.5em;">See Something Missing?</h4>
+          <p style="margin-bottom: 1.5em;">We want to hear from you! Please use the link in the sidebar to submit information or corrections.</p>
         </div>
       </div>
     </div>
@@ -4993,15 +5005,15 @@
 
     // Handle submission button clicks
     $("#submit-correction-button").click(function () {
-      window.open("https://forms.gle/your-correction-form-link", "_blank");
+      window.open("https://docs.google.com/forms/d/e/1FAIpQLSdgVi7LFEMk4ztwWPJQhXEhtQr6CUPldvCd7kGuKwEy-qxkLQ/viewform?usp=preview", "_blank");
     });
 
     $("#submit-policy-button").click(function () {
-      window.open("https://forms.gle/your-policy-form-link", "_blank");
+      window.open("https://docs.google.com/forms/d/e/1FAIpQLScOVmqZyiwVWaSUthgYE6p1XOY51TH763Ftr_LRHbtZItLXhA/viewform?usp=dialog", "_blank");
     });
 
     $("#submit-association-button").click(function () {
-      window.open("https://forms.gle/your-association-form-link", "_blank");
+      window.open("https://docs.google.com/forms/d/e/1FAIpQLSf6RhMgxEQgC07DA0ZMoDXzi-VQ3Svq3deCwL7rhpahOXFPmw/viewform?usp=header", "_blank");
     });
 
     // Handle download button clicks
@@ -5038,7 +5050,7 @@
     $("#download-data-button").click(function () {
       // Download the CSV file
       var link = document.createElement('a');
-      link.href = 'https://docs.google.com/spreadsheets/d/1LTB8mJ566h_z1RJEn3D2StMElgN0MMfripYmhaeSQ3Y/export?format=csv';
+      link.href = 'https://docs.google.com/spreadsheets/d/1nrpW_mR51LSpkkaChva3ELZLBzsFwILnNLb1Y-icJKc/export?format=csv';
       link.download = 'chw-policy-data.csv';
       link.click();
       
