@@ -3543,7 +3543,7 @@
 
     document.getElementById('download-data-button').addEventListener('click', function () {
       const link = document.createElement('a');
-      link.href = 'https://docs.google.com/spreadsheets/d/1nrpW_mR51LSpkkaChva3ELZLBzsFwILnNLb1Y-icJKc/export?format=csv';
+      link.href = `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`;
       link.download = 'chw-policy-data.csv';
       link.click();
       
