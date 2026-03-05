@@ -9,8 +9,6 @@
   <link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet'>
   <link href="https://fonts.googleapis.com/css?family=Playfair Display" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-  <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
 
   <style>
     /* CSS Variables - Design System */
@@ -26,17 +24,12 @@
       --color-background: #F4F1EB;
       --color-white: #ffffff;
       --color-black: #111111;
+      --color-muted: #666666;
       
       /* Typography */
       --font-primary: 'Helvetica Neue', 'Arial Narrow', sans-serif;
       --font-display: 'Anton', sans-serif;
-      
-      /* Spacing */
-      --space-xs: 0.25rem;
-      --space-sm: 0.5rem;
-      --space-md: 1rem;
-      --space-lg: 1.5rem;
-      --space-xl: 2rem;
+      --font-accent: 'Playfair Display', serif;
       
       /* Border radius */
       --radius-sm: 3px;
@@ -45,12 +38,48 @@
       
       /* Shadows */
       --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
-      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
-      
-      /* Transitions */
-      --transition-fast: 0.15s ease;
-      --transition-normal: 0.2s ease;
-      --transition-slow: 0.3s ease;
+    }
+
+    /* Global utility classes (not scoped to a breakpoint) */
+    .popup-body h4 {
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--color-primary-light);
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+    }
+
+    .popup-body p {
+      margin-bottom: 1.5em;
+    }
+
+    .data-not-available-text {
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    .association-message {
+      font-style: italic;
+      padding: 0.5em 0;
+      margin: 0;
+      color: var(--color-black);
+      line-height: 1.4;
+    }
+
+    .association-message a,
+    .association-message a:link,
+    .association-message a:visited {
+      color: var(--color-primary);
+      text-decoration: underline;
+    }
+
+    .policy-not-available {
+      color: var(--color-neutral);
+    }
+
+    .timeline-milestone a {
+      color: inherit;
+      text-decoration: underline;
     }
 
     /* Mobile */
@@ -76,6 +105,8 @@
       .header {
         grid-column: 1 / span 4;
         display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
       }
 
       .header-section {
@@ -84,18 +115,19 @@
         align-content: center;
       }
 
-      /* Child containers within header */
+      /* Left column = content width (purple box); middle = rest; text sits right next to box */
       .left {
-        grid-column: 1 / span 1;
+        grid-column: 1;
       }
 
       .middle {
-        grid-column: 2 / span 3;
+        grid-column: 2;
+        min-width: 0;
       }
 
       .right {
-        grid-column: 1 / span 4;
-        grid-row: 2 / span 1;
+        grid-column: 1 / -1;
+        grid-row: 2;
         display: grid;
         text-align: center;
         margin: .5em;
@@ -107,7 +139,7 @@
         grid-row: 3 / span 2;
       }
 
-      /* Total accredited & salaried */
+      /* Total accredited & paid */
       #totaltext {
         color: var(--color-primary-light);
         font-family: var(--font-display);
@@ -118,9 +150,10 @@
         margin-bottom: .5rem;
         margin-right: .5rem;
         line-height: 1.1em;
+        text-align: left;
       }
 
-      #total-accredited-and-salaried {
+      #total-accredited-and-paid {
         color: var(--color-background);
         font-family: var(--font-display);
         font-size: 4vw;
@@ -130,6 +163,10 @@
         margin: .5rem;
         padding: .5rem;
         border-radius: var(--radius-sm);
+        width: 7ch;
+        min-width: 7ch;
+        max-width: 7ch;
+        box-sizing: border-box;
       }
 
       /* How to Use Dashboard button design */
@@ -226,14 +263,7 @@
         white-space: nowrap;
       }
 
-      .download-button:hover {
-        background-color: var(--color-accent);
-        color: var(--color-background);
-        border: 1px solid var(--color-primary);
-        opacity: 1;
-      }
-
-      #buttoncontainer {
+      .buttoncontainer {
         position: absolute;
         top: 16%;
         left: 0;
@@ -244,6 +274,16 @@
         max-width: calc(100vw - 1em);
         z-index: 1000;
         padding-top: clamp(0.3em, 0.2em + 0.2vw, 0.6em);
+        pointer-events: none;
+      }
+
+      .buttoncontainer > * {
+        pointer-events: none;
+      }
+
+      .buttoncontainer .button-with-tooltip,
+      .buttoncontainer .searchcontainer {
+        pointer-events: auto;
       }
 
       .button-row {
@@ -273,7 +313,7 @@
       .search-input:focus {
         outline: none;
         border-color: var(--color-primary);
-        box-shadow: 0 0 3px rgba(79, 32, 73, 0.3);
+        box-shadow: 0 0 5px rgba(79, 32, 73, 0.3);
       }
 
       .search-results {
@@ -320,9 +360,13 @@
         padding: 1em 1.5em 0.5em 1.5em;
         z-index: 1000;
         max-width: calc(100vw - 1em);
-        /* On mobile, position relative to the map container */
         top: auto;
         height: auto;
+        pointer-events: none;
+      }
+
+      .legend-and-download-container > * {
+        pointer-events: auto;
       }
 
       /* Legend design */
@@ -342,8 +386,8 @@
       }
 
       #legend {
-        box-shadow: var(--shadow-sm);
-        line-height: 1.1em;
+        line-height: 1.3em;
+        margin-bottom: 0;
       }
 
       .legend-key {
@@ -370,6 +414,14 @@
         line-height: 1.2;
       }
 
+      /* Popup design */
+      .mapboxgl-popup-content {
+        font-family: var(--font-primary);
+        opacity: 0.8;
+        background-color: var(--color-black);
+        color: var(--color-background);
+      }
+
       .sidebar {
         display: flex;
         flex-direction: column;
@@ -382,7 +434,7 @@
         overflow-y: auto;
         max-height: 100%;
         font-family: var(--font-primary);
-        border-top: solid 0.5px var(--color-primary-light);
+        border-top: solid 1px var(--color-primary-light);
       }
 
 
@@ -437,10 +489,10 @@
       }
 
       /* Bottom container of sidebar */
-      #bottom {
+      .bottom {
         margin-top: auto;
         padding-top: 1em;
-        line-height: 1.5em;
+        line-height: 1.3em;
         font-size: .72rem;
         font-family: var(--font-primary);
       }
@@ -574,9 +626,13 @@
         color: var(--color-primary-light);
       }
 
-      .policy-status-badge.expired,
-      .policy-status-badge.expiring {
+      .policy-status-badge.expired {
         background-color: var(--color-warning);
+        color: var(--color-background);
+      }
+
+      .policy-status-badge.expiring {
+        background-color: var(--color-accent);
         color: var(--color-background);
       }
 
@@ -667,7 +723,7 @@
       }
 
       .accreditation-section-subtitle {
-        font-family: 'Playfair Display', serif;
+        font-family: var(--font-accent);
         font-size: .6rem;
         color: var(--color-black);
         font-style: normal;
@@ -764,6 +820,11 @@
         color: var(--color-light-gray);
       }
 
+      .indicator-circle.partial {
+        background-color: var(--color-accent);
+        color: var(--color-light-gray);
+      }
+
       .indicator-circle.na {
         background-color: var(--color-neutral);
         color: var(--color-light-gray);
@@ -774,7 +835,7 @@
         font-size: .45rem;
         font-weight: bold;
         text-transform: uppercase;
-        color: #666666;
+        color: var(--color-muted);
       }
 
       .accreditation-subsection-source {
@@ -847,7 +908,7 @@
       }
 
       .timeline-year {
-        font-family: 'Anton', sans-serif;
+        font-family: var(--font-display);
         font-size: .7rem;
         color: var(--color-primary);
         margin-top: 2.2em;
@@ -884,26 +945,26 @@
       .ai-summary-card {
         background-color: var(--color-accent);
         border-radius: var(--radius-lg);
-        padding: 1.5em;
-        margin-top: 2.5em;
-        font-family: 'Helvetica Neue', Arial, sans-serif;
+        padding: 1em;
+        margin-top: 1.5em;
+        font-family: var(--font-primary);
       }
 
       .ai-summary-title {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        font-size: .81rem;
+        font-family: var(--font-primary);
+        font-size: .54rem;
         color: var(--color-black);
         text-transform: uppercase;
         font-weight: bold;
         line-height: 1.2;
-        margin-bottom: 1em;
+        margin-bottom: .75em;
       }
 
       .ai-summary-content {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        font-size: .9rem;
+        font-family: var(--font-primary);
+        font-size: .63rem;
         color: var(--color-black);
-        line-height: 1.2;
+        line-height: 1.3;
       }
 
       /* Button hover (definition) design - Hidden on mobile */
@@ -913,8 +974,8 @@
 
       /* Hide all tooltips on mobile */
       .accredited-chws-button-def,
-      .salaried-chws-button-def,
-      .accredited-and-salaried-chws-button-def,
+      .paid-chws-button-def,
+      .accredited-and-paid-chws-button-def,
       .policy-status-button-def,
       .implementation-evidence-button-def {
         display: none;
@@ -1004,12 +1065,10 @@
 
     }
 
-    /* Laptop */
-    @media screen and (min-width: 768px) and (max-width: 1279px) {
+    /* Shared styles for tablet and desktop (min-width: 768px) */
+    @media screen and (min-width: 768px) {
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
       body {
         margin: 0px;
@@ -1025,35 +1084,18 @@
         height: 100%;
       }
 
-      /* Container for header elements */
       .header {
         grid-column: 1 / span 12;
         display: grid;
-      }
-
-      .header-section {
-        grid-row: 1;
-        display: grid;
+        grid-template-columns: auto 1fr auto;
         align-items: center;
       }
 
-      /* Child containers within header */
-      .left {
-        grid-column: 1 / span 2;
-      }
-
-      .middle {
-        grid-column: 3 / span 6;
-      }
-
-      .right {
-        grid-column: 9 / span 3;
-      }
-
-      /* Define map and sidebar container */
-      .content-section {
-        grid-row: 2;
-      }
+      .header-section { grid-row: 1; }
+      .left { grid-column: 1; }
+      .middle { grid-column: 2; min-width: 0; }
+      .right { grid-column: 3; }
+      .content-section { grid-row: 2; }
 
       .sidebar {
         display: flex;
@@ -1068,24 +1110,17 @@
         max-height: 100%;
       }
 
-      /* How to Use Dashboard button design */
       .how-to-use-button {
-        text-align: center;
         background-color: var(--color-background);
         color: var(--color-black);
         font-family: var(--font-primary);
-        text-align: center;
+        font-weight: bold;
         vertical-align: middle;
         font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        font-weight: bold;
         text-transform: uppercase;
         border-radius: var(--radius-md);
         border: 1px solid var(--color-black);
-        padding: 10px;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: .5em;
-        padding-bottom: .5em;
+        padding: .5em 1em;
         margin: 1em;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -1095,52 +1130,42 @@
         gap: 0.5em;
       }
 
-      .play-icon {
-        font-size: 0.8em;
-      }
+      .play-icon { font-size: 0.8em; }
+      .right a:link { text-decoration: none; }
+      .right a:visited { text-decoration: none; }
 
-      .right a:link {
-        text-decoration: none;
-      }
-
-      .right a:visited {
-        text-decoration: none;
-      }
-
-      /* Total accredited & salaried */
       #totaltext {
         color: var(--color-primary-light);
         font-family: var(--font-display);
-        font-size: clamp(1.8rem, 1.046rem + 1.571vw, 2.46rem);
-        overflow-wrap: normal;
         vertical-align: middle;
         margin-top: 0.3em;
         margin-bottom: 0.3em;
         margin-right: 0.3em;
         line-height: 1.1em;
-
+        text-align: left;
       }
 
-      #total-accredited-and-salaried {
+      #total-accredited-and-paid {
         color: var(--color-background);
         font-family: var(--font-display);
-        font-size: clamp(2rem, 1.2rem + 1.667vw, 2.7rem);
         text-align: center;
         vertical-align: middle;
         background-color: var(--color-secondary);
         margin: 0.3em;
         padding: 0.3em;
         border-radius: var(--radius-md);
+        width: 7ch;
+        min-width: 7ch;
+        max-width: 7ch;
+        box-sizing: border-box;
       }
 
-      /* Map positioning */
       #map {
         grid-column: 1 / span 8;
         height: 100%;
         position: relative;
       }
 
-      /* Legend and Download Container */
       .legend-and-download-container {
         position: absolute;
         bottom: 2em;
@@ -1153,38 +1178,31 @@
         padding: 1em 1.5em 0.5em 1.5em;
         z-index: 1000;
         max-width: calc(66.67vw - 0.5em);
+        pointer-events: none;
       }
 
-      /* Legend design */
+      .legend-and-download-container > * { pointer-events: auto; }
+
       .legend {
-        background: #fff;
+        background: var(--color-white);
         border-radius: var(--radius-md);
         padding: .8em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        font-family: var(--font-primary);
         font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-sm);
         flex: 0 1 auto;
         width: 280px;
         max-width: 60%;
       }
 
-      #legend {
-        line-height: 1.3em;
-        margin-bottom: 0;
-      }
+      #legend { line-height: 1.3em; margin-bottom: 0; }
 
-      /* Download button design */
       .download-button {
         background-color: var(--color-background);
         color: var(--color-black);
         border: 1px solid var(--color-black);
         border-radius: var(--radius-md);
-        padding: 10px;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: .5em;
-        padding-bottom: .5em;
-        padding: .8em;
+        padding: .5em 1em;
         font-family: var(--font-primary);
         font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
         font-weight: bold;
@@ -1204,39 +1222,18 @@
         opacity: 1;
       }
 
-      .legend-key {
-        display: inline-block;
-        border-radius: 20%;
-        width: 10px;
-        height: 10px;
-        margin-right: 5px;
-      }
+      .legend-key { display: inline-block; border-radius: 20%; width: 10px; height: 10px; margin-right: 5px; }
+      .legenditems { display: inline-block; }
+      h4 { margin-top: 5px; margin-bottom: 5px; }
+      #legend-title { word-wrap: break-word; word-break: break-word; hyphens: auto; line-height: 1.2; }
 
-      .legenditems {
-        display: inline-block;
-      }
-
-      h4 {
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
-
-      #legend-title {
-        word-wrap: break-word;
-        word-break: break-word;
-        hyphens: auto;
-        line-height: 1.2;
-      }
-
-      /* Popup design */
       .mapboxgl-popup-content {
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
+        font-family: var(--font-primary);
         opacity: 0.8;
         background-color: var(--color-black);
         color: var(--color-background);
       }
 
-      /* Sidebar design */
       #country-name {
         font-size: clamp(1.2rem, 0.6rem + 1.8vw, 3rem);
         text-transform: uppercase;
@@ -1248,68 +1245,44 @@
       .out-of-scope-text {
         font-style: italic;
         font-family: var(--font-primary);
-        font-size: clamp(0.54rem, 0.36rem + 0.45vw, 0.81rem);
         color: var(--color-primary-light);
         margin-bottom: 1em;
       }
 
+      #download-link { margin-top: 1em; }
+      #download-link a { color: var(--color-primary-light); }
 
-      #download-link {
-        margin-top: 1em;
-      }
-
-      #download-link a {
-        color: var(--color-primary-light);
-      }
-
-      /* Button design (sidebar buttons) */
       .buttonsidebar {
         background-color: var(--color-background);
         color: var(--color-black);
         border: 1px solid var(--color-black);
         border-radius: var(--radius-md);
         font-family: var(--font-primary);
-        white-space: normal;
         font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
         font-weight: bold;
         text-align: center;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: 1em;
-        padding-bottom: 1em;
+        padding: 1em;
         opacity: 1;
       }
 
-      buttonsidebar:hover {
-        background: #4F2049;
+      .buttonsidebar:hover {
+        background: var(--color-primary);
         color: var(--color-background);
         border: 1px solid var(--color-primary);
         font-weight: bold;
         opacity: 1;
       }
 
-      /* Bottom container of sidebar */
       .bottom {
         margin-top: auto;
         padding-top: 1em;
         line-height: 1.3em;
         font-family: var(--font-primary);
-        font-size: clamp(0.54rem, 0.36rem + 0.45vw, 0.81rem);
       }
 
+      #date-last-updated { font-style: italic; }
 
-      #date-last-updated {
-        font-style: italic;
-      }
-
-      /* CHW Cards design */
-      .chw-cards-container {
-        display: flex;
-        flex-direction: row;
-        gap: .5em;
-        flex-wrap: wrap;
-        margin-bottom: 1em;
-      }
+      .chw-cards-container { display: flex; flex-direction: row; gap: .5em; flex-wrap: wrap; margin-bottom: 1em; }
 
       .chw-card {
         background-color: var(--color-primary);
@@ -1327,34 +1300,11 @@
         justify-content: center;
       }
 
-      .chw-card:hover {
-        background-color: var(--color-primary-light);
-        color: var(--color-background);
-      }
-
-      .chw-card-number {
-        font-family: var(--font-display);
-        font-size: clamp(0.9rem, 0.72rem + 0.45vw, 1.35rem);
-        font-weight: bold;
-        margin-bottom: .3em;
-      }
-
-      .chw-card-number-not-available {
-        font-family: var(--font-primary);
-        font-style: italic;
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-      }
-
-      .chw-card-label {
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        font-weight: normal;
-      }
-
-      .chw-popups-container {
-        margin-bottom: 1em;
-      }
+      .chw-card:hover { background-color: var(--color-primary-light); color: var(--color-background); }
+      .chw-card-number { font-family: var(--font-display); font-weight: bold; margin-bottom: .3em; }
+      .chw-card-number-not-available { font-family: var(--font-primary); font-style: italic; font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem); }
+      .chw-card-label { padding: .8em; font-family: var(--font-primary); font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem); font-weight: normal; }
+      .chw-popups-container { margin-bottom: 1em; }
 
       .chw-popup {
         display: none;
@@ -1368,54 +1318,32 @@
         width: 100%;
       }
 
-      .chw-popup-title {
-        font-weight: bold;
-        color: var(--color-primary-light);
-        margin: 0;
-      }
+      .chw-popup-title { font-weight: bold; color: var(--color-primary-light); margin: 0; }
+      .chw-popup-list { list-style-type: disc; margin-left: 1em; padding-left: 0; }
+      .chw-popup-list li { line-height: 1.4; margin: 0; color: var(--color-black); }
 
-      .chw-popup-list {
-        list-style-type: disc;
-        margin-left: 1em;
-        padding-left: 0;
-      }
-
-      .chw-popup-list li {
-        line-height: 1.4;
-        margin: 0;
-        color: var(--color-black);
-      }
-
-
-      /* Map button design */
       .button {
         background-color: var(--color-background);
         color: var(--color-black);
-        padding: 10px;
         border: 1px solid var(--color-black);
         border-radius: var(--radius-md);
-        padding: .8em;
+        padding: .5em 1em;
         font-family: var(--font-primary);
         font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
         font-weight: bold;
         text-align: center;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: .5em;
-        padding-bottom: .5em;
         margin: 0;
         opacity: 0.8;
       }
 
       .button.active {
-        background: #4F2049;
+        background: var(--color-primary);
         color: var(--color-background);
         border: 1px solid var(--color-primary);
         font-weight: bold;
         opacity: 1;
       }
 
-      /* Policy Status Card */
       .policy-status-card {
         background-color: var(--color-primary);
         color: var(--color-background);
@@ -1429,104 +1357,27 @@
         width: 100%;
       }
 
-      .policy-status-header {
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        align-items: center;
-      }
+      .policy-status-header { display: flex; justify-content: space-between; gap: 2em; align-items: center; }
+      .policy-status-title { font-weight: bold; color: var(--color-background); }
+      .policy-status-badge { padding: .3em .6em; border-radius: var(--radius-md); font-weight: bold; font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem); text-transform: uppercase; }
+      .policy-status-badge.out-of-scope { background-color: var(--color-neutral); color: var(--color-background); }
+      .policy-status-badge.data-not-available { background-color: var(--color-light-gray); color: var(--color-primary-light); }
+      .policy-status-badge.expired { background-color: var(--color-warning); color: var(--color-background); }
+      .policy-status-badge.expiring { background-color: var(--color-accent); color: var(--color-background); }
+      .policy-status-badge.active { background-color: var(--color-secondary); color: var(--color-background); }
+      .policy-status-content { font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem); line-height: 1.2; }
+      .policy-status-line { margin-bottom: .1em; display: flex; justify-content: space-between; gap: 2em; align-items: center; width: 100%; }
+      .policy-status-label { font-weight: bold; flex-shrink: 0; line-height: 1.8; }
+      .policy-status-value { text-align: right; word-wrap: break-word; flex: 1; margin-left: 1em; }
+      .policy-status-divider { height: 1px; background-color: rgba(244, 241, 235, 0.5); margin: .5em auto; width: 100%; display: block; }
+      .policy-link { color: var(--color-background); text-decoration: none; font-weight: bold; }
+      .policy-link:hover { text-decoration: underline; }
 
-      .policy-status-title {
-        font-weight: bold;
-        color: var(--color-background);
-      }
-
-      .policy-status-badge {
-        padding: .3em .6em;
-        border-radius: var(--radius-md);
-        font-weight: bold;
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        text-transform: uppercase;
-      }
-
-      .policy-status-badge.out-of-scope {
-        background-color: var(--color-neutral);
-        color: var(--color-background);
-      }
-
-      .policy-status-badge.data-not-available {
-        background-color: var(--color-light-gray);
-        color: var(--color-primary-light);
-      }
-
-      .policy-status-badge.expired,
-      .policy-status-badge.expiring {
-        background-color: var(--color-warning);
-        color: var(--color-background);
-      }
-
-      .policy-status-badge.active {
-        background-color: var(--color-secondary);
-        color: var(--color-background);
-      }
-
-      .policy-status-content {
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        line-height: 1.2;
-      }
-
-      .policy-status-line {
-        margin-bottom: .1em;
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        align-items: center;
-        width: 100%;
-      }
-
-      .policy-status-label {
-        font-weight: bold;
-        flex-shrink: 0;
-        line-height: 1.8;
-      }
-
-      .policy-status-value {
-        text-align: right;
-        word-wrap: break-word;
-        flex: 1;
-        margin-left: 1em;
-      }
-
-      .policy-status-divider {
-        height: 1px;
-        background-color: rgba(244, 241, 235, 0.5);
-        margin: .5em auto;
-        width: 100%;
-        display: block;
-      }
-
-      .policy-link {
-        color: var(--color-background);
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      .policy-link:hover {
-        text-decoration: underline;
-      }
-
-      /* Accreditation Section */
-      .accreditation-section {
-        background-color: transparent;
-        border: none;
-        border-radius: var(--radius-md);
-        width: 100%;
-      }
+      .accreditation-section { background-color: transparent; border: none; width: 100%; }
 
       .accreditation-section-header {
         background-color: transparent;
         border: none;
-        border-radius: var(--radius-md);
         padding: .5em;
         cursor: pointer;
         transition: background-color 0.2s ease;
@@ -1534,267 +1385,52 @@
         justify-content: space-between;
         gap: 2em;
         align-items: center;
-        width: 100%;
         margin-top: 2.5em;
       }
 
-      .accreditation-section-header:hover {
-        background-color: rgba(79, 32, 73, 0.1);
-      }
+      .accreditation-section-header:hover { background-color: rgba(79, 32, 73, 0.1); }
+      .accreditation-section-title { font-family: var(--font-display); font-size: clamp(0.63rem, 0.36rem + 0.9vw, 1.62rem); color: var(--color-primary-light); text-transform: uppercase; font-weight: bold; line-height: 1.2; }
+      .accreditation-section-subtitle { font-family: var(--font-accent); font-size: clamp(0.55rem, 0.4rem + 0.55vw, 0.95rem); color: var(--color-black); font-style: normal; padding: .5em; line-height: 1.3; }
+      .accreditation-section-arrow { color: var(--color-neutral); font-weight: bold; font-size: .72rem; margin-left: .5em; transition: transform 0.2s ease; }
+      .accreditation-section.expanded .accreditation-section-arrow { transform: rotate(90deg); }
+      .accreditation-section-content { padding: .8em; background-color: rgba(79, 32, 73, 0.08); border-radius: var(--radius-lg); }
+      #policy-timeline-section .accreditation-section-content { background-color: transparent; }
+      .accreditation-section-text { padding: .8em; font-family: var(--font-primary); font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem); color: var(--color-primary-light); }
 
-      .accreditation-section-title {
-        font-family: var(--font-display);
-        font-size: clamp(0.63rem, 0.36rem + 0.9vw, 1.62rem);
-        color: var(--color-primary-light);
-        text-transform: uppercase;
-        font-weight: bold;
-        line-height: 1.2;
-      }
+      .accreditation-subsection { display: flex; align-items: center; padding-left: .8em; border-left: 3px solid var(--color-primary); margin-bottom: 1.2em; }
+      .accreditation-subsection-content { flex: 1; margin-right: .8em; }
+      .accreditation-subsection-title { padding: 0; font-family: var(--font-primary); font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem); font-weight: bold; text-transform: uppercase; color: var(--color-primary-light); line-height: 1.2; margin-bottom: .4em; }
+      .accreditation-subsection-description { font-family: var(--font-primary); font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem); color: var(--color-black); line-height: 1.4; }
+      .accreditation-subsection-indicator { display: flex; align-items: center; flex-shrink: 0; margin-left: .8em; }
 
-      .accreditation-section-subtitle {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(0.55rem, 0.4rem + 0.55vw, 0.95rem);
-        color: var(--color-black);
-        font-style: normal;
-        padding: .5em;
-        line-height: 1.3;
-      }
+      .indicator-circle { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: .4em; font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem); font-weight: bold; }
+      .indicator-circle.yes { background-color: var(--color-secondary); color: var(--color-light-gray); }
+      .indicator-circle.no { background-color: var(--color-warning); color: var(--color-light-gray); }
+      .indicator-circle.partial { background-color: var(--color-accent); color: var(--color-light-gray); }
+      .indicator-circle.na { background-color: var(--color-neutral); color: var(--color-light-gray); }
+      .indicator-text { font-family: var(--font-primary); font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem); font-weight: bold; text-transform: uppercase; color: var(--color-muted); }
 
-      .accreditation-section-arrow {
-        color: var(--color-neutral);
-        font-weight: bold;
-        font-size: .72rem;
-        margin-left: .5em;
-        transition: transform 0.2s ease;
-      }
+      .accreditation-subsection-source { font-family: var(--font-primary); font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem); color: var(--color-black); margin-top: .4em; line-height: 1.4; font-style: italic; }
+      .accreditation-subsection-source a { color: var(--color-primary-light); text-decoration: underline; font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem); }
+      .accreditation-subsection-source a:hover { color: var(--color-primary); }
 
-      .accreditation-section.expanded .accreditation-section-arrow {
-        transform: rotate(90deg);
-      }
+      .policy-timeline { overflow-x: auto; overflow-y: visible; padding-bottom: 1em; }
+      .timeline-inner-wrapper { position: relative; display: flex; justify-content: space-between; gap: 2em; min-width: 100%; width: fit-content; }
+      .timeline-inner-wrapper::before { content: ""; position: absolute; left: 0; right: 0; background-color: var(--color-primary); z-index: 0; }
+      .timeline-item { position: relative; text-align: center; flex: 1 1 0; }
+      .timeline-item::before { content: ""; position: absolute; left: 50%; transform: translateX(-50%); border-radius: 50%; background-color: var(--color-primary); border: 2px solid var(--color-light-gray); z-index: 1; }
+      .timeline-year { font-family: var(--font-display); color: var(--color-primary); text-align: center; }
+      .timeline-milestones-container { display: flex; flex-direction: column; }
+      .timeline-milestone { font-family: var(--font-primary); color: var(--color-primary-light); text-align: center; margin: 0 auto; }
+      .timeline-milestone a { color: var(--color-primary-light); text-decoration: underline; }
+      .timeline-milestone a:hover { color: var(--color-primary); }
 
-      .accreditation-section-content {
-        padding: .8em;
-        background-color: rgba(79, 32, 73, 0.08);
-        border-radius: var(--radius-lg);
-      }
-
-      #policy-timeline-section .accreditation-section-content {
-        background-color: transparent;
-      }
-
-      .accreditation-section-text {
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        color: var(--color-primary-light);
-      }
-
-      /* Accreditation Subsections */
-      .accreditation-subsection {
-        display: flex;
-        align-items: center;
-        padding-left: .8em;
-        border-left: 3px solid var(--color-primary);
-        margin-bottom: 1.2em;
-      }
-
-      .accreditation-subsection-content {
-        flex: 1;
-        margin-right: .8em;
-      }
-
-      .accreditation-subsection-title {
-        padding: 0;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        font-weight: bold;
-        text-transform: uppercase;
-        color: var(--color-primary-light);
-        line-height: 1.2;
-        margin-bottom: .4em;
-      }
-
-      .accreditation-subsection-description {
-        font-family: var(--font-primary);
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        color: var(--color-black);
-        line-height: 1.4;
-      }
-
-      .accreditation-subsection-indicator {
-        display: flex;
-        align-items: center;
-        flex-shrink: 0;
-        margin-left: .8em;
-      }
-
-      .indicator-circle {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: .4em;
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        font-weight: bold;
-      }
-
-      .indicator-circle.yes {
-        background-color: var(--color-secondary);
-        color: var(--color-light-gray);
-      }
-
-      .indicator-circle.no {
-        background-color: var(--color-warning);
-        color: var(--color-light-gray);
-      }
-
-      .indicator-circle.na {
-        background-color: var(--color-neutral);
-        color: var(--color-light-gray);
-      }
-
-      .indicator-text {
-        font-family: var(--font-primary);
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        font-weight: bold;
-        text-transform: uppercase;
-        color: #666666;
-      }
-
-      .accreditation-subsection-source {
-        font-family: var(--font-primary);
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        color: var(--color-black);
-        margin-top: .4em;
-        line-height: 1.4;
-        font-style: italic;
-      }
-
-      .accreditation-subsection-source a {
-        color: var(--color-primary-light);
-        text-decoration: underline;
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-      }
-
-      .accreditation-subsection-source a:hover {
-        color: var(--color-primary);
-      }
-
-      /* Policy Timeline Styles - Laptop */
-      .policy-timeline {
-        overflow-x: auto;
-        overflow-y: visible;
-        padding-bottom: 1em;
-        margin: 1.2em 0;
-      }
-
-      .timeline-inner-wrapper {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        min-width: 100%;
-        width: fit-content;
-      }
-
-      /* The horizontal line */
-      .timeline-inner-wrapper::before {
-        content: "";
-        position: absolute;
-        top: 14px; /* center of the dots */
-        left: 0;
-        right: 0;
-        height: 3px;
-        background-color: var(--color-primary);
-        z-index: 0;
-      }
-
-      .timeline-item {
-        position: relative;
-        text-align: center;
-        flex: 1 1 0;
-      }
-
-      /* The dot */
-      .timeline-item::before {
-        content: "";
-        position: absolute;
-        top: 9px; /* align with the line */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: var(--color-primary);
-        border: 2px solid var(--color-light-gray);
-        z-index: 1;
-      }
-
-      .timeline-year {
-        font-family: 'Anton', sans-serif;
-        font-size: .72rem;
-        color: var(--color-primary);
-        margin-top: 2.5em;
-        margin-bottom: .4em;
-        text-align: center;
-      }
-
-      .timeline-milestones-container {
-        display: flex;
-        flex-direction: column;
-        gap: .6em;
-      }
-
-      .timeline-milestone {
-        font-family: var(--font-primary);
-        font-size: .49rem;
-        color: var(--color-primary-light);
-        text-align: center;
-        line-height: 1.4;
-        max-width: 150px;
-        margin: 0 auto;
-      }
-
-      .timeline-milestone a {
-        color: var(--color-primary-light);
-        text-decoration: underline;
-      }
-
-      .timeline-milestone a:hover {
-        color: var(--color-primary);
-      }
-
-      /* AI Summary Card Styles - Laptop */
-      .ai-summary-card {
-        background-color: var(--color-accent);
-        border-radius: var(--radius-lg);
-        padding: 1.5em;
-        margin-top: 2.5em;
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-      }
-
-      .ai-summary-title {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        font-size: .81rem;
-        color: var(--color-black);
-        text-transform: uppercase;
-        font-weight: bold;
-        line-height: 1.2;
-        margin-bottom: 1em;
-      }
-
-      .ai-summary-content {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        font-size: .9rem;
-        color: var(--color-black);
-        line-height: 1.2;
-      }
+      .ai-summary-card { background-color: var(--color-accent); border-radius: var(--radius-lg); padding: 1.5em; margin-top: 2.5em; font-family: var(--font-primary); }
+      .ai-summary-title { font-family: var(--font-primary); font-size: .81rem; color: var(--color-black); text-transform: uppercase; font-weight: bold; line-height: 1.2; margin-bottom: 1em; }
+      .ai-summary-content { font-family: var(--font-primary); font-size: .9rem; color: var(--color-black); line-height: 1.2; }
 
       .buttoncontainer {
         position: absolute;
-        top: 22%;
         left: 0;
         margin-left: 10px;
         display: flex;
@@ -1803,39 +1439,16 @@
         max-width: calc(66.67vw - 20px);
         z-index: 1000;
         padding-top: clamp(0.3em, 0.2em + 0.2vw, 0.6em);
+        pointer-events: none;
       }
 
-      .button-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5em;
-      }
+      .buttoncontainer > * { pointer-events: none; }
+      .buttoncontainer .button-with-tooltip, .buttoncontainer .searchcontainer { pointer-events: auto; }
+      .button-row { display: flex; flex-wrap: wrap; gap: 0.5em; }
 
-      /* Search bar design */
-      .searchcontainer {
-        width: 300px;
-        z-index: 1000;
-        position: relative;
-      }
-
-      .search-input {
-        width: 100%;
-        padding: .8em;
-        border: 1px solid var(--color-black);
-        border-radius: var(--radius-md);
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        background-color: var(--color-white);
-        /* background-color: #F4F1EB; */
-        color: var(--color-black);
-      }
-
-      .search-input:focus {
-        outline: none;
-        border-color: var(--color-primary);
-        box-shadow: 0 0 5px rgba(79, 32, 73, 0.3);
-      }
+      .searchcontainer { z-index: 1000; position: relative; }
+      .search-input { width: 100%; padding: .8em; border: 1px solid var(--color-black); border-radius: var(--radius-md); font-family: var(--font-primary); font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem); background-color: var(--color-white); color: var(--color-black); }
+      .search-input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 5px rgba(79, 32, 73, 0.3); }
 
       .search-results {
         position: absolute;
@@ -1845,1165 +1458,111 @@
         background-color: var(--color-white);
         border: 1px solid var(--color-black);
         border-top: none;
-        border-radius: 0 0 5px 5px;
-        max-height: 250px;
+        border-radius: 0 0 var(--radius-md) var(--radius-md);
         overflow-y: auto;
         display: none;
         z-index: 1001;
       }
 
-      .search-result-item {
-        cursor: pointer;
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        border-bottom: 1px solid var(--color-light-gray);
+      .search-result-item { cursor: pointer; padding: .8em; font-family: var(--font-primary); font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem); border-bottom: 1px solid var(--color-light-gray); }
+      .search-result-item:hover { background-color: var(--color-accent); color: var(--color-background); }
+      .search-result-item:last-child { border-bottom: none; }
+      button:not(.close-button):hover { background: var(--color-primary); color: var(--color-background); font-weight: bold; border: 1px solid var(--color-primary); }
+
+      .button-with-tooltip { position: relative; display: inline-block; }
+
+      .accredited-chws-button-def, .paid-chws-button-def, .accredited-and-paid-chws-button-def, .policy-status-button-def, .implementation-evidence-button-def {
+        display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px;
+        max-width: 300px; min-width: 200px; font-family: var(--font-primary); font-size: 0.85rem; line-height: 1.4;
+        background-color: var(--color-black); color: var(--color-background); padding: 12px 16px;
+        border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); opacity: 1; z-index: 2001; pointer-events: none;
       }
 
-      .search-result-item:hover {
-        background-color: var(--color-accent);
-        color: var(--color-background);
+      .accredited-chws-button-def::after, .paid-chws-button-def::after, .accredited-and-paid-chws-button-def::after, .policy-status-button-def::after, .implementation-evidence-button-def::after {
+        content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-bottom-color: var(--color-black);
       }
 
-      .search-result-item:last-child {
-        border-bottom: none;
-      }
+      .accredited-and-paid-chws-button-def, .policy-status-button-def { left: 0; transform: none; }
+      .accredited-and-paid-chws-button-def::after, .policy-status-button-def::after { left: 2em; }
 
-      button:not(.close-button):hover {
-        background: #4F2049;
-        color: var(--color-background);
-        font-weight: bold;
-        border: 1px solid var(--color-primary);
-      }
+      .subsection-title-with-tooltip { position: relative; display: inline-flex; align-items: center; gap: 0.35em; cursor: help; margin-bottom: .3em; }
+      .subsection-info-icon { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; font-size: 0.7em; font-weight: bold; font-style: italic; color: var(--color-neutral); border: 1px solid var(--color-neutral); border-radius: 50%; flex-shrink: 0; position: relative; top: -0.25em; vertical-align: middle; }
+      .sidebar-subsection-tooltip { display: none; position: absolute; top: 100%; left: 0; margin-top: 6px; max-width: 300px; min-width: 200px; font-family: var(--font-primary); font-size: 0.85rem; line-height: 1.4; background-color: var(--color-black); color: var(--color-background); padding: 12px 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); z-index: 2001; pointer-events: none; }
+      .sidebar-subsection-tooltip::before { content: ''; position: absolute; bottom: 100%; left: 1em; border: 6px solid transparent; border-bottom-color: var(--color-black); }
+      .subsection-title-with-tooltip:hover .sidebar-subsection-tooltip { display: block; }
 
-      /* Button hover (definition) design - Individual button positioning */
-      .button-with-tooltip {
-        position: relative;
-        display: inline-block;
-      }
-
-      .accredited-chws-button-def,
-      .salaried-chws-button-def,
-      .accredited-and-salaried-chws-button-def,
-      .policy-status-button-def,
-      .implementation-evidence-button-def {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-top: 8px;
-        max-width: 280px;
-        min-width: 180px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: 0.8rem;
-        line-height: 1.4;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 10px 14px;
-        border-radius: 6px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-        opacity: 1;
-        z-index: 2001;
-        pointer-events: none;
-      }
-
-      /* Tooltip arrow */
-      .accredited-chws-button-def::after,
-      .salaried-chws-button-def::after,
-      .accredited-and-salaried-chws-button-def::after,
-      .policy-status-button-def::after,
-      .implementation-evidence-button-def::after {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 5px solid transparent;
-        border-bottom-color: var(--color-black);
-      }
-
-      /* Popup styles */
-      .popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-      }
+      .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: none; justify-content: center; align-items: center; z-index: 10000; }
 
       .popup-content {
         background-color: var(--color-background);
         border-radius: var(--radius-md);
-        padding: 2em;
-        max-width: 600px;
         max-height: 80%;
         overflow-y: auto;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       }
 
-      .popup-header {
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        align-items: center;
-        margin-bottom: 1em;
-        padding-bottom: 0.5em;
-      }
-
-      .popup-header h3 {
-        margin: 0;
-        font-family: var(--font-display);
-        color: var(--color-primary-light);
-        font-size: 1.35rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
+      .popup-header { display: flex; justify-content: space-between; gap: 2em; align-items: center; margin-bottom: 1em; padding-bottom: 0.5em; }
+      .popup-header h3 { margin: 0; font-family: var(--font-display); color: var(--color-primary-light); text-transform: uppercase; letter-spacing: 0.05em; }
 
       .close-button {
-        background: none;
-        border: none;
-        font-size: 1.62rem;
-        color: var(--color-primary);
-        cursor: pointer;
-        padding: 0;
-        width: 35px;
-        height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: color 0.2s ease;
-        outline: none;
-        box-shadow: none;
+        background: none; border: none; color: var(--color-primary); cursor: pointer; padding: 0;
+        display: flex; align-items: center; justify-content: center; transition: color 0.2s ease; outline: none; box-shadow: none;
       }
 
-      .close-button:hover {
-        color: var(--color-primary-light);
-        background: none;
-        outline: none;
-        box-shadow: none;
-      }
-
-      .close-button:focus,
-      .close-button:focus-visible,
-      .close-button:active {
-        outline: none;
-        box-shadow: none;
-        background: none;
-        border: none;
-      }
-
-      .popup-body {
-        font-family: var(--font-primary);
-        color: var(--color-black);
-        line-height: 1.4;
-        font-size: 0.85rem;
-      }
+      .close-button:hover { color: var(--color-primary-light); background: none; outline: none; box-shadow: none; }
+      .close-button:focus, .close-button:focus-visible, .close-button:active { outline: none; box-shadow: none; background: none; border: none; }
+      .popup-body { font-family: var(--font-primary); color: var(--color-black); line-height: 1.4; }
 
     }
 
-    /* Desktop */
+    /* Tablet overrides */
+    @media screen and (min-width: 768px) and (max-width: 1279px) {
+      .header-section { display: grid; align-items: center; }
+      #totaltext { font-size: clamp(1.8rem, 1.046rem + 1.571vw, 2.46rem); overflow-wrap: normal; }
+      #total-accredited-and-paid { font-size: clamp(2rem, 1.2rem + 1.667vw, 2.7rem); }
+      .out-of-scope-text { font-size: clamp(0.54rem, 0.36rem + 0.45vw, 0.81rem); }
+      .buttonsidebar { white-space: normal; }
+      .bottom { font-size: clamp(0.54rem, 0.36rem + 0.45vw, 0.81rem); }
+      .chw-card-number { font-size: clamp(0.9rem, 0.72rem + 0.45vw, 1.35rem); }
+      .accreditation-section { border-radius: var(--radius-md); }
+      .accreditation-section-header { border-radius: var(--radius-md); width: 100%; }
+      .policy-timeline { margin: 1.2em 0; }
+      .timeline-inner-wrapper::before { top: 14px; height: 3px; }
+      .timeline-item::before { top: 9px; width: 10px; height: 10px; }
+      .timeline-year { font-size: .72rem; margin-top: 2.5em; margin-bottom: .4em; }
+      .timeline-milestones-container { gap: .6em; }
+      .timeline-milestone { font-size: .49rem; line-height: 1.4; max-width: 150px; }
+      .buttoncontainer { top: 22%; }
+      .searchcontainer { width: 300px; }
+      .search-results { max-height: 250px; }
+      .popup-content { padding: 2em; max-width: 600px; }
+      .popup-header h3 { font-size: 1.35rem; }
+      .close-button { font-size: 1.62rem; width: 35px; height: 35px; }
+      .popup-body { font-size: 0.85rem; }
+    }
+
+    /* Desktop overrides */
     @media screen and (min-width: 1280px) and (min-height: 570px) {
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0px;
-        padding: 0px;
-        background-color: var(--color-background);
-        height: 100%;
-      }
-
-      .container {
-        display: grid;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-template-rows: 20vh 80vh;
-        height: 100%;
-      }
-
-      /* Container for header elements */
-      .header {
-        grid-column: 1 / span 12;
-        display: grid;
-        align-items: center;
-      }
-
-      .header-section {
-        grid-row: 1;
-      }
-
-      /* Child containers within header */
-      .left {
-        grid-column: 1 / span 2;
-      }
-
-      .middle {
-        grid-column: 3 / span 6;
-      }
-
-      .right {
-        grid-column: 9 / span 3;
-      }
-
-      /* Define map and sidebar container */
-      .content-section {
-        grid-row: 2;
-      }
-
-      .sidebar {
-        display: flex;
-        flex-direction: column;
-        grid-column: 9 / span 4;
-        background-color: var(--color-background);
-        color: var(--color-primary-light);
-        padding: 1em 1.5em 0.5em 1.5em;
-        border-top: solid 1px var(--color-primary-light);
-        border-left: solid 1px var(--color-primary-light);
-        overflow-y: auto;
-        max-height: 100%;
-      }
-
-      /* How to Use Dashboard button design */
-      .how-to-use-button {
-        text-align: center;
-        background-color: var(--color-background);
-        color: var(--color-black);
-        font-family: var(--font-primary);
-        font-weight: bold;
-        text-align: center;
-        vertical-align: middle;
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        text-transform: uppercase;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--color-black);
-        padding: 10px;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: .5em;
-        padding-bottom: .5em;
-        margin: 1em;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5em;
-      }
-
-      .play-icon {
-        font-size: 0.8em;
-      }
-
-      .right a:link {
-        text-decoration: none;
-      }
-
-      .right a:visited {
-        text-decoration: none;
-      }
-
-      /* Total accredited & salaried */
-      #totaltext {
-        color: var(--color-primary-light);
-        font-family: var(--font-display);
-        font-size: clamp(2.4rem, 1.2rem + 1.667vw, 3.8rem);
-        vertical-align: middle;
-        margin-top: 0.3em;
-        margin-bottom: 0.3em;
-        margin-right: 0.3em;
-        line-height: 1.1em;
-
-      }
-
-      #total-accredited-and-salaried {
-        color: var(--color-background);
-        font-family: var(--font-display);
-        font-size: clamp(2.4rem, 1.2rem + 1.667vw, 4rem);
-        text-align: center;
-        vertical-align: middle;
-        background-color: var(--color-secondary);
-        margin: 0.3em;
-        padding: 0.3em;
-        border-radius: var(--radius-md);
-      }
-
-      /* Map positioning */
-      #map {
-        grid-column: 1 / span 8;
-        height: 100%;
-        position: relative;
-      }
-
-      /* Legend and Download Container */
-      .legend-and-download-container {
-        position: absolute;
-        bottom: 2em;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        align-items: flex-end;
-        padding: 1em 1.5em 0.5em 1.5em;
-        z-index: 1000;
-        max-width: calc(66.67vw - 0.5em);
-      }
-
-      /* Legend design */
-      .legend {
-        background: #fff;
-        border-radius: var(--radius-md);
-        padding: .8em;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        flex: 0 1 auto;
-        width: 280px;
-        max-width: 60%;
-      }
-
-      #legend {
-        line-height: 1.3em;
-        margin-bottom: 0;
-      }
-
-      /* Download button design */
-      .download-button {
-        background-color: var(--color-background);
-        color: var(--color-black);
-        border: 1px solid var(--color-black);
-        border-radius: var(--radius-md);
-        padding: 10px;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: .5em;
-        padding-bottom: .5em;
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        font-weight: bold;
-        text-align: center;
-        text-transform: uppercase;
-        margin: 0;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        flex: 0 0 auto;
-        white-space: nowrap;
-      }
-
-      .download-button:hover {
-        background-color: var(--color-accent);
-        color: var(--color-background);
-        border: 1px solid var(--color-primary);
-        opacity: 1;
-      }
-
-      .legend-key {
-        display: inline-block;
-        border-radius: 20%;
-        width: 10px;
-        height: 10px;
-        margin-right: 5px;
-      }
-
-      .legenditems {
-        display: inline-block;
-      }
-
-      h4 {
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
-
-      #legend-title {
-        word-wrap: break-word;
-        word-break: break-word;
-        hyphens: auto;
-        line-height: 1.2;
-      }
-
-      /* Popup design */
-      .mapboxgl-popup-content {
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        opacity: 0.8;
-        background-color: var(--color-black);
-        color: var(--color-background);
-      }
-
-      /* Sidebar design */
-      #country-name {
-        font-size: clamp(1.2rem, 0.6rem + 1.8vw, 3rem);
-        text-transform: uppercase;
-        font-family: var(--font-display);
-        line-height: 1.1em;
-        margin-bottom: 1em;
-      }
-
-      .out-of-scope-text {
-        font-style: italic;
-        font-family: var(--font-primary);
-        font-size: clamp(0.63rem, 0.54rem + 0.27vw, 0.9rem);
-        color: var(--color-primary-light);
-        margin-bottom: 1em;
-      }
-
-
-      #download-link {
-        margin-top: 1em;
-      }
-
-      #download-link a {
-        color: var(--color-primary-light);
-      }
-
-      /* Button design (sidebar buttons) */
-      .buttonsidebar {
-        background-color: var(--color-background);
-        color: var(--color-black);
-        border: 1px solid var(--color-black);
-        border-radius: var(--radius-md);
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        font-weight: bold;
-        text-align: center;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: 1em;
-        padding-bottom: 1em;
-        opacity: 1;
-      }
-
-      buttonsidebar:hover {
-        background: #4F2049;
-        color: var(--color-background);
-        border: 1px solid var(--color-primary);
-        font-weight: bold;
-        opacity: 1;
-      }
-
-      /* Bottom container of sidebar */
-      .bottom {
-        margin-top: auto;
-        padding-top: 1em;
-        line-height: 1.3em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.7rem, 0.6rem + 0.2vw, 1rem);
-      }
-
-
-      #date-last-updated {
-        font-style: italic;
-      }
-
-      /* CHW Cards design */
-      .chw-cards-container {
-        display: flex;
-        flex-direction: row;
-        gap: .5em;
-        flex-wrap: wrap;
-        margin-bottom: 1em;
-      }
-
-      .chw-card {
-        background-color: var(--color-primary);
-        color: var(--color-background);
-        border: none;
-        border-radius: var(--radius-lg);
-        padding: 1.2em 0.3em;
-        cursor: pointer;
-        text-align: center;
-        transition: all 0.2s ease;
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .chw-card:hover {
-        background-color: var(--color-primary-light);
-        color: var(--color-background);
-      }
-
-      .chw-card-number {
-        font-family: var(--font-display);
-        font-size: clamp(1.08rem, 0.9rem + 0.45vw, 1.62rem);
-        font-weight: bold;
-        margin-bottom: .3em;
-      }
-
-      .chw-card-number-not-available {
-        font-family: var(--font-primary);
-        font-style: italic;
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-      }
-
-      .chw-card-label {
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        font-weight: normal;
-      }
-
-      .chw-popups-container {
-        margin-bottom: 1em;
-      }
-
-      .chw-popup {
-        display: none;
-        background-color: rgba(79, 32, 73, 0.08);
-        border: none;
-        border-radius: var(--radius-lg);
-        padding: 1em 1.5em 0.5em 1.5em;
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        line-height: 1.2;
-        width: 100%;
-      }
-
-      .chw-popup-title {
-        font-weight: bold;
-        color: var(--color-primary-light);
-        margin: 0;
-      }
-
-      .chw-popup-list {
-        list-style-type: disc;
-        margin-left: 1em;
-        padding-left: 0;
-      }
-
-      .chw-popup-list li {
-        line-height: 1.4;
-        margin: 0;
-        color: var(--color-black);
-      }
-
-
-      /* Map button design */
-      .button {
-        background-color: var(--color-background);
-        color: var(--color-black);
-        padding: 10px;
-        border: 1px solid var(--color-black);
-        border-radius: var(--radius-md);
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        font-weight: bold;
-        text-align: center;
-        padding-right: 1em;
-        padding-left: 1em;
-        padding-top: .5em;
-        padding-bottom: .5em;
-        margin: 0;
-        opacity: 0.8;
-      }
-
-      .button.active {
-        background: #4F2049;
-        color: var(--color-background);
-        border: 1px solid var(--color-primary);
-        font-weight: bold;
-        opacity: 1;
-      }
-
-      /* Policy Status Card */
-      .policy-status-card {
-        background-color: var(--color-primary);
-        color: var(--color-background);
-        border: none;
-        border-radius: var(--radius-lg);
-        padding: 1.2em;
-        margin-bottom: 1em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        line-height: 1.2;
-        width: 100%;
-      }
-
-      .policy-status-header {
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        align-items: center;
-      }
-
-      .policy-status-title {
-        font-weight: bold;
-        color: var(--color-background);
-      }
-
-      .policy-status-badge {
-        padding: .3em .6em;
-        border-radius: var(--radius-md);
-        font-weight: bold;
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        text-transform: uppercase;
-      }
-
-      .policy-status-badge.out-of-scope {
-        background-color: var(--color-neutral);
-        color: var(--color-background);
-      }
-
-      .policy-status-badge.data-not-available {
-        background-color: var(--color-light-gray);
-        color: var(--color-primary-light);
-      }
-
-      .policy-status-badge.expired,
-      .policy-status-badge.expiring {
-        background-color: var(--color-warning);
-        color: var(--color-background);
-      }
-
-      .policy-status-badge.active {
-        background-color: var(--color-secondary);
-        color: var(--color-background);
-      }
-
-      .policy-status-content {
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        line-height: 1.2;
-      }
-
-      .policy-status-line {
-        margin-bottom: .1em;
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        align-items: center;
-        width: 100%;
-      }
-
-      .policy-status-label {
-        font-weight: bold;
-        flex-shrink: 0;
-        line-height: 1.8;
-      }
-
-      .policy-status-value {
-        text-align: right;
-        word-wrap: break-word;
-        flex: 1;
-        margin-left: 1em;
-      }
-
-      .policy-status-divider {
-        height: 1px;
-        background-color: rgba(244, 241, 235, 0.5);
-        margin: .5em auto;
-        width: 100%;
-        display: block;
-      }
-
-      .policy-link {
-        color: var(--color-background);
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      .policy-link:hover {
-        text-decoration: underline;
-      }
-
-      /* Accreditation Section */
-      .accreditation-section {
-        background-color: transparent;
-        border: none;
-        border-radius: var(--radius-lg);
-        width: 100%;
-      }
-
-      .accreditation-section-header {
-        background-color: transparent;
-        border: none;
-        border-radius: var(--radius-lg);
-        padding: .5em;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        align-items: cent;
-        margin-top: 2.5em;
-      }
-
-      .accreditation-section-header:hover {
-        background-color: rgba(79, 32, 73, 0.1);
-      }
-
-      .accreditation-section-title {
-        font-family: var(--font-display);
-        font-size: clamp(0.63rem, 0.36rem + 0.9vw, 1.62rem);
-        color: var(--color-primary-light);
-        text-transform: uppercase;
-        font-weight: bold;
-        line-height: 1.2;
-      }
-
-      .accreditation-section-subtitle {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(0.55rem, 0.4rem + 0.55vw, 0.95rem);
-        color: var(--color-black);
-        font-style: normal;
-        padding: .5em;
-        line-height: 1.3;
-      }
-
-      .accreditation-section-arrow {
-        color: var(--color-neutral);
-        font-weight: bold;
-        font-size: .72rem;
-        margin-left: .5em;
-        transition: transform 0.2s ease;
-      }
-
-      .accreditation-section.expanded .accreditation-section-arrow {
-        transform: rotate(90deg);
-      }
-
-      .accreditation-section-content {
-        padding: .8em;
-        background-color: rgba(79, 32, 73, 0.08);
-        border-radius: var(--radius-lg);
-      }
-
-      #policy-timeline-section .accreditation-section-content {
-        background-color: transparent;
-      }
-
-      .accreditation-section-text {
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        color: var(--color-primary-light);
-      }
-
-      /* Accreditation Subsections */
-      .accreditation-subsection {
-        display: flex;
-        align-items: center;
-        padding-left: .8em;
-        border-left: 3px solid var(--color-primary);
-        margin-bottom: 1.2em;
-      }
-
-      .accreditation-subsection-content {
-        flex: 1;
-        margin-right: .8em;
-      }
-
-      .accreditation-subsection-title {
-        padding: 0;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        font-weight: bold;
-        text-transform: uppercase;
-        color: var(--color-primary-light);
-        line-height: 1.2;
-        margin-bottom: .4em;
-      }
-
-      .accreditation-subsection-description {
-        font-family: var(--font-primary);
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        color: var(--color-black);
-        line-height: 1.4;
-      }
-
-      .accreditation-subsection-indicator {
-        display: flex;
-        align-items: center;
-        flex-shrink: 0;
-        margin-left: .8em;
-      }
-
-      .indicator-circle {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: .4em;
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        font-weight: bold;
-      }
-
-      .indicator-circle.yes {
-        background-color: var(--color-secondary);
-        color: var(--color-light-gray);
-      }
-
-      .indicator-circle.no {
-        background-color: var(--color-warning);
-        color: var(--color-light-gray);
-      }
-
-      .indicator-circle.na {
-        background-color: var(--color-neutral);
-        color: var(--color-light-gray);
-      }
-
-      .indicator-text {
-        font-family: var(--font-primary);
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        font-weight: bold;
-        text-transform: uppercase;
-        color: #666666;
-      }
-
-      .accreditation-subsection-source {
-        font-family: var(--font-primary);
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-        color: var(--color-black);
-        margin-top: .4em;
-        line-height: 1.4;
-      }
-
-      .accreditation-subsection-source a {
-        color: var(--color-primary-light);
-        text-decoration: underline;
-        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
-      }
-
-      .accreditation-subsection-source a:hover {
-        color: var(--color-primary);
-      }
-
-      /* Policy Timeline Styles - Desktop */
-      .policy-timeline {
-        overflow-x: auto;
-        overflow-y: visible;
-        padding-bottom: 1em;
-        margin: 1.5em 0;
-      }
-
-      .timeline-inner-wrapper {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        min-width: 100%;
-        width: fit-content;
-      }
-
-      /* The horizontal line */
-      .timeline-inner-wrapper::before {
-        content: "";
-        position: absolute;
-        top: 16px; /* center of the dots */
-        left: 0;
-        right: 0;
-        height: 4px;
-        background-color: var(--color-primary);
-        z-index: 0;
-      }
-
-      .timeline-item {
-        position: relative;
-        text-align: center;
-        flex: 1 1 0;
-      }
-
-      /* The dot */
-      .timeline-item::before {
-        content: "";
-        position: absolute;
-        top: 10px; /* align with the line */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background-color: var(--color-primary);
-        border: 2px solid var(--color-light-gray);
-        z-index: 1;
-      }
-
-      .timeline-year {
-        font-family: 'Anton', sans-serif;
-        font-size: .81rem;
-        color: var(--color-primary);
-        margin-top: 2.8em;
-        margin-bottom: .5em;
-        text-align: center;
-      }
-
-      .timeline-milestones-container {
-        display: flex;
-        flex-direction: column;
-        gap: .7em;
-      }
-
-      .timeline-milestone {
-        font-family: var(--font-primary);
-        font-size: .7rem;
-        color: var(--color-primary-light);
-        text-align: center;
-        line-height: 1.2;
-        max-width: 180px;
-        margin: 0 auto;
-      }
-
-      .timeline-milestone a {
-        color: var(--color-primary-light);
-        text-decoration: underline;
-      }
-
-      .timeline-milestone a:hover {
-        color: var(--color-primary);
-      }
-
-      /* AI Summary Card Styles - Desktop */
-      .ai-summary-card {
-        background-color: var(--color-accent);
-        border-radius: var(--radius-lg);
-        padding: 1.5em;
-        margin-top: 2.5em;
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-      }
-
-      .ai-summary-title {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        font-size: .81rem;
-        color: var(--color-black);
-        text-transform: uppercase;
-        font-weight: bold;
-        line-height: 1.2;
-        margin-bottom: 1em;
-      }
-
-      .ai-summary-content {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        font-size: .9rem;
-        color: var(--color-black);
-        line-height: 1.2;
-      }
-
-      .buttoncontainer {
-        position: absolute;
-        top: 20%;
-        left: 0;
-        margin-left: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5em;
-        max-width: calc(66.67vw - 20px);
-        z-index: 1000;
-        padding-top: clamp(0.3em, 0.2em + 0.2vw, 0.6em);
-      }
-
-      .button-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5em;
-      }
-
-      /* Search bar design */
-      .searchcontainer {
-        width: 350px;
-        z-index: 1000;
-        position: relative;
-      }
-
-      .search-input {
-        width: 100%;
-        padding: 0.75em 1.5em;
-        border: 1px solid var(--color-black);
-        border-radius: var(--radius-md);
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        background-color: var(--color-white);
-        color: var(--color-black);
-      }
-
-      .search-input:focus {
-        outline: none;
-        border-color: var(--color-primary);
-        box-shadow: 0 0 5px rgba(79, 32, 73, 0.3);
-      }
-
-      .search-results {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: var(--color-white);
-        border: 1px solid var(--color-black);
-        border-top: none;
-        border-radius: 0 0 5px 5px;
-        max-height: 300px;
-        overflow-y: auto;
-        display: none;
-        z-index: 1001;
-      }
-
-      .search-result-item {
-        cursor: pointer;
-        padding: .8em;
-        font-family: var(--font-primary);
-        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
-        border-bottom: 1px solid var(--color-light-gray);
-      }
-
-      .search-result-item:hover {
-        background-color: var(--color-accent);
-        color: var(--color-background);
-      }
-
-      .search-result-item:last-child {
-        border-bottom: none;
-      }
-
-      button:not(.close-button):hover {
-        background: #4F2049;
-        color: var(--color-background);
-        font-weight: bold;
-        border: 1px solid var(--color-primary);
-      }
-
-      /* Button hover (definition) design - Individual button positioning */
-      .button-with-tooltip {
-        position: relative;
-        display: inline-block;
-      }
-
-      .accredited-chws-button-def,
-      .salaried-chws-button-def,
-      .accredited-and-salaried-chws-button-def,
-      .policy-status-button-def,
-      .implementation-evidence-button-def {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-top: 8px;
-        max-width: 300px;
-        min-width: 200px;
-        font-family: 'Helvetica Neue', 'Arial Narrow', Sans-serif;
-        font-size: 0.85rem;
-        line-height: 1.4;
-        background-color: var(--color-black);
-        color: var(--color-background);
-        padding: 12px 16px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        opacity: 1;
-        z-index: 2001;
-        pointer-events: none;
-      }
-
-      /* Tooltip arrow */
-      .accredited-chws-button-def::after,
-      .salaried-chws-button-def::after,
-      .accredited-and-salaried-chws-button-def::after,
-      .policy-status-button-def::after,
-      .implementation-evidence-button-def::after {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 6px solid transparent;
-        border-bottom-color: var(--color-black);
-      }
-
-      /* Popup styles */
-      .popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-      }
-
-      .popup-content {
-        background-color: var(--color-background);
-        border-radius: var(--radius-md);
-        padding: 2.5em;
-        max-width: 700px;
-        max-height: 80%;
-        overflow-y: auto;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      }
-
-      .popup-header {
-        display: flex;
-        justify-content: space-between;
-        gap: 2em;
-        align-items: center;
-        margin-bottom: 1em;
-        padding-bottom: 0.5em;
-      }
-
-      .popup-header h3 {
-        margin: 0;
-        font-family: var(--font-display);
-        color: var(--color-primary-light);
-        font-size: 1.62rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-
-      .close-button {
-        background: none;
-        border: none;
-        font-size: 2rem;
-        color: var(--color-primary);
-        cursor: pointer;
-        padding: 0;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: color 0.2s ease;
-        outline: none;
-        box-shadow: none;
-      }
-
-      .close-button:hover {
-        color: var(--color-primary-light);
-        background: none;
-        outline: none;
-        box-shadow: none;
-      }
-
-      .close-button:focus,
-      .close-button:focus-visible,
-      .close-button:active {
-        outline: none;
-        box-shadow: none;
-        background: none;
-        border: none;
-      }
-
-      .popup-body {
-        font-family: var(--font-primary);
-        color: var(--color-black);
-        line-height: 1.4;
-        font-size: 0.9rem;
-      }
-
+      #totaltext { font-size: clamp(2.4rem, 1.2rem + 1.667vw, 3.8rem); }
+      #total-accredited-and-paid { font-size: clamp(2.4rem, 1.2rem + 1.667vw, 4rem); }
+      .out-of-scope-text { font-size: clamp(0.63rem, 0.54rem + 0.27vw, 0.9rem); }
+      .bottom { font-size: clamp(0.7rem, 0.6rem + 0.2vw, 1rem); }
+      .chw-card-number { font-size: clamp(1.08rem, 0.9rem + 0.45vw, 1.62rem); }
+      .accreditation-section { border-radius: var(--radius-lg); }
+      .accreditation-section-header { border-radius: var(--radius-lg); }
+      .policy-timeline { margin: 1.5em 0; }
+      .timeline-inner-wrapper::before { top: 16px; height: 4px; }
+      .timeline-item::before { top: 10px; width: 12px; height: 12px; }
+      .timeline-year { font-size: .81rem; margin-top: 2.8em; margin-bottom: .5em; }
+      .timeline-milestones-container { gap: .7em; }
+      .timeline-milestone { font-size: .7rem; line-height: 1.2; max-width: 180px; }
+      .buttoncontainer { top: 20%; }
+      .searchcontainer { width: 350px; }
+      .search-results { max-height: 300px; }
+      .popup-content { padding: 2.5em; max-width: 700px; }
+      .popup-header h3 { font-size: 1.62rem; }
+      .close-button { font-size: 2rem; width: 40px; height: 40px; }
+      .popup-body { font-size: 0.9rem; }
     }
 
   </style>
@@ -3012,7 +1571,7 @@
 
 <body>
 
-  <!-- Page congainer -->
+  <!-- Page container -->
   <div class="container">
 
     <!-- Header container, with title, subtitle, proCHW total, and accompanying text -->
@@ -3020,15 +1579,15 @@
 
       <!-- Left side of header -->
       <div class="header-section left">
-        <div id="total-accredited-and-salaried"></div>
+        <div id="total-accredited-and-paid"></div>
       </div>
 
       <!-- Middle of header -->
-      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED AND SALARIED</div>
+      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED AND PAID</div>
 
       <!-- Right side of header -->
       <div class="header-section right">
-        <button type="button" id="how-to-use-button" class="how-to-use-button">
+        <button type="button" id="how-to-use-button" class="how-to-use-button" data-popup="how-to-use-popup">
           <span class="play-icon">▶</span>
           HOW TO USE THE DASHBOARD
         </button>
@@ -3043,20 +1602,20 @@
           <h3>HOW TO USE THE DASHBOARD</h3>
           <button type="button" id="close-popup" class="close-button">&times;</button>
         </div>
-        <div class="popup-body" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-          <p style="margin-bottom: 1.5em;">This dashboard provides comprehensive data on proCHW policies in Countdown to 2030 countries. Scroll past the map to see methods and definitions for dashboard information.</p>
+        <div class="popup-body">
+          <p>This dashboard provides comprehensive data on proCHW policies in Countdown to 2030 countries. Scroll past the map to see methods and definitions for dashboard information.</p>
           
-          <h4 style="font-weight: bold; text-transform: uppercase; color: #4B0082; margin-top: 1.5em; margin-bottom: 0.5em;">Getting Started</h4>
-          <p style="margin-bottom: 1.5em;">Use the buttons at the top of the map to view different indicators, including accredited CHWs, salaried CHWs, accredited and salaried CHWs, policy status, and evidence for CHW policy implementation. Download a high-resolution photo of the map or the raw data using the download button in the bottom right hand corner of the map.</p>
+          <h4>Getting Started</h4>
+          <p>Use the buttons at the top of the map to view different indicators, including accredited CHWs, paid CHWs, accredited and paid CHWs, policy status, and evidence for CHW policy implementation. Download a high-resolution photo of the map or the raw data using the download button in the bottom right hand corner of the map.</p>
           
-          <h4 style="font-weight: bold; text-transform: uppercase; color: #4B0082; margin-top: 1.5em; margin-bottom: 0.5em;">Map Interaction</h4>
-          <p style="margin-bottom: 1.5em;">Click on countries to view detailed policy information in the sidebar, or use the search bar to quickly find specific countries. The legend at the bottom left explains the color coding for each indicator.</p>
+          <h4>Map Interaction</h4>
+          <p>Click on countries to view detailed policy information in the sidebar, or use the search bar to quickly find specific countries. The legend at the bottom left explains the color coding for each indicator.</p>
           
-          <h4 style="font-weight: bold; text-transform: uppercase; color: #4B0082; margin-top: 1.5em; margin-bottom: 0.5em;">Sidebar Features</h4>
-          <p style="margin-bottom: 1.5em;">The sidebar shows detailed country information including CHW group information; policy or other government document details; evidence for commitments to professional CHWs including accreditation, salary, supervision, skills, and supplies; evidence for policy implementation; where available, a timeline of policy milestones; and AI-generated summaries for each country. Click on the expandable sections to view this information.</p>
+          <h4>Sidebar Features</h4>
+          <p>The sidebar shows detailed country information including CHW group information; policy or other government document details; evidence for commitments to professional CHWs including accreditation, paid, supervision, skills, and supplies; evidence for policy implementation; where available, a timeline of policy milestones; and AI-generated summaries for each country. Click on the expandable sections to view this information.</p>
           
-          <h4 style="font-weight: bold; text-transform: uppercase; color: #4B0082; margin-top: 1.5em; margin-bottom: 0.5em;">See Something Missing?</h4>
-          <p style="margin-bottom: 1.5em;">We want to hear from you! Please use the link in the sidebar to submit information or corrections.</p>
+          <h4>See Something Missing?</h4>
+          <p>We want to hear from you! Please use the link in the sidebar to submit information or corrections.</p>
         </div>
       </div>
     </div>
@@ -3115,7 +1674,7 @@
           <div id="legenditems"></div>
         </div>
         
-        <button type="button" id="download-button" class="download-button">
+        <button type="button" id="download-button" class="download-button" data-popup="download-popup">
           Download High-Res Image or Raw Data
         </button>
       </div>
@@ -3125,35 +1684,29 @@
     <div id="buttoncontainer" class="buttoncontainer">
       <div class="button-row">
         <div class="button-with-tooltip">
-          <button type="button" id="accredited-chws-button" class="button">ACCREDITED CHWS</button>
-          <div class="accredited-chws-button-def">Does the country policy document explicitly recognize
-            roles, qualifications, and competencies for CHWs?
-          </div>
-        </div>
-        <div class="button-with-tooltip">
-          <button type="button" id="salaried-chws-button" class="button">SALARIED CHWS</button>
-          <div class="salaried-chws-button-def">Does the policy document provide for CHWs to be compensated
-            through government wage bills? (Policies that stipulate CHW remuneration via performance-based
-            incentives, stipends, and/or non-financial incentives like gumboots, t-shirts, soap, and
-            batteries were coded as "No".)
-          </div>
-        </div>
-        <div class="button-with-tooltip">
-          <button type="button" id="accredited-and-salaried-chws-button" class="button">ACCREDITED & SALARIED CHWS</button>
-          <div class="accredited-and-salaried-chws-button-def">For purposes of
+          <button type="button" id="accredited-and-paid-chws-button" class="button" data-indicator="paid_accredited_cat" data-header-key="accredited-and-paid">ACCREDITED & PAID CHWS</button>
+          <div class="accredited-and-paid-chws-button-def">For purposes of
             this dashboard, we focus on two of the eight best practices that are indicative of formal,
             fulfilling, and dignified labor conditions and for which sufficient data exists in policy
             documents: accreditation and compensation.
           </div>
         </div>
         <div class="button-with-tooltip">
-          <button type="button" id="policy-status-button" class="button">POLICY STATUS</button>
-          <div class="policy-status-button-def">What is the status of the country's policy?
+          <button type="button" id="accredited-chws-button" class="button" data-indicator="accreditation_cat" data-header-key="accredited">ACCREDITED CHWS</button>
+          <div class="accredited-chws-button-def">Does the government document explicitly recognize roles, qualifications, and/or competencies for at least one CHW group?</div>
+        </div>
+        <div class="button-with-tooltip">
+          <button type="button" id="paid-chws-button" class="button" data-indicator="paid_cat" data-header-key="paid">PAID CHWS</button>
+          <div class="paid-chws-button-def">Does the government document provide for at least one CHW group to be compensated, either through government wage bills (salaries) or another form of regular payment?</div>
+        </div>
+        <div class="button-with-tooltip">
+          <button type="button" id="implementation-evidence-button" class="button" data-indicator="any_implementation_evidence" data-header-key="implementation-evidence">IMPLEMENTATION EVIDENCE</button>
+          <div class="implementation-evidence-button-def">Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?
           </div>
         </div>
         <div class="button-with-tooltip">
-          <button type="button" id="implementation-evidence-button" class="button">IMPLEMENTATION EVIDENCE</button>
-          <div class="implementation-evidence-button-def">Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?
+          <button type="button" id="policy-status-button" class="button" data-indicator="doc_status" data-header-key="policy-status">POLICY STATUS</button>
+          <div class="policy-status-button-def">What is the status of the country's policy?
           </div>
         </div>
       </div>
@@ -3180,19 +1733,19 @@
         <!-- CHW Cards Container -->
         <div id="chw-cards-container" class="chw-cards-container" style="display: none;">
           <!-- Total CHW Groups Card -->
-          <div id="total-chw-groups-card" class="chw-card">
+          <div id="total-chw-groups-card" class="chw-card" data-card-popup="total-chw-groups-popup">
             <div id="total-chw-groups-number" class="chw-card-number"></div>
             <div class="chw-card-label">Total CHW Groups</div>
           </div>
           
-          <!-- Salaried & Accredited Card -->
-          <div id="salaried-accredited-card" class="chw-card">
-            <div id="salaried-accredited-number" class="chw-card-number"></div>
-            <div class="chw-card-label">Salaried & Accredited</div>
+          <!-- Paid & Accredited Card -->
+          <div id="paid-accredited-card" class="chw-card" data-card-popup="paid-accredited-popup">
+            <div id="paid-accredited-number" class="chw-card-number"></div>
+            <div class="chw-card-label">Paid & Accredited</div>
           </div>
           
           <!-- CHW Associations Card -->
-          <div id="chw-associations-card" class="chw-card">
+          <div id="chw-associations-card" class="chw-card" data-card-popup="chw-associations-popup">
             <div id="chw-associations-number" class="chw-card-number"></div>
             <div class="chw-card-label">CHW Associations</div>
           </div>
@@ -3205,9 +1758,9 @@
             <ul id="total-chw-groups-list" class="chw-popup-list"></ul>
           </div>
           
-          <div id="salaried-accredited-popup" class="chw-popup">
-            <div class="chw-popup-title">Salaried & Accredited Group(s):</div>
-            <ul id="salaried-accredited-list" class="chw-popup-list"></ul>
+          <div id="paid-accredited-popup" class="chw-popup">
+            <div class="chw-popup-title">Paid & Accredited Group(s):</div>
+            <ul id="paid-accredited-list" class="chw-popup-list"></ul>
           </div>
           
           <div id="chw-associations-popup" class="chw-popup">
@@ -3238,10 +1791,15 @@
           </div>
         </div>
         
-        <!-- Accreditation, Salary, Supervision, Skills, & Supplies Section -->
+        <!-- No known CHWs message (shown below policy status when applicable) -->
+        <div id="no-known-chws-message" class="out-of-scope-text" style="display: none;">
+          While this is a Countdown to 2030 country, we could not find evidence of CHWs existing in this country.
+        </div>
+
+        <!-- Accreditation, Paid, Supervision, Skills, & Supplies Section -->
         <div id="accreditation-section" class="accreditation-section" style="display: none;">
           <div class="accreditation-section-header">
-            <div class="accreditation-section-title">ACCREDITATION, SALARY, SUPERVISION, SKILLS, & SUPPLIES</div>
+            <div class="accreditation-section-title">ACCREDITATION, PAYMENT, SUPERVISION, SKILLS, & SUPPLIES</div>
             <div class="accreditation-section-arrow">></div>
           </div>
           <div class="accreditation-section-subtitle">Does the policy reflect formal commitments to professional CHWs?</div>
@@ -3249,7 +1807,11 @@
             <!-- Accreditation Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">ACCREDITATION</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">ACCREDITATION</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document explicitly recognize roles, qualifications, and/or competencies for at least one CHW group?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="accreditation-description"></div>
                 <div class="accreditation-subsection-source" id="accreditation-source"></div>
               </div>
@@ -3259,23 +1821,31 @@
               </div>
             </div>
             
-            <!-- Salary Subsection -->
+            <!-- Paid Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">SALARY</div>
-                <div class="accreditation-subsection-description" id="salary-description"></div>
-                <div class="accreditation-subsection-source" id="salary-source"></div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">PAYMENT</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document provide for at least one CHW group to be compensated, either through government wage bills (salaries) or another form of regular payment?</div>
+                </div>
+                <div class="accreditation-subsection-description" id="paid-description"></div>
+                <div class="accreditation-subsection-source" id="paid-source"></div>
               </div>
               <div class="accreditation-subsection-indicator">
-                <div class="indicator-circle" id="salary-indicator"></div>
-                <div class="indicator-text" id="salary-text"></div>
+                <div class="indicator-circle" id="paid-indicator"></div>
+                <div class="indicator-text" id="paid-text"></div>
               </div>
             </div>
             
             <!-- Supervision Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">SUPERVISION</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">SUPERVISION</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document establish a functional supervision system?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="supervision-description"></div>
                 <div class="accreditation-subsection-source" id="supervision-source"></div>
               </div>
@@ -3288,7 +1858,11 @@
             <!-- Skills Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">SKILLS</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">SKILLS</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document detail functional training for CHWs?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="skills-description"></div>
                 <div class="accreditation-subsection-source" id="skills-source"></div>
               </div>
@@ -3301,7 +1875,11 @@
             <!-- Supplies Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">SUPPLIES</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">SUPPLIES</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document detail a functional system for CHWs to access equipment, supplies, and job aids?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="supplies-description"></div>
                 <div class="accreditation-subsection-source" id="supplies-source"></div>
               </div>
@@ -3319,12 +1897,16 @@
             <div class="accreditation-section-title">POLICY IMPLEMENTATION</div>
             <div class="accreditation-section-arrow">></div>
           </div>
-          <div class="accreditation-section-subtitle">Is there any evidence of CHW policy implementation, as measured by the presence of any one of five proxy indicators?</div>
+          <div class="accreditation-section-subtitle">Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?</div>
           <div class="accreditation-section-content" style="display: none;">
             <!-- Domestic Financing Commitment Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">DOMESTIC FINANCING COMMITMENT</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">DOMESTIC FINANCING COMMITMENT</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document describe commitments to finance CHW programs using domestic resources?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="domestic-financing-commitment-description"></div>
                 <div class="accreditation-subsection-source" id="domestic-financing-commitment-source"></div>
               </div>
@@ -3337,7 +1919,11 @@
             <!-- CHW Budget Line Item Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">CHW BUDGET LINE ITEM</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">CHW BUDGET LINE ITEM</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Is there evidence of domestic resources being used for CHW programs, such as a dedicated budget line or budget allocation in the national health budget?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="chw-budget-line-item-description"></div>
                 <div class="accreditation-subsection-source" id="chw-budget-line-item-source"></div>
               </div>
@@ -3350,7 +1936,11 @@
             <!-- Data Systems / Feedback Loops Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">DATA SYSTEMS / FEEDBACK LOOPS</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">DATA SYSTEMS / FEEDBACK LOOPS</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document detail a functional data system for CHWs, including CHW data collection using standardized formats, supervisor review and feedback, reporting into public-sector M&amp;E systems, and data use for community problem-solving?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="data-systems-description"></div>
                 <div class="accreditation-subsection-source" id="data-systems-source"></div>
               </div>
@@ -3363,7 +1953,11 @@
             <!-- MERL / M&E Framework Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">MERL / M&E FRAMEWORK</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">MERL / M&amp;E FRAMEWORK</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document describe a national MERL framework for measuring and tracking the performance of CHW programs?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="merl-description"></div>
                 <div class="accreditation-subsection-source" id="merl-source"></div>
               </div>
@@ -3376,7 +1970,11 @@
             <!-- CHW Registry Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">CHW REGISTRY</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">CHW REGISTRY</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document describe the use of a digital registry or CHW master list?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="chw-registry-description"></div>
                 <div class="accreditation-subsection-source" id="chw-registry-source"></div>
               </div>
@@ -3389,7 +1987,11 @@
             <!-- Costed Documentation Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">COSTED DOCUMENTATION</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">COSTED DOCUMENTATION</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Is there costing information that explicitly includes CHWs?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="costed-documentation-description"></div>
                 <div class="accreditation-subsection-source" id="costed-documentation-source"></div>
               </div>
@@ -3402,7 +2004,11 @@
             <!-- Operational Materials Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
-                <div class="accreditation-subsection-title">OPERATIONAL MATERIALS</div>
+                <div class="subsection-title-with-tooltip">
+                  <span class="accreditation-subsection-title">OPERATIONAL MATERIALS</span>
+                  <span class="subsection-info-icon" aria-hidden="true">i</span>
+                  <div class="sidebar-subsection-tooltip">Does the government document describe existing or planned operational or implementation guidance for CHW programs, including operational plans, implementation manuals, protocols, or other resources that support CHW program execution?</div>
+                </div>
                 <div class="accreditation-subsection-description" id="operational-materials-description"></div>
                 <div class="accreditation-subsection-source" id="operational-materials-source"></div>
               </div>
@@ -3436,7 +2042,7 @@
         </div>
         
         <!-- Submit for Review Button -->
-        <button type="button" id="submit-review-button" class="buttonsidebar" style="display: none; margin-top: 3em; width: 100%; cursor: pointer; text-transform: uppercase;">
+        <button type="button" id="submit-review-button" class="buttonsidebar" data-popup="submit-review-popup" style="display: none; margin-top: 3em; width: 100%; cursor: pointer; text-transform: uppercase;">
           See something missing? Submit it for review by the CHIC team
         </button>
         
@@ -3452,12 +2058,10 @@
 
   </div>
 
-</body>
-
 <script>
 
   // Initialize data
-  let csvData = false
+  let csvData = [];
 
   // Basemap info
   mapboxgl.accessToken = 'pk.eyJ1IjoiY2hpY3BvbGljeWRhc2hib2FyZCIsImEiOiJjbGV5M3ZncXIwam96M3FuMGU4b3puMDVlIn0.aIXbEvRX7bYtEjBE2mmLTg';
@@ -3471,354 +2075,331 @@
 
   // Create function to build a legend
   function buildLegend(legendColors, legendValues) {
-    // First empty legend items
-    const item = $('#legenditems')
-    item.empty()
+    const item = document.getElementById('legenditems');
+    item.innerHTML = '';
     legendValues.forEach((legendValue, i) => {
-      const color = legendColors[i];
-      const key = document.createElement('span')
+      const key = document.createElement('span');
       key.className = 'legend-key';
-      key.style.backgroundColor = color
+      key.style.backgroundColor = legendColors[i];
 
       const value = document.createElement('span');
-      value.innerHTML = `${legendValue}`;
-      item.append(key);
-      item.append(value);
-      item.append(document.createElement("br"));
-    })
+      value.innerHTML = legendValue;
+      item.append(key, value, document.createElement('br'));
+    });
   }
 
-  // Create function to define how colors are added to map and to build the legend
-  function setColorsToMap(indicatorName) {
-
-    // Initialize arrays for the map colors, the legend colors, and the legend values
-    var caseExpression = []
-
-    // If indicator is salaried_accredited_cat:
-    if (indicatorName == "salaried_accredited_cat") {
-
-      // Initialize arrays for all possible values of this indicator
-      let bothArray = []
-      let oneArray = []
-      let neitherArray = []
-      let naArray = []
-
-      // Push ISO codes from csv data to arrays based on values
-      csvData.forEach((row) => {
-        if (row[indicatorName] == "Both") {
-          bothArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "Only salaried or only accredited") {
-          oneArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "Neither") {
-          neitherArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "No document available" || row[indicatorName] == "Not specified in documents reviewed") {
-          naArray.push(row.ISO_A3)
-        }
-      })
-
-      // Set Mapbox colors based on arrays
-      var caseExpression = [
-        'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", bothArray]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", oneArray]], "#20bdc5",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", neitherArray]], "#F36744",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
-        "#dbdbdb"
+  // Config for each map indicator: categories in legend display order
+  const indicatorConfigs = {
+    paid_accredited_cat: {
+      title: "Is at least one CHW group paid (salaried or regular payments) & accredited (fully or partially)?",
+      categories: [
+        { match: ["both"], color: "#9272d9", label: "Both (salaried or regular payments AND fully or partially accredited)" },
+        { match: ["only accredited or only paid"], color: "#20bdc5", label: "Only accredited (fully or partially) or only paid (salaried or regular payments)" },
+        { match: ["neither", "no document available", "not specified in documents reviewed"], color: "#F36744", label: "Neither or not specified in documents reviewed" },
+        { match: ["no known chws"], color: "#999999", label: "No known CHWs" },
       ]
-
-      // Set legend title, colors and values manually
-      $('#legend-title').text("Is at least one CHW group salaried & accredited?")
-      const legendColors = ["#9272d9", "#20bdc5", "#F36744", "#999999", "#dbdbdb"]
-      const legendValues = ["Both", "Only salaried or only accredited", "Neither", "No document available or not specified in documents reviewed", "Out of scope"]
-
-      // Now build legend
-      buildLegend(legendColors, legendValues)
-
+    },
+    accreditation_cat: {
+      title: "Is at least one CHW group accredited (fully or partially)?",
+      categories: [
+        { match: ["yes"], color: "#9272d9", label: "Yes (policy details all elements)", hoverLabel: "Yes" },
+        { match: ["partial"], color: "#20bdc5", label: "Partial (policy details 1-2 elements)", hoverLabel: "Partial" },
+        { match: ["no", "not specified in documents reviewed"], color: "#F36744", label: "No (no evidence of accreditation based on available sources)", hoverLabel: "No" },
+        { match: ["no known chws"], color: "#999999", label: "No known CHWs", hoverLabel: "No known CHWs" },
+      ]
+    },
+    paid_cat: {
+      title: "Is at least one CHW group paid (salaried or regular payments)?",
+      categories: [
+        { match: ["yes, salaried"], color: "#9272d9", label: "Yes (CHWs are paid via a wage bill)", hoverLabel: "Yes" },
+        { match: ["partial, paid regularly"], color: "#20bdc5", label: "Partial (CHWs receive regular payments e.g. monthly stipends)", hoverLabel: "Partial" },
+        { match: ["no, irregular pay or no evidence of payments", "not specified in documents reviewed"], color: "#F36744", label: "No (CHWs receive irregular payments, non-monetary incentives only, are explicitly not paid, or there is no evidence of payment available in the documents reviewed)", hoverLabel: "No" },
+        { match: ["no known chws"], color: "#999999", label: "No known CHWs", hoverLabel: "No known CHWs" },
+      ]
+    },
+    doc_status: {
+      title: "What is the country policy's status?",
+      categories: [
+        { match: ["active"], color: "#9272d9", label: "Active" },
+        { match: ["expiring within 2 years"], color: "#20bdc5", label: "Expiring within 2 years" },
+        { match: ["expired"], color: "#F36744", label: "Expired" },
+        { match: ["no document available"], color: "#999999", label: "No document available" },
+      ]
+    },
+    any_implementation_evidence: {
+      title: "Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?",
+      categories: [
+        { match: ["yes"], color: "#9272d9", label: "Yes", hoverLabel: "Yes" },
+        { match: ["no", "no document available", "not specified in documents reviewed"], color: "#F36744", label: "No evidence of implementation based on available sources", hoverLabel: "No" },
+        { match: ["no known chws"], color: "#999999", label: "No known CHWs", hoverLabel: "No known CHWs" },
+      ]
     }
-
-    // Else if indicator is at_least_1_accredited:
-    if (indicatorName == "at_least_1_accredited") {
-
-      // Initialize arrays for all possible values of this indicator
-      let yArray = []
-      let nArray = []
-      let naArray = []
-
-      // Push ISO codes from csv data to arrays based on values
-      csvData.forEach((row) => {
-        if (row[indicatorName] == "Yes") {
-          yArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "No") {
-          nArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "No document available" || row[indicatorName] == "Not specified in documents reviewed") {
-          naArray.push(row.ISO_A3)
-        }
-      })
-
-      // Set Mapbox colors based on arrays
-      var caseExpression = [
-        'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", yArray]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", nArray]], "#F36744",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
-        "#dbdbdb"
-      ]
-
-      // Set legend title, colors and values manually
-      $('#legend-title').text("Is at least one CHW group accredited?")
-      var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
-      var legendValues = ["Yes", "No", "No document available or not specified in documents reviewed", "Out of scope"]
-
-      // Now build legend
-      buildLegend(legendColors, legendValues)
-
-    }
-
-    // Else if indicator is at_least_1_salaried:
-    if (indicatorName == "at_least_1_salaried") {
-
-      // Initialize arrays for all possible values of this indicator
-      let yArray = []
-      let nArray = []
-      let naArray = []
-
-      // Push ISO codes from csv data to arrays based on values
-      csvData.forEach((row) => {
-        if (row[indicatorName] == "Yes") {
-          yArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "No") {
-          nArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "No document available" || row[indicatorName] == "Not specified in documents reviewed") {
-          naArray.push(row.ISO_A3)
-        }
-      })
-
-      // Set Mapbox colors based on arrays
-      var caseExpression = [
-        'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", yArray]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", nArray]], "#F36744",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
-        "#dbdbdb"
-      ]
-
-      // Set legend title, colors and values manually
-      $('#legend-title').text("Is at least one CHW group salaried?")
-      var legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
-      var legendValues = ["Yes", "No", "No document available or not specified in documents reviewed", "Out of scope"]
-
-      // Now build legend
-      buildLegend(legendColors, legendValues)
-
-    }
-
-    // Else if indicator is policy status:
-    if (indicatorName == "doc_status") {
-
-      // Initialize arrays for all possible values of this indicator
-      let activeArray = []
-      let expiringArray = []
-      let expiredArray = []
-      let naArray = []
-
-      // Push ISO codes from csv data to arrays based on values
-      csvData.forEach((row) => {
-        if (row[indicatorName] == "Active") {
-          activeArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "Expiring within 2 years") {
-          expiringArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "Expired") {
-          expiredArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "No document available") {
-          naArray.push(row.ISO_A3)
-        }
-      })
-
-      // Set Mapbox colors based on arrays
-      var caseExpression = [
-        'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", activeArray]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", expiringArray]], "#20bdc5",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", expiredArray]], "#F36744",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
-        "#dbdbdb"
-      ]
-
-      // Set legend title, colors and values manually
-      $('#legend-title').text("What is the country policy's status?")
-      const legendColors = ["#9272d9", "#20bdc5", "#F36744", "#999999", "#dbdbdb"]
-      const legendValues = ["Active", "Expiring within 2 years", "Expired", "No document available", "Out of scope"]
-
-      // Now build legend
-      buildLegend(legendColors, legendValues)
-
-      }
-
-    // Else if indicator is any_implementation_evidence:
-    if (indicatorName == "any_implementation_evidence") {
-
-      // Initialize arrays for all possible values of this indicator
-      let yArray = []
-      let nArray = []
-      let naArray = []
-
-      // Push ISO codes from csv data to arrays based on values
-      csvData.forEach((row) => {
-        if (row[indicatorName] == "Yes") {
-          yArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "No") {
-          nArray.push(row.ISO_A3)
-        }
-        if (row[indicatorName] == "No document available" || row[indicatorName] == "Not specified in documents reviewed") {
-          naArray.push(row.ISO_A3)
-        }
-      })
-
-      // Set Mapbox colors based on arrays
-      var caseExpression = [
-        'case',
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", yArray]], "#9272d9",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", nArray]], "#F36744",
-        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", naArray]], "#999999",
-        "#dbdbdb"
-      ]
-
-      // Set legend title, colors and values manually
-      $('#legend-title').text("Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?")
-      const legendColors = ["#9272d9", "#F36744", "#999999", "#dbdbdb"]
-      const legendValues = ["Yes", "No", "No document available or not specified in documents reviewed", "Out of scope"]
-
-      // Now build legend
-      buildLegend(legendColors, legendValues)
-
-      }
-
-    // Now, based on results of if statements and indicator selected, set map colors 
-    map.setPaintProperty('country-boundaries', 'fill-color', caseExpression)
-
   };
+
+  // Return the legend label for a raw indicator value (for legend and elsewhere)
+  function getLegendLabel(indicatorName, rawValue) {
+    const config = indicatorConfigs[indicatorName];
+    if (!config) return rawValue && rawValue.trim() !== '' ? rawValue.trim() : '—';
+    const val = (rawValue || '').trim().toLowerCase();
+    for (let i = 0; i < config.categories.length; i++) {
+      if (config.categories[i].match.includes(val)) return config.categories[i].label;
+    }
+    return val !== '' ? rawValue.trim() : '—';
+  }
+
+  // Short label for map hover (uses hoverLabel when present, else legend label)
+  function getHoverLabel(indicatorName, rawValue) {
+    const config = indicatorConfigs[indicatorName];
+    if (!config) return rawValue && rawValue.trim() !== '' ? rawValue.trim() : '—';
+    const val = (rawValue || '').trim().toLowerCase();
+    for (let i = 0; i < config.categories.length; i++) {
+      const cat = config.categories[i];
+      if (cat.match.includes(val)) return cat.hoverLabel != null ? cat.hoverLabel : cat.label;
+    }
+    return val !== '' ? rawValue.trim() : '—';
+  }
+
+  // Color the map and build the legend for a given indicator
+  function setColorsToMap(indicatorName) {
+    const config = indicatorConfigs[indicatorName];
+    if (!config) return;
+
+    // Bucket ISO codes by category (case-insensitive matching)
+    const buckets = config.categories.map(() => []);
+    csvData.forEach(row => {
+      const val = (row[indicatorName] || "").trim().toLowerCase();
+      for (let i = 0; i < config.categories.length; i++) {
+        if (config.categories[i].match.includes(val)) {
+          buckets[i].push(row.ISO_A3);
+          break;
+        }
+      }
+    });
+
+    // Build Mapbox case expression
+    const caseExpression = ['case'];
+    config.categories.forEach((cat, i) => {
+      caseExpression.push(
+        ["in", ["get", "iso_3166_1_alpha_3"], ["literal", buckets[i]]],
+        cat.color
+      );
+    });
+    caseExpression.push("#dbdbdb");
+
+    map.setPaintProperty('country-boundaries', 'fill-color', caseExpression);
+
+    // Build legend
+    document.getElementById('legend-title').textContent = config.title;
+    buildLegend(
+      config.categories.map(c => c.color).concat("#dbdbdb"),
+      config.categories.map(c => c.label).concat("Out of scope")
+    );
+  }
 
   // Create function to sum countries with data available for denominator 
   function denominator(sumDenominator) {
 
-    let denominatorArray = []
+    let denominatorArray = [];
 
     csvData.forEach((row) => {
-      if (row[sumDenominator] == "Yes" || row[sumDenominator] == "No") {
-        denominatorArray.push(row.ISO_A3)
-      } 
-    })
+      if (row[sumDenominator] === "Yes" || row[sumDenominator] === "No") {
+        denominatorArray.push(row.ISO_A3);
+      }
+    });
 
-    return denominatorSum = denominatorArray.length
+    return denominatorArray.length;
+  }
 
-  };
+  // Count denominator from paid_accredited_cat categorical values
+  function denominatorCategorical() {
+    if (!csvData) return 0;
+    const validValues = ["Both", "Neither", "Only accredited or only paid", "Not specified in documents reviewed"];
+    let count = 0;
+    csvData.forEach((row) => {
+      const val = (row.paid_accredited_cat || "").trim();
+      if (validValues.includes(val)) count++;
+    });
+    return count;
+  }
 
   // Create function to sum counts for tickers
   function sumIndicators(sumIndicatorName) {
 
-    let indicatorArray = []
+    let indicatorArray = [];
 
     csvData.forEach((row) => {
-      if (row[sumIndicatorName] == "Yes") {
-        indicatorArray.push(row.ISO_A3)
+      if (row[sumIndicatorName] === "Yes") {
+        indicatorArray.push(row.ISO_A3);
       }
-    })
+    });
 
-    return indicatorSum = indicatorArray.length
+    return indicatorArray.length;
+  }
 
-  };
+  // Count countries where policy status is "active" (uses policy_status or doc_status column)
+  function countPolicyStatusActive() {
+    if (!csvData) return 0;
+    let count = 0;
+    csvData.forEach((row) => {
+      const status = (row.policy_status || row.doc_status || "").toString().toLowerCase();
+      if (status === "active") count++;
+    });
+    return count;
+  }
+
+  // Count countries where a categorical column equals one or more values (case-insensitive)
+  function countCategoricalYes(columnName, yesValue) {
+    if (!csvData) return 0;
+    let count = 0;
+    const matches = Array.isArray(yesValue)
+      ? yesValue.map(v => v.toLowerCase())
+      : [(yesValue || "").toLowerCase()];
+    csvData.forEach((row) => {
+      const val = (row[columnName] || "").toString().trim().toLowerCase();
+      if (matches.includes(val)) count++;
+    });
+    return count;
+  }
+
+  // Update header numerator/denominator and text based on which map indicator is selected
+  function updateHeaderForIndicator(indicatorKey) {
+    if (!csvData) return;
+    const totalDenominator = denominatorCategorical();
+    let numerator, text;
+    switch (indicatorKey) {
+      case "accredited-and-paid":
+        numerator = countCategoricalYes("paid_accredited_cat", "both");
+        text = "COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED AND PAID";
+        break;
+      case "accredited":
+        numerator = countCategoricalYes("accreditation_cat", ["yes", "partial"]);
+        text = "COUNTRIES HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED";
+        break;
+      case "paid":
+        numerator = countCategoricalYes("paid_cat", ["yes, salaried", "partial, paid regularly"]);
+        text = "COUNTRIES HAVE ONE OR MORE CHW GROUPS WHO ARE PAID";
+        break;
+      case "policy-status":
+        numerator = countPolicyStatusActive();
+        text = "COUNTRIES HAVE AN ACTIVE CHW POLICY";
+        break;
+      case "implementation-evidence":
+        numerator = sumIndicators("any_implementation_evidence");
+        text = "COUNTRIES SHOW EVIDENCE OF CHW POLICY IMPLEMENTATION";
+        break;
+      default:
+        numerator = countCategoricalYes("paid_accredited_cat", "both");
+        text = "COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED AND PAID";
+    }
+    document.getElementById('total-accredited-and-paid').textContent = numerator + "/" + totalDenominator;
+    document.getElementById('totaltext').textContent = text;
+  }
 
   // Resize map to its container on map render
-  map.on('render', function () {
-    map.resize();
-  });
+  window.addEventListener('resize', () => map.resize());
 
   // On map load, load csv data, color the map, load top scorecards, and set up for populating sidebar and hovers
   map.on('load', () => {
+    map.resize();
 
     // Set zoom level based on device
-    var laptop = window.matchMedia("(min-width: 768px)");
+    const laptop = window.matchMedia("(min-width: 768px)");
 
     if (laptop.matches) {
       map.setZoom(2.3);
+    } else {
+      map.setZoom(0.5);
     }
-    else {
-      map.setZoom(.5);
-    };
+
+    // Parse CSV text into array of objects keyed by header row
+    function parseCSV(text) {
+      const rows = [];
+      const chars = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+      let i = 0;
+
+      function parseField() {
+        if (i >= chars.length) return '';
+        if (chars[i] === '"') {
+          i++;
+          let field = '';
+          while (i < chars.length) {
+            if (chars[i] === '"') {
+              if (i + 1 < chars.length && chars[i + 1] === '"') {
+                field += '"';
+                i += 2;
+              } else {
+                i++;
+                break;
+              }
+            } else {
+              field += chars[i++];
+            }
+          }
+          return field;
+        }
+        let field = '';
+        while (i < chars.length && chars[i] !== ',' && chars[i] !== '\n') {
+          field += chars[i++];
+        }
+        return field;
+      }
+
+      function parseRow() {
+        const fields = [];
+        fields.push(parseField());
+        while (i < chars.length && chars[i] === ',') {
+          i++;
+          fields.push(parseField());
+        }
+        if (i < chars.length && chars[i] === '\n') i++;
+        return fields;
+      }
+
+      const headers = parseRow();
+      while (i < chars.length) {
+        const fields = parseRow();
+        if (fields.length === 1 && fields[0] === '') continue;
+        const obj = {};
+        headers.forEach((h, idx) => { obj[h] = fields[idx] !== undefined ? fields[idx] : ''; });
+        rows.push(obj);
+      }
+      return rows;
+    }
 
     // Fetch CSV data - this is where CHIC team will update data quarterly
-    // WORKING VERSION: const sheetId = '2PACX-1vRW71f12hsPrtlEglo73Xcit8TgFw1WeyU4HXWNV3M-IasQMjvzhS3zWjlFTgm4NHFs_1KJjHaSPLCZ'
-    // NEW BQ VERSION: const sheetId = '2PACX-1vSKosFU0tUSzF1esBHsppzU9fcGVytdbUSsp9jE48i4PXZP6hrq-KPf3Bhom5rly2Kdseawyiwm3PQj'
-    // NEW SNOWFLAKE VERSION:
-    const sheetId = '2PACX-1vQywgpExVZxfgBYhfqWB6DdBJc2jfC-2bDQJ3g0N8M-YGP5Jn1rkAO2rp2tRZob2sTmObPucw0bIBlS'
-    // REAL SPREADSHEET const sheetId = '2PACX-1vQan4RTDeRovJT7VqPhh15B6GLNhvxVGTILpyjOIfbfEEf2Sd0Ky5xpPsRlLS9_9GmHeWVIwNcIU5X8'
+    // WORKING VERSION - FOR STAGING:
+    const sheetId = '2PACX-1vRVJ_0tdtOBgKYBiUMzPmTHVSSQ489khWOMzBNd0JV6O9OfkpwX3jWgEffbFHuPcJac1MRd1HgyS5lD';
+    // VERSION WITH AIRTABLE: const sheetId = '2PACX-1vQywgpExVZxfgBYhfqWB6DdBJc2jfC-2bDQJ3g0N8M-YGP5Jn1rkAO2rp2tRZob2sTmObPucw0bIBlS';
+    // LIVE SPREADSHEET const sheetId = '2PACX-1vQan4RTDeRovJT7VqPhh15B6GLNhvxVGTILpyjOIfbfEEf2Sd0Ky5xpPsRlLS9_9GmHeWVIwNcIU5X8';
     fetch(`https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`)
-      .catch(err => {})
+      .catch(err => { console.error('Failed to load CSV data:', err); })
       .then(resp => resp.text())
       .then(response => {
-        csv().fromString(response)
-          .then(rows => {
-            csvData = rows
+        csvData = parseCSV(response);
 
-            // Add scorecard at top based on csv data
-            const totalAccreditedAndSalaried = sumIndicators("at_least_1_salaried_accredited")
-            const totalDenominator = denominator("at_least_1_salaried_accredited")
-            $('#total-accredited-and-salaried').text(totalAccreditedAndSalaried + "/" + totalDenominator)
+        // Set header for default indicator (accredited & paid)
+        updateHeaderForIndicator("accredited-and-paid");
 
-            // Initialize map with data for proCHW indicator
-            setColorsToMap("salaried_accredited_cat")
+        // Initialize map with data for proCHW indicator
+        setColorsToMap("paid_accredited_cat");
 
-            // Add button active state
-            $('#accredited-and-salaried-chws-button').addClass('active');
+        // Add button active state
+        document.getElementById('accredited-and-paid-chws-button').classList.add('active');
 
-            setTimeout(() => {
-              map.setPaintProperty('country-boundaries', 'fill-opacity', 1)
-            }, 1000)
+        setTimeout(() => {
+          map.setPaintProperty('country-boundaries', 'fill-opacity', 1);
+        }, 1000);
+      });
 
-          })
-      })
-
-    // Add event listeners for button clicks to change the map based on the indicator selected and toggle button to active state
-    $("#accredited-chws-button").click(function () {
-      setColorsToMap("at_least_1_accredited")
-      $('.button').removeClass('active')
-      $(this).addClass('active')
-    })
-
-    $("#salaried-chws-button").click(function () {
-      setColorsToMap("at_least_1_salaried")
-      $('.button').removeClass('active')
-      $(this).addClass('active')
-    })
-
-    $("#accredited-and-salaried-chws-button").click(function () {
-      setColorsToMap("salaried_accredited_cat")
-      $('.button').removeClass('active')
-      $(this).addClass('active')
-    })
-
-    $("#policy-status-button").click(function () {
-      setColorsToMap("doc_status")
-      $('.button').removeClass('active')
-      $(this).addClass('active')
-    })
-
-    $("#implementation-evidence-button").click(function () {
-      setColorsToMap("any_implementation_evidence")
-      $('.button').removeClass('active')
-      $(this).addClass('active')
-    })
+    // Delegated click handler for all map indicator buttons
+    document.querySelectorAll('.button[data-indicator]').forEach(btn => {
+      btn.addEventListener('click', function () {
+        setColorsToMap(this.dataset.indicator);
+        document.querySelectorAll('.button').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        updateHeaderForIndicator(this.dataset.headerKey);
+      });
+    });
 
 
     // Search functionality
@@ -3853,8 +2434,8 @@
             
             if (thisCountry) {
               // Populate the sidebar with country information
-              $("#country-name").text(thisCountry.country);
-              $("#date-last-updated").text("Date last updated: " + thisCountry.date_last_updated);
+              document.getElementById('country-name').textContent = thisCountry.country;
+              document.getElementById('date-last-updated').textContent = 'Date last updated: ' + thisCountry.date_last_updated;
               
               // Populate the entire sidebar
               populateSidebar(thisCountry);
@@ -3907,7 +2488,7 @@
     function populateCHWCards(countryData) {
       // Hide all popups when switching countries
       document.getElementById('total-chw-groups-popup').style.display = 'none';
-      document.getElementById('salaried-accredited-popup').style.display = 'none';
+      document.getElementById('paid-accredited-popup').style.display = 'none';
       document.getElementById('chw-associations-popup').style.display = 'none';
       
       // Clear any existing "Data not available" text from popup titles
@@ -3952,9 +2533,7 @@
           if (title && !title.querySelector('.data-not-available-text')) {
             const dataNotAvailableSpan = document.createElement('span');
             dataNotAvailableSpan.className = 'data-not-available-text';
-            dataNotAvailableSpan.style.fontWeight = 'normal';
-            dataNotAvailableSpan.style.fontStyle = 'italic';
-            dataNotAvailableSpan.textContent = ' No document available or not specified in documents reviewed';
+            dataNotAvailableSpan.textContent = ' Not specified in documents reviewed';
             title.appendChild(dataNotAvailableSpan);
           }
         }
@@ -3968,23 +2547,26 @@
         totalGroupsNumber.textContent = countryData.group_count;
         totalGroupsNumber.className = 'chw-card-number';
       } else {
-        totalGroupsNumber.textContent = 'No document available or not specified in documents reviewed';
+        totalGroupsNumber.textContent = 'Not specified in documents reviewed';
         totalGroupsNumber.className = 'chw-card-number chw-card-number-not-available';
       }
       createListItems(countryData.group_names, totalGroupsList);
 
-      // Populate Salaried & Accredited Card
-      const salariedAccreditedNumber = document.getElementById('salaried-accredited-number');
-      const salariedAccreditedList = document.getElementById('salaried-accredited-list');
+      // Populate Paid & Accredited Card
+      const paidAccreditedNumber = document.getElementById('paid-accredited-number');
+      const paidAccreditedList = document.getElementById('paid-accredited-list');
       
-      if (isDataAvailable(countryData.num_groups_salaried_accredited)) {
-        salariedAccreditedNumber.textContent = countryData.num_groups_salaried_accredited;
-        salariedAccreditedNumber.className = 'chw-card-number';
+      if (isDataAvailable(countryData.num_groups_paid_accredited)) {
+        paidAccreditedNumber.textContent = countryData.num_groups_paid_accredited;
+        paidAccreditedNumber.className = 'chw-card-number';
+      } else if (countryData.num_groups_paid_accredited === "Not specified in documents reviewed") {
+        paidAccreditedNumber.textContent = '?';
+        paidAccreditedNumber.className = 'chw-card-number';
       } else {
-        salariedAccreditedNumber.textContent = 'No document available or not specified in documents reviewed';
-        salariedAccreditedNumber.className = 'chw-card-number chw-card-number-not-available';
+        paidAccreditedNumber.textContent = 'Not specified in documents reviewed';
+        paidAccreditedNumber.className = 'chw-card-number chw-card-number-not-available';
       }
-      createListItems(countryData.group_names_salaried_accredited, salariedAccreditedList);
+      createListItems(countryData.group_names_paid_accredited, paidAccreditedList);
 
       // Populate CHW Associations Card
       const associationsNumber = document.getElementById('chw-associations-number');
@@ -3993,24 +2575,22 @@
       if (isDataAvailable(countryData.count_chw_associations) && parseInt(countryData.count_chw_associations) > 0) {
         associationsNumber.textContent = countryData.count_chw_associations;
         associationsNumber.className = 'chw-card-number';
-        createListItems(countryData.chw_association_names, associationsList);
+        createListItems(countryData.name_chw_associations, associationsList);
       } else if (countryData.count_chw_associations === "0" || !isDataAvailable(countryData.count_chw_associations)) {
         // Show count as 0 or "No document available"
         if (countryData.count_chw_associations === "0") {
           associationsNumber.textContent = countryData.count_chw_associations;
           associationsNumber.className = 'chw-card-number';
         } else {
-          associationsNumber.textContent = 'No document available or not specified in documents reviewed';
+          associationsNumber.textContent = 'Not specified in documents reviewed';
           associationsNumber.className = 'chw-card-number chw-card-number-not-available';
         }
         
         // Clear the list and add custom message with link
         associationsList.innerHTML = '';
         const messageP = document.createElement('p');
-        messageP.style.fontStyle = 'italic';
-        messageP.style.padding = '0.5em 0';
-        messageP.style.color = '#000000';
-        messageP.innerHTML = 'CHIC is not aware of any CHW associations in this country. If you know of one, please <a href="#" id="submit-association-link" style="color: #4F2049; text-decoration: underline;">submit information here</a>.';
+        messageP.className = 'association-message';
+        messageP.innerHTML = 'CHIC is not aware of any CHW associations in this country. If you know of one, please <a href="#" id="submit-association-link">submit information here</a>.';
         associationsList.appendChild(messageP);
         
         // Add click event to the link
@@ -4020,7 +2600,7 @@
             link.addEventListener('click', function(e) {
               e.preventDefault();
               e.stopPropagation();
-              window.open('https://forms.gle/your-association-form-link', '_blank');
+              window.open('https://docs.google.com/forms/d/e/1FAIpQLSf6RhMgxEQgC07DA0ZMoDXzi-VQ3Svq3deCwL7rhpahOXFPmw/viewform?usp=header', '_blank');
             });
           }
         }, 0);
@@ -4031,7 +2611,7 @@
       const policyStatus = countryData.doc_status || 'No document available';
       
       // Remove existing status classes
-      policyStatusBadge.classList.remove('out-of-scope', 'data-not-available', 'expired', 'active');
+      policyStatusBadge.classList.remove('out-of-scope', 'data-not-available', 'expired', 'expiring', 'active');
       
       // Add appropriate class and text based on policy status
       if (policyStatus === 'Out of Scope') {
@@ -4040,9 +2620,12 @@
       } else if (policyStatus === 'No document available') {
         policyStatusBadge.classList.add('data-not-available');
         policyStatusBadge.textContent = 'NO DOCUMENT AVAILABLE';
-      } else if (policyStatus === 'Expired' || policyStatus === 'Expiring within 2 years') {
+      } else if (policyStatus === 'Expired') {
         policyStatusBadge.classList.add('expired');
-        policyStatusBadge.textContent = policyStatus.toUpperCase();
+        policyStatusBadge.textContent = 'EXPIRED';
+      } else if (policyStatus === 'Expiring within 2 years') {
+        policyStatusBadge.classList.add('expiring');
+        policyStatusBadge.textContent = 'EXPIRING WITHIN 2 YEARS';
       } else if (policyStatus === 'Active') {
         policyStatusBadge.classList.add('active');
         policyStatusBadge.textContent = 'ACTIVE';
@@ -4067,7 +2650,6 @@
         policyLink.href = countryData.document_link;
         policyLink.textContent = 'View policy document →';
         policyLink.style.display = 'inline';
-        policyLink.style.color = '';
         // Remove any "Policy not available" span if it exists
         const notAvailableSpan = policyLinkContainer.querySelector('span');
         if (notAvailableSpan) {
@@ -4078,8 +2660,7 @@
         // Only add the "Policy not available" span if it doesn't already exist
         if (!policyLinkContainer.querySelector('span')) {
           const notAvailableSpan = document.createElement('span');
-          notAvailableSpan.className = 'policy-link';
-          notAvailableSpan.style.color = '#999999';
+          notAvailableSpan.className = 'policy-link policy-not-available';
           notAvailableSpan.textContent = 'Policy not available';
           policyLinkContainer.appendChild(notAvailableSpan);
         }
@@ -4126,76 +2707,127 @@
       return lines.join('<br>');
     }
 
+    // Shared helper: binary indicator (Yes/No/N/A)
+    function createIndicator(value, indicatorElement, textElement) {
+      if (value === "Yes" || value === "yes") {
+        indicatorElement.className = 'indicator-circle yes';
+        indicatorElement.innerHTML = '✓';
+        textElement.textContent = 'YES';
+      } else if (value === "No" || value === "no") {
+        indicatorElement.className = 'indicator-circle no';
+        indicatorElement.innerHTML = '✗';
+        textElement.textContent = 'NO';
+      } else {
+        indicatorElement.className = 'indicator-circle na';
+        indicatorElement.innerHTML = '?';
+        textElement.textContent = 'N/A';
+      }
+    }
+
+    // Shared helper: set source link(s); supports multiple sources (semicolon-separated) with matching links
+    function setSource(sourceElement, sourceText, sourceLink, pageNumber) {
+      if (sourceText && sourceText !== "No document available" && sourceText !== "Not specified in documents reviewed" && sourceText !== "" && 
+          sourceLink && sourceLink !== "No document available" && sourceLink !== "Not specified in documents reviewed" && sourceLink !== "") {
+        const sources = sourceText.split(';').map(s => s.trim()).filter(Boolean);
+        const links = sourceLink.split(';').map(s => s.trim()).filter(Boolean);
+        const pages = (pageNumber && pageNumber !== "No document available" && pageNumber !== "Not specified in documents reviewed")
+          ? pageNumber.split(';').map(s => s.trim())
+          : [];
+        const parts = [];
+        for (let i = 0; i < sources.length; i++) {
+          let displayText = sources[i];
+          const page = pages[i] !== undefined && pages[i] !== '' ? pages[i] : (pages[0] || '');
+          if (page) displayText = `${sources[i]} (${page})`;
+          const link = links[i] && links[i].trim() !== '';
+          if (link) {
+            parts.push(`<a href="${links[i].trim()}" target="_blank">${displayText}</a>`);
+          } else {
+            parts.push(displayText);
+          }
+        }
+        sourceElement.innerHTML = parts.join(' | ');
+        sourceElement.querySelectorAll('a').forEach(linkEl => {
+          linkEl.addEventListener('click', function(e) { e.stopPropagation(); });
+        });
+      } else {
+        sourceElement.textContent = '';
+      }
+    }
+
+    // Shared helper: set description with quotes (handles categorical and binary)
+    function setDescription(descriptionElement, indicatorValue, quoteValue, sourceText) {
+      const iv = indicatorValue && indicatorValue.trim ? indicatorValue.trim().toLowerCase() : "";
+      const isNo = iv === "no" || iv === "no, irregular pay or no evidence of payments";
+      const isYesOrPartial = iv === "yes" || iv === "partial" || iv === "yes, salaried" || iv === "partial, paid regularly";
+      if (isNo && 
+          (!quoteValue || quoteValue === "" || quoteValue === "No document available" || quoteValue === "Not specified in documents reviewed") &&
+          (!sourceText || sourceText === "" || sourceText === "No document available" || sourceText === "Not specified in documents reviewed")) {
+        descriptionElement.textContent = 'No evidence of this indicator was found in the documents reviewed';
+      } 
+      else if (!isYesOrPartial && !isNo) {
+        descriptionElement.textContent = 'Not specified in documents reviewed';
+      }
+      else if (quoteValue && quoteValue !== "No document available" && quoteValue !== "Not specified in documents reviewed" && quoteValue !== "") {
+        descriptionElement.innerHTML = formatQuoteText(quoteValue);
+      } else {
+        descriptionElement.textContent = 'Not specified in documents reviewed';
+      }
+    }
+
     // Function to populate accreditation subsections
     function populateAccreditationSubsections(countryData) {
-      // Helper function to create indicator
-      function createIndicator(value, indicatorElement, textElement) {
-        if (value === "Yes" || value === "yes") {
-          indicatorElement.className = 'indicator-circle yes';
-          indicatorElement.innerHTML = '✓';
-          textElement.textContent = 'YES';
-        } else if (value === "No" || value === "no") {
-          indicatorElement.className = 'indicator-circle no';
-          indicatorElement.innerHTML = '✗';
-          textElement.textContent = 'NO';
-        } else {
-          indicatorElement.className = 'indicator-circle na';
-          indicatorElement.innerHTML = '?';
-          textElement.textContent = 'N/A';
-        }
-      }
-
-      // Helper function to set description with quotes
-      function setDescription(descriptionElement, indicatorValue, quoteValue, sourceText) {
-        // Check if indicator is "No" and quote/source are blank
-        if ((indicatorValue === "No" || indicatorValue === "no") && 
-            (!quoteValue || quoteValue === "" || quoteValue === "No document available" || quoteValue === "Not specified in documents reviewed") &&
-            (!sourceText || sourceText === "" || sourceText === "No document available" || sourceText === "Not specified in documents reviewed")) {
-          descriptionElement.textContent = 'No evidence of this indicator was found in the documents reviewed';
-        } 
-        // Check if indicator is N/A (not specified or no document available)
-        else if (indicatorValue !== "Yes" && indicatorValue !== "yes" && indicatorValue !== "No" && indicatorValue !== "no") {
-          descriptionElement.textContent = 'No document available or not specified in documents reviewed';
-        }
-        // Otherwise show the quote with formatting
-        else if (quoteValue && quoteValue !== "No document available" && quoteValue !== "Not specified in documents reviewed" && quoteValue !== "") {
-          descriptionElement.innerHTML = formatQuoteText(quoteValue);
-        } else {
-          descriptionElement.textContent = 'No document available or not specified in documents reviewed';
-        }
-      }
-
-      // Helper function to set source link
-      function setSource(sourceElement, sourceText, sourceLink, pageNumber) {
-        if (sourceText && sourceText !== "No document available" && sourceText !== "Not specified in documents reviewed" && sourceText !== "" && 
-            sourceLink && sourceLink !== "No document available" && sourceLink !== "Not specified in documents reviewed" && sourceLink !== "") {
-          // Format source text with page number if available
-          let displayText = sourceText;
-          if (pageNumber && pageNumber !== "" && pageNumber !== "No document available" && pageNumber !== "Not specified in documents reviewed") {
-            displayText = `${sourceText} (${pageNumber})`;
-          }
-          sourceElement.innerHTML = `<a href="${sourceLink}" target="_blank">${displayText}</a>`;
-          // Add click event listener to prevent event bubbling
-          const link = sourceElement.querySelector('a');
-          if (link) {
-            link.addEventListener('click', function(e) {
-              e.stopPropagation();
-            });
+      // Helper for categorical indicators (yes / partial / no) – accreditation_cat and paid_cat
+      function createCategoricalIndicator(value, indicatorElement, textElement, isPaid) {
+        const v = value && value.trim ? value.trim().toLowerCase() : "";
+        if (isPaid) {
+          if (v === "yes, salaried") {
+            indicatorElement.className = 'indicator-circle yes';
+            indicatorElement.innerHTML = '✓';
+            textElement.textContent = 'YES';
+          } else if (v === "partial, paid regularly") {
+            indicatorElement.className = 'indicator-circle partial';
+            indicatorElement.innerHTML = '−';
+            textElement.textContent = 'PARTIAL';
+          } else if (v === "no, irregular pay or no evidence of payments") {
+            indicatorElement.className = 'indicator-circle no';
+            indicatorElement.innerHTML = '✗';
+            textElement.textContent = 'NO';
+          } else {
+            indicatorElement.className = 'indicator-circle na';
+            indicatorElement.innerHTML = '?';
+            textElement.textContent = 'N/A';
           }
         } else {
-          sourceElement.textContent = '';
+          if (v === "yes") {
+            indicatorElement.className = 'indicator-circle yes';
+            indicatorElement.innerHTML = '✓';
+            textElement.textContent = 'YES';
+          } else if (v === "partial") {
+            indicatorElement.className = 'indicator-circle partial';
+            indicatorElement.innerHTML = '−';
+            textElement.textContent = 'PARTIAL';
+          } else if (v === "no") {
+            indicatorElement.className = 'indicator-circle no';
+            indicatorElement.innerHTML = '✗';
+            textElement.textContent = 'NO';
+          } else {
+            indicatorElement.className = 'indicator-circle na';
+            indicatorElement.innerHTML = '?';
+            textElement.textContent = 'N/A';
+          }
         }
       }
 
-      // Accreditation (Column Z for yes/no, Column AA for description)
-      createIndicator(
-        countryData.accreditation_policy || 'No document available or not specified in documents reviewed',
+      // Accreditation (categorical: yes / partial / no)
+      createCategoricalIndicator(
+        countryData.accreditation_cat || 'Not specified in documents reviewed',
         document.getElementById('accreditation-indicator'),
-        document.getElementById('accreditation-text')
+        document.getElementById('accreditation-text'),
+        false
       );
       setDescription(
         document.getElementById('accreditation-description'),
-        countryData.accreditation_policy,
+        countryData.accreditation_cat,
         countryData.accreditation_quote,
         countryData.accreditation_quote_source
       );
@@ -4206,34 +2838,36 @@
         countryData.accreditation_quote_page
       );
 
-      // Salary (Column AD for yes/no, Column AE for description)
-      createIndicator(
-        countryData.salary_policy || 'No document available or not specified in documents reviewed',
-        document.getElementById('salary-indicator'),
-        document.getElementById('salary-text')
+      // Paid (categorical: yes, salaried / partial, paid regularly / no, irregular pay or no payments)
+      createCategoricalIndicator(
+        countryData.paid_cat || 'Not specified in documents reviewed',
+        document.getElementById('paid-indicator'),
+        document.getElementById('paid-text'),
+        true
       );
       setDescription(
-        document.getElementById('salary-description'),
-        countryData.salary_policy,
-        countryData.salary_quote,
-        countryData.salary_quote_source
+        document.getElementById('paid-description'),
+        countryData.paid_cat,
+        countryData.paid_quote,
+        countryData.paid_quote_source
       );
       setSource(
-        document.getElementById('salary-source'),
-        countryData.salary_quote_source,
-        countryData.salary_quote_source_link,
-        countryData.salaried_quote_page
+        document.getElementById('paid-source'),
+        countryData.paid_quote_source,
+        countryData.paid_quote_source_link,
+        countryData.paid_quote_page
       );
 
-      // Supervision (Column AH for yes/no, Column AI for description)
-      createIndicator(
-        countryData.supervision_policy || 'No document available or not specified in documents reviewed',
+      // Supervision (categorical: yes / partial / no)
+      createCategoricalIndicator(
+        countryData.supervision_cat || 'Not specified in documents reviewed',
         document.getElementById('supervision-indicator'),
-        document.getElementById('supervision-text')
+        document.getElementById('supervision-text'),
+        false
       );
       setDescription(
         document.getElementById('supervision-description'),
-        countryData.supervision_policy,
+        countryData.supervision_cat,
         countryData.supervision_quote,
         countryData.supervision_quote_source
       );
@@ -4244,15 +2878,16 @@
         countryData.supervision_quote_page
       );
 
-      // Skills (Column AL for yes/no, Column AM for description)
-      createIndicator(
-        countryData.skills_policy || 'No document available or not specified in documents reviewed',
+      // Skills (categorical: yes / partial / no)
+      createCategoricalIndicator(
+        countryData.skills_cat || 'Not specified in documents reviewed',
         document.getElementById('skills-indicator'),
-        document.getElementById('skills-text')
+        document.getElementById('skills-text'),
+        false
       );
       setDescription(
         document.getElementById('skills-description'),
-        countryData.skills_policy,
+        countryData.skills_cat,
         countryData.skills_quote,
         countryData.skills_quote_source
       );
@@ -4263,15 +2898,16 @@
         countryData.skills_quote_page
       );
 
-      // Supplies (Column AP for yes/no, Column AQ for description)
-      createIndicator(
-        countryData.supplies_policy || 'No document available or not specified in documents reviewed',
+      // Supplies (categorical: yes / partial / no)
+      createCategoricalIndicator(
+        countryData.supplies_cat || 'Not specified in documents reviewed',
         document.getElementById('supplies-indicator'),
-        document.getElementById('supplies-text')
+        document.getElementById('supplies-text'),
+        false
       );
       setDescription(
         document.getElementById('supplies-description'),
-        countryData.supplies_policy,
+        countryData.supplies_cat,
         countryData.supplies_quote,
         countryData.supplies_quote_source
       );
@@ -4285,68 +2921,9 @@
 
     // Function to populate policy implementation subsections
     function populatePolicyImplementationSubsections(countryData) {
-      // Helper function to create indicator
-      function createIndicator(value, indicatorElement, textElement) {
-        if (value === "Yes" || value === "yes") {
-          indicatorElement.className = 'indicator-circle yes';
-          indicatorElement.innerHTML = '✓';
-          textElement.textContent = 'YES';
-        } else if (value === "No" || value === "no") {
-          indicatorElement.className = 'indicator-circle no';
-          indicatorElement.innerHTML = '✗';
-          textElement.textContent = 'NO';
-        } else {
-          indicatorElement.className = 'indicator-circle na';
-          indicatorElement.innerHTML = '?';
-          textElement.textContent = 'N/A';
-        }
-      }
-
-      // Helper function to set description with quotes
-      function setDescription(descriptionElement, indicatorValue, quoteValue, sourceText) {
-        // Check if indicator is "No" and quote/source are blank
-        if ((indicatorValue === "No" || indicatorValue === "no") && 
-            (!quoteValue || quoteValue === "" || quoteValue === "No document available" || quoteValue === "Not specified in documents reviewed") &&
-            (!sourceText || sourceText === "" || sourceText === "No document available" || sourceText === "Not specified in documents reviewed")) {
-          descriptionElement.textContent = 'No evidence of this indicator was found in the documents reviewed';
-        } 
-        // Check if indicator is N/A (not specified or no document available)
-        else if (indicatorValue !== "Yes" && indicatorValue !== "yes" && indicatorValue !== "No" && indicatorValue !== "no") {
-          descriptionElement.textContent = 'No document available or not specified in documents reviewed';
-        }
-        // Otherwise show the quote with formatting
-        else if (quoteValue && quoteValue !== "No document available" && quoteValue !== "Not specified in documents reviewed" && quoteValue !== "") {
-          descriptionElement.innerHTML = formatQuoteText(quoteValue);
-        } else {
-          descriptionElement.textContent = 'No document available or not specified in documents reviewed';
-        }
-      }
-
-      // Helper function to set source link
-      function setSource(sourceElement, sourceText, sourceLink, pageNumber) {
-        if (sourceText && sourceText !== "No document available" && sourceText !== "Not specified in documents reviewed" && sourceText !== "" && 
-            sourceLink && sourceLink !== "No document available" && sourceLink !== "Not specified in documents reviewed" && sourceLink !== "") {
-          // Format source text with page number if available
-          let displayText = sourceText;
-          if (pageNumber && pageNumber !== "" && pageNumber !== "No document available" && pageNumber !== "Not specified in documents reviewed") {
-            displayText = `${sourceText} (${pageNumber})`;
-          }
-          sourceElement.innerHTML = `<a href="${sourceLink}" target="_blank">${displayText}</a>`;
-          // Add click event listener to prevent event bubbling
-          const link = sourceElement.querySelector('a');
-          if (link) {
-            link.addEventListener('click', function(e) {
-              e.stopPropagation();
-            });
-          }
-        } else {
-          sourceElement.textContent = '';
-        }
-      }
-
       // Domestic Financing Commitment
       createIndicator(
-        countryData.domestic_financing_commitment || 'No document available or not specified in documents reviewed',
+        countryData.domestic_financing_commitment || 'Not specified in documents reviewed',
         document.getElementById('domestic-financing-commitment-indicator'),
         document.getElementById('domestic-financing-commitment-text')
       );
@@ -4365,7 +2942,7 @@
 
       // CHW Budget Line Item
       createIndicator(
-        countryData.chw_budget_line_item || 'No document available or not specified in documents reviewed',
+        countryData.chw_budget_line_item || 'Not specified in documents reviewed',
         document.getElementById('chw-budget-line-item-indicator'),
         document.getElementById('chw-budget-line-item-text')
       );
@@ -4384,7 +2961,7 @@
 
       // Data Systems / Feedback Loops
       createIndicator(
-        countryData.data_systems || 'No document available or not specified in documents reviewed',
+        countryData.data_systems || 'Not specified in documents reviewed',
         document.getElementById('data-systems-indicator'),
         document.getElementById('data-systems-text')
       );
@@ -4403,7 +2980,7 @@
 
       // MERL / M&E Framework
       createIndicator(
-        countryData.merl || 'No document available or not specified in documents reviewed',
+        countryData.merl || 'Not specified in documents reviewed',
         document.getElementById('merl-indicator'),
         document.getElementById('merl-text')
       );
@@ -4422,7 +2999,7 @@
 
       // CHW Registry
       createIndicator(
-        countryData.chw_registry || 'No document available or not specified in documents reviewed',
+        countryData.chw_registry || 'Not specified in documents reviewed',
         document.getElementById('chw-registry-indicator'),
         document.getElementById('chw-registry-text')
       );
@@ -4441,7 +3018,7 @@
 
       // Costed Documentation
       createIndicator(
-        countryData.costed || 'No document available or not specified in documents reviewed',
+        countryData.costed || 'Not specified in documents reviewed',
         document.getElementById('costed-documentation-indicator'),
         document.getElementById('costed-documentation-text')
       );
@@ -4460,7 +3037,7 @@
 
       // Operational Materials
       createIndicator(
-        countryData.operational || 'No document available or not specified in documents reviewed',
+        countryData.operational || 'Not specified in documents reviewed',
         document.getElementById('operational-materials-indicator'),
         document.getElementById('operational-materials-text')
       );
@@ -4594,8 +3171,6 @@
                 link.target = '_blank';
                 link.rel = 'noopener noreferrer';
                 link.textContent = milestone.text;
-                link.style.color = 'inherit';
-                link.style.textDecoration = 'underline';
                 
                 // Prevent event bubbling to accordion
                 link.addEventListener('click', function(e) {
@@ -4654,86 +3229,39 @@
     }
 
     // Add click event listeners for CHW cards
-    document.getElementById('total-chw-groups-card').addEventListener('click', function() {
-      // Hide all other popups first
-      document.getElementById('salaried-accredited-popup').style.display = 'none';
-      document.getElementById('chw-associations-popup').style.display = 'none';
-      
-      // Toggle the clicked popup
-      const popup = document.getElementById('total-chw-groups-popup');
-      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    document.querySelectorAll('.chw-card[data-card-popup]').forEach(card => {
+      card.addEventListener('click', function() {
+        const targetId = this.dataset.cardPopup;
+        document.querySelectorAll('.chw-popup').forEach(p => {
+          if (p.id === targetId) {
+            p.style.display = p.style.display === 'block' ? 'none' : 'block';
+          } else {
+            p.style.display = 'none';
+          }
+        });
+      });
     });
 
-    document.getElementById('salaried-accredited-card').addEventListener('click', function() {
-      // Hide all other popups first
-      document.getElementById('total-chw-groups-popup').style.display = 'none';
-      document.getElementById('chw-associations-popup').style.display = 'none';
-      
-      // Toggle the clicked popup
-      const popup = document.getElementById('salaried-accredited-popup');
-      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-    });
-
-    document.getElementById('chw-associations-card').addEventListener('click', function() {
-      // Hide all other popups first
-      document.getElementById('total-chw-groups-popup').style.display = 'none';
-      document.getElementById('salaried-accredited-popup').style.display = 'none';
-      
-      // Toggle the clicked popup
-      const popup = document.getElementById('chw-associations-popup');
-      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-    });
-
-    // Add click event listener for accreditation section
-    const accreditationSection = document.getElementById('accreditation-section');
-    if (accreditationSection) {
-      accreditationSection.addEventListener('click', function() {
-        const content = this.querySelector('.accreditation-section-content');
-        const isExpanded = this.classList.contains('expanded');
-        
+    // Toggle section when clicking only the header/arrow (not the section content)
+    function addSectionToggleListener(section) {
+      if (!section) return;
+      const header = section.querySelector('.accreditation-section-header');
+      if (!header) return;
+      header.addEventListener('click', function() {
+        const content = section.querySelector('.accreditation-section-content');
+        const isExpanded = section.classList.contains('expanded');
         if (isExpanded) {
           content.style.display = 'none';
-          this.classList.remove('expanded');
+          section.classList.remove('expanded');
         } else {
           content.style.display = 'block';
-          this.classList.add('expanded');
+          section.classList.add('expanded');
         }
       });
     }
-
-    // Add click event listener for policy implementation section
-    const policyImplementationSection = document.getElementById('policy-implementation-section');
-    if (policyImplementationSection) {
-      policyImplementationSection.addEventListener('click', function() {
-        const content = this.querySelector('.accreditation-section-content');
-        const isExpanded = this.classList.contains('expanded');
-        
-        if (isExpanded) {
-          content.style.display = 'none';
-          this.classList.remove('expanded');
-        } else {
-          content.style.display = 'block';
-          this.classList.add('expanded');
-        }
-      });
-    }
-
-    // Add click event listener for policy timeline section
-    const policyTimelineSection = document.getElementById('policy-timeline-section');
-    if (policyTimelineSection) {
-      policyTimelineSection.addEventListener('click', function() {
-        const content = this.querySelector('.accreditation-section-content');
-        const isExpanded = this.classList.contains('expanded');
-        
-        if (isExpanded) {
-          content.style.display = 'none';
-          this.classList.remove('expanded');
-        } else {
-          content.style.display = 'block';
-          this.classList.add('expanded');
-        }
-      });
-    }
+    addSectionToggleListener(document.getElementById('accreditation-section'));
+    addSectionToggleListener(document.getElementById('policy-implementation-section'));
+    addSectionToggleListener(document.getElementById('policy-timeline-section'));
 
     // Function to clear persistent data that might carry over between countries
     function clearPersistentData() {
@@ -4751,6 +3279,9 @@
       // Hide AI summary section
       document.getElementById('ai-summary-section').style.display = 'none';
       
+      // Hide no-known-chws message
+      document.getElementById('no-known-chws-message').style.display = 'none';
+
       // Hide submit button (will be shown again when new country is selected)
       document.getElementById('submit-review-button').style.display = 'none';
     }
@@ -4758,7 +3289,7 @@
     // Function to clear all subsections (accreditation and policy implementation)
     function clearAllSubsections() {
       // Clear accreditation subsections
-      const accreditationSubsections = ['accreditation', 'salary', 'supervision', 'skills', 'supplies'];
+      const accreditationSubsections = ['accreditation', 'paid', 'supervision', 'skills', 'supplies'];
       
       accreditationSubsections.forEach(subsection => {
         const indicator = document.getElementById(`${subsection}-indicator`);
@@ -4813,27 +3344,17 @@
         }
       });
 
-      // Clear policy timeline
-      const timelineElements = [
-        'timeline-year-1', 'timeline-milestone-1',
-        'timeline-year-2', 'timeline-milestone-2', 
-        'timeline-year-3', 'timeline-milestone-3'
-      ];
-      
-      timelineElements.forEach(elementId => {
-        const element = document.getElementById(elementId);
-        if (element) {
-          element.textContent = '';
-        }
-      });
     }
 
     // Function to populate the entire sidebar
     function populateSidebar(countryData) {
+      const isNoKnownChws = countryData.accreditation_cat && countryData.accreditation_cat.trim() === "No known CHWs";
+
       if (countryData.countdown_country === "FALSE") {
         // Country is out of scope - show only out of scope message
         document.getElementById('out-of-scope-message').style.display = 'block';
         document.getElementById('out-of-scope-message').textContent = "This country is not a Countdown to 2030 country, so it is out of scope for this dashboard.";
+        document.getElementById('no-known-chws-message').style.display = 'none';
         
         // Hide all other elements
         document.getElementById('chw-cards-container').style.display = 'none';
@@ -4842,15 +3363,39 @@
         document.getElementById('accreditation-section').style.display = 'none';
         document.getElementById('policy-implementation-section').style.display = 'none';
         document.getElementById('policy-timeline-section').style.display = 'none';
+        document.getElementById('ai-summary-section').style.display = 'none';
         
+        // Show submit button
+        document.getElementById('submit-review-button').style.display = 'block';
+      } else if (isNoKnownChws) {
+        // No known CHWs – populate policy status via populateCHWCards, then hide everything else
+        document.getElementById('out-of-scope-message').style.display = 'none';
+        document.getElementById('no-known-chws-message').style.display = 'block';
+
+        // Populate cards/policy status (this also shows chw-cards-container internally)
+        populateCHWCards(countryData);
+
+        // Now hide top cards, popups, accreditation, implementation, timeline, AI summary
+        document.getElementById('chw-cards-container').style.display = 'none';
+        document.getElementById('chw-popups-container').style.display = 'none';
+        document.getElementById('accreditation-section').style.display = 'none';
+        document.getElementById('policy-implementation-section').style.display = 'none';
+        document.getElementById('policy-timeline-section').style.display = 'none';
+        document.getElementById('ai-summary-section').style.display = 'none';
+
+        // Show policy status card
+        document.getElementById('policy-status-card').style.display = 'block';
+
         // Show submit button
         document.getElementById('submit-review-button').style.display = 'block';
       } else {
         // Country is in scope - show everything
         document.getElementById('out-of-scope-message').style.display = 'none';
+        document.getElementById('no-known-chws-message').style.display = 'none';
         
         // Show all elements
         document.getElementById('chw-cards-container').style.display = 'flex';
+        document.getElementById('chw-popups-container').style.display = '';
         document.getElementById('policy-status-card').style.display = 'block';
         document.getElementById('accreditation-section').style.display = 'block';
         document.getElementById('policy-implementation-section').style.display = 'block';
@@ -4869,17 +3414,15 @@
       // Clear previous country's data first
       clearPersistentData();
 
-      const thisCountry = csvData.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
+      const thisCountry = csvData.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3);
 
       if (thisCountry) {
-
-        $("#country-name").text(thisCountry.country)
-        $("#date-last-updated").text("Date last updated: " + thisCountry.date_last_updated)
+        document.getElementById('country-name').textContent = thisCountry.country;
+        document.getElementById('date-last-updated').textContent = 'Date last updated: ' + thisCountry.date_last_updated;
         
         // Populate the entire sidebar
-        populateSidebar(thisCountry)
+        populateSidebar(thisCountry);
       }
-
     });
 
     // Create popup on hover
@@ -4889,139 +3432,90 @@
     });
 
     map.on('mousemove', 'country-boundaries', (e) => {
+      map.getCanvas().style.cursor = 'pointer';
 
-      map.getCanvas().style.cursor = 'pointer'
-
-      const thisCountry = csvData.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3)
+      const thisCountry = csvData.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3);
 
       if (thisCountry) {
-
         popup.setLngLat(e.lngLat)
-          .setHTML(
-            `
-                        <div>
-                        ${thisCountry.country}<br> 
-                        At least 1 group accredited:
-                        ${thisCountry.at_least_1_accredited}<br>
-                        At least 1 group salaried:
-                        ${thisCountry.at_least_1_salaried}
-                        </div>
-                        `
-          )
-          .addTo(map)
-
+          .setHTML(`
+            <div>
+              <strong>${thisCountry.country}</strong><br>
+              Accredited: ${getHoverLabel('accreditation_cat', thisCountry.accreditation_cat)}<br>
+              Paid: ${getHoverLabel('paid_cat', thisCountry.paid_cat)}<br>
+              Any implementation evidence: ${getHoverLabel('any_implementation_evidence', thisCountry.any_implementation_evidence)}
+            </div>
+          `)
+          .addTo(map);
       }
-
     });
 
-    map.on('mouseleave', 'country-boundaries', (e) => {
-
+    map.on('mouseleave', 'country-boundaries', () => {
       map.getCanvas().style.cursor = '';
       popup.remove();
-
     });
 
     // Create hover on buttons with definitions - Desktop only
-    // Check if device supports hover (desktop/laptop)
+    // Check if device supports hover (desktop/laptop) and viewport is wide enough
     if (window.matchMedia('(hover: hover)').matches) {
-      $("#accredited-chws-button").hover(function () {
-        $('.accredited-chws-button-def').show();
-      }, function () {
-        $('.accredited-chws-button-def').hide();
-      })
+      function isDesktopWidth() {
+        return window.innerWidth >= 768;
+      }
 
-      $("#salaried-chws-button").hover(function () {
-        $('.salaried-chws-button-def').show();
-      }, function () {
-        $('.salaried-chws-button-def').hide();
-      })
-
-      $("#accredited-and-salaried-chws-button").hover(function () {
-        $('.accredited-and-salaried-chws-button-def').show();
-      }, function () {
-        $('.accredited-and-salaried-chws-button-def').hide();
-      })
-
-      $("#policy-status-button").hover(function () {
-        $('.policy-status-button-def').show();
-      }, function () {
-        $('.policy-status-button-def').hide();
-      })
-
-      $("#implementation-evidence-button").hover(function () {
-        $('.implementation-evidence-button-def').show();
-      }, function () {
-        $('.implementation-evidence-button-def').hide();
-      })
+      const tooltipPairs = [
+        ['accredited-chws-button', 'accredited-chws-button-def'],
+        ['paid-chws-button', 'paid-chws-button-def'],
+        ['accredited-and-paid-chws-button', 'accredited-and-paid-chws-button-def'],
+        ['policy-status-button', 'policy-status-button-def'],
+        ['implementation-evidence-button', 'implementation-evidence-button-def'],
+      ];
+      tooltipPairs.forEach(([btnId, tipClass]) => {
+        const btn = document.getElementById(btnId);
+        const tip = document.querySelector('.' + tipClass);
+        btn.addEventListener('mouseenter', () => {
+          if (isDesktopWidth()) tip.style.display = 'block';
+        });
+        btn.addEventListener('mouseleave', () => {
+          tip.style.display = 'none';
+        });
+      });
     }
 
-    // How to Use Dashboard popup functionality
-    $("#how-to-use-button").click(function () {
-      $("#how-to-use-popup").css("display", "flex");
+    // Generic popup open/close handlers
+    document.querySelectorAll('[data-popup]').forEach(trigger => {
+      trigger.addEventListener('click', function () {
+        document.getElementById(this.dataset.popup).style.display = 'flex';
+      });
     });
 
-    $("#close-popup").click(function () {
-      $("#how-to-use-popup").css("display", "none");
+    document.querySelectorAll('.popup-overlay .close-button').forEach(btn => {
+      btn.addEventListener('click', function () {
+        this.closest('.popup-overlay').style.display = 'none';
+      });
     });
 
-    // Close popup when clicking outside of it
-    $("#how-to-use-popup").click(function (e) {
-      if (e.target === this) {
-        $(this).css("display", "none");
-      }
-    });
-
-    // Download Data popup functionality
-    $("#download-button").click(function () {
-      $("#download-popup").css("display", "flex");
-    });
-
-    $("#close-download-popup").click(function () {
-      $("#download-popup").css("display", "none");
-    });
-
-    // Close download popup when clicking outside of it
-    $("#download-popup").click(function (e) {
-      if (e.target === this) {
-        $(this).css("display", "none");
-      }
-    });
-
-    // Submit for Review popup functionality
-    $("#submit-review-button").click(function () {
-      $("#submit-review-popup").css("display", "flex");
-    });
-
-    $("#close-submit-review-popup").click(function () {
-      $("#submit-review-popup").css("display", "none");
-    });
-
-    // Close submit review popup when clicking outside of it
-    $("#submit-review-popup").click(function (e) {
-      if (e.target === this) {
-        $(this).css("display", "none");
-      }
+    document.querySelectorAll('.popup-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === this) {
+          this.style.display = 'none';
+        }
+      });
     });
 
     // Handle submission button clicks
-    $("#submit-correction-button").click(function () {
-      window.open("https://docs.google.com/forms/d/e/1FAIpQLSdgVi7LFEMk4ztwWPJQhXEhtQr6CUPldvCd7kGuKwEy-qxkLQ/viewform?usp=preview", "_blank");
-    });
-
-    $("#submit-policy-button").click(function () {
-      window.open("https://docs.google.com/forms/d/e/1FAIpQLScOVmqZyiwVWaSUthgYE6p1XOY51TH763Ftr_LRHbtZItLXhA/viewform?usp=dialog", "_blank");
-    });
-
-    $("#submit-association-button").click(function () {
-      window.open("https://docs.google.com/forms/d/e/1FAIpQLSf6RhMgxEQgC07DA0ZMoDXzi-VQ3Svq3deCwL7rhpahOXFPmw/viewform?usp=header", "_blank");
+    const externalLinks = {
+      'submit-correction-button': 'https://docs.google.com/forms/d/e/1FAIpQLSdgVi7LFEMk4ztwWPJQhXEhtQr6CUPldvCd7kGuKwEy-qxkLQ/viewform?usp=preview',
+      'submit-policy-button': 'https://docs.google.com/forms/d/e/1FAIpQLScOVmqZyiwVWaSUthgYE6p1XOY51TH763Ftr_LRHbtZItLXhA/viewform?usp=dialog',
+      'submit-association-button': 'https://docs.google.com/forms/d/e/1FAIpQLSf6RhMgxEQgC07DA0ZMoDXzi-VQ3Svq3deCwL7rhpahOXFPmw/viewform?usp=header',
+    };
+    Object.entries(externalLinks).forEach(([id, url]) => {
+      document.getElementById(id).addEventListener('click', () => window.open(url, '_blank'));
     });
 
     // Handle download button clicks
-    $("#download-map-button").click(function () {
-      // Close the popup first
-      $("#download-popup").css("display", "none");
+    document.getElementById('download-map-button').addEventListener('click', function () {
+      document.getElementById('download-popup').style.display = 'none';
       
-      // Export high-resolution map
       const canvas = map.getCanvas();
       const originalSize = {
         width: canvas.width,
@@ -5047,29 +3541,23 @@
       map.triggerRepaint();
     });
 
-    $("#download-data-button").click(function () {
-      // Download the CSV file
-      var link = document.createElement('a');
+    document.getElementById('download-data-button').addEventListener('click', function () {
+      const link = document.createElement('a');
       link.href = 'https://docs.google.com/spreadsheets/d/1nrpW_mR51LSpkkaChva3ELZLBzsFwILnNLb1Y-icJKc/export?format=csv';
       link.download = 'chw-policy-data.csv';
       link.click();
       
-      // Close the popup
-      $("#download-popup").css("display", "none");
+      document.getElementById('download-popup').style.display = 'none';
     });
 
-    // Close popup with Escape key
-    $(document).keydown(function (e) {
-      if (e.key === "Escape") {
-        if ($("#how-to-use-popup").css("display") === "flex") {
-          $("#how-to-use-popup").css("display", "none");
-        }
-        if ($("#download-popup").css("display") === "flex") {
-          $("#download-popup").css("display", "none");
-        }
-        if ($("#submit-review-popup").css("display") === "flex") {
-          $("#submit-review-popup").css("display", "none");
-        }
+    // Close any open popup with Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.popup-overlay').forEach(overlay => {
+          if (overlay.style.display === 'flex') {
+            overlay.style.display = 'none';
+          }
+        });
       }
     });
 
