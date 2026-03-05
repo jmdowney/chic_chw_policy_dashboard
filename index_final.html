@@ -784,6 +784,66 @@
         margin-bottom: .3em;
       }
 
+      .subsection-title-with-tooltip {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
+        cursor: help;
+        margin-bottom: .3em;
+      }
+
+      .subsection-info-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1em;
+        height: 1em;
+        font-size: 0.7em;
+        font-weight: bold;
+        font-style: italic;
+        color: var(--color-neutral);
+        border: 1px solid var(--color-neutral);
+        border-radius: 50%;
+        flex-shrink: 0;
+        position: relative;
+        top: -0.25em;
+        vertical-align: middle;
+      }
+
+      .sidebar-subsection-tooltip {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 6px;
+        max-width: min(300px, 85vw);
+        min-width: 180px;
+        font-family: var(--font-primary);
+        font-size: 0.75rem;
+        line-height: 1.4;
+        background-color: var(--color-black);
+        color: var(--color-background);
+        padding: 10px 12px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 2001;
+        pointer-events: none;
+      }
+
+      .sidebar-subsection-tooltip::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 1em;
+        border: 6px solid transparent;
+        border-bottom-color: var(--color-black);
+      }
+
+      .subsection-title-with-tooltip.tooltip-open .sidebar-subsection-tooltip {
+        display: block;
+      }
+
       .accreditation-subsection-description {
         font-family: var(--font-primary);
         font-size: .45rem;
@@ -1486,7 +1546,7 @@
       .accredited-and-paid-chws-button-def::after, .policy-status-button-def::after { left: 2em; }
 
       .subsection-title-with-tooltip { position: relative; display: inline-flex; align-items: center; gap: 0.35em; cursor: help; margin-bottom: .3em; }
-      .subsection-info-icon { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; font-size: 0.7em; font-weight: bold; font-style: italic; color: var(--color-neutral); border: 1px solid var(--color-neutral); border-radius: 50%; flex-shrink: 0; position: relative; top: -0.25em; vertical-align: middle; }
+      .subsection-info-icon { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; font-size: clamp(0.5em, 0.45em + 0.35vw, 0.7em); font-weight: bold; font-style: italic; color: var(--color-neutral); border: 1px solid var(--color-neutral); border-radius: 50%; flex-shrink: 0; position: relative; top: -0.25em; vertical-align: middle; }
       .sidebar-subsection-tooltip { display: none; position: absolute; top: 100%; left: 0; margin-top: 6px; max-width: 300px; min-width: 200px; font-family: var(--font-primary); font-size: 0.85rem; line-height: 1.4; background-color: var(--color-black); color: var(--color-background); padding: 12px 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); z-index: 2001; pointer-events: none; }
       .sidebar-subsection-tooltip::before { content: ''; position: absolute; bottom: 100%; left: 1em; border: 6px solid transparent; border-bottom-color: var(--color-black); }
       .subsection-title-with-tooltip:hover .sidebar-subsection-tooltip { display: block; }
@@ -1517,6 +1577,7 @@
 
     /* Tablet overrides */
     @media screen and (min-width: 768px) and (max-width: 1279px) {
+      .subsection-info-icon { font-size: 0.55em; }
       .header-section { display: grid; align-items: center; }
       #totaltext { font-size: clamp(1.8rem, 1.046rem + 1.571vw, 2.46rem); overflow-wrap: normal; }
       #total-accredited-and-paid { font-size: clamp(2rem, 1.2rem + 1.667vw, 2.7rem); }
@@ -3558,6 +3619,23 @@
             overlay.style.display = 'none';
           }
         });
+        document.querySelectorAll('.subsection-title-with-tooltip.tooltip-open').forEach(w => w.classList.remove('tooltip-open'));
+      }
+    });
+
+    // Mobile: tap subsection title or icon to toggle tooltip (no hover on touch)
+    document.addEventListener('click', function (e) {
+      const isMobileOrTouch = window.matchMedia('(max-width: 767px)').matches || window.matchMedia('(hover: none)').matches;
+      if (!isMobileOrTouch) return;
+
+      const wrapper = e.target.closest('.subsection-title-with-tooltip');
+      if (wrapper) {
+        e.preventDefault();
+        const wasOpen = wrapper.classList.contains('tooltip-open');
+        document.querySelectorAll('.subsection-title-with-tooltip.tooltip-open').forEach(w => w.classList.remove('tooltip-open'));
+        if (!wasOpen) wrapper.classList.add('tooltip-open');
+      } else {
+        document.querySelectorAll('.subsection-title-with-tooltip.tooltip-open').forEach(w => w.classList.remove('tooltip-open'));
       }
     });
 
