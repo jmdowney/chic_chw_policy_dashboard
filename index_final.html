@@ -159,7 +159,7 @@
         font-size: 4vw;
         text-align: center;
         vertical-align: middle;
-        background-color: var(--color-secondary);
+        background-color: var(--color-primary);
         margin: .5rem;
         padding: .5rem;
         border-radius: var(--radius-sm);
@@ -396,6 +396,13 @@
         width: 10px;
         height: 10px;
         margin-right: 5px;
+        flex-shrink: 0;
+        margin-top: 0.25em;
+      }
+
+      .legend-row {
+        display: flex;
+        align-items: flex-start;
       }
 
       .legenditems {
@@ -1012,7 +1019,7 @@
 
       .ai-summary-title {
         font-family: var(--font-primary);
-        font-size: .54rem;
+        font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem);
         color: var(--color-black);
         text-transform: uppercase;
         font-weight: bold;
@@ -1022,7 +1029,7 @@
 
       .ai-summary-content {
         font-family: var(--font-primary);
-        font-size: .63rem;
+        font-size: clamp(0.45rem, 0.36rem + 0.36vw, 0.81rem);
         color: var(--color-black);
         line-height: 1.3;
       }
@@ -1210,7 +1217,7 @@
         font-family: var(--font-display);
         text-align: center;
         vertical-align: middle;
-        background-color: var(--color-secondary);
+        background-color: var(--color-primary);
         margin: 0.3em;
         padding: 0.3em;
         border-radius: var(--radius-md);
@@ -1282,8 +1289,9 @@
         opacity: 1;
       }
 
-      .legend-key { display: inline-block; border-radius: 20%; width: 10px; height: 10px; margin-right: 5px; }
-      .legenditems { display: inline-block; }
+      .legend-key { display: inline-block; border-radius: 20%; width: 10px; height: 10px; margin-right: 5px; flex-shrink: 0; margin-top: 0.25em; }
+      .legend-row { display: flex; align-items: flex-start; }
+      .legenditems { display: block; }
       h4 { margin-top: 5px; margin-bottom: 5px; }
       #legend-title { word-wrap: break-word; word-break: break-word; hyphens: auto; line-height: 1.2; }
 
@@ -1486,8 +1494,8 @@
       .timeline-milestone a:hover { color: var(--color-primary); }
 
       .ai-summary-card { background-color: var(--color-accent); border-radius: var(--radius-lg); padding: 1.5em; margin-top: 2.5em; font-family: var(--font-primary); }
-      .ai-summary-title { font-family: var(--font-primary); font-size: .81rem; color: var(--color-black); text-transform: uppercase; font-weight: bold; line-height: 1.2; margin-bottom: 1em; }
-      .ai-summary-content { font-family: var(--font-primary); font-size: .9rem; color: var(--color-black); line-height: 1.2; }
+      .ai-summary-title { font-family: var(--font-primary); font-size: clamp(0.54rem, 0.36rem + 0.54vw, 0.95rem); color: var(--color-black); text-transform: uppercase; font-weight: bold; line-height: 1.2; margin-bottom: 1em; }
+      .ai-summary-content { font-family: var(--font-primary); font-size: clamp(0.54rem, 0.4rem + 0.5vw, 0.9rem); color: var(--color-black); line-height: 1.2; }
 
       .buttoncontainer {
         position: absolute;
@@ -1644,7 +1652,7 @@
       </div>
 
       <!-- Middle of header -->
-      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED AND PAID</div>
+      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS BOTH ACCREDITED AND PAID</div>
 
       <!-- Right side of header -->
       <div class="header-section right">
@@ -1664,19 +1672,30 @@
           <button type="button" id="close-popup" class="close-button">&times;</button>
         </div>
         <div class="popup-body">
-          <p>This dashboard provides comprehensive data on proCHW policies in Countdown to 2030 countries. Scroll past the map to see methods and definitions for dashboard information.</p>
+          <p>This dashboard shows proCHW policies across Countdown to 2030 countries. Explore the map to see where policies exist, what they include, and whether there is evidence that they are being implemented. Scroll past the map to view methods and definitions.</p>
           
           <h4>Getting Started</h4>
-          <p>Use the buttons at the top of the map to view different indicators, including accredited CHWs, paid CHWs, accredited and paid CHWs, policy status, and evidence for CHW policy implementation. Download a high-resolution photo of the map or the raw data using the download button in the bottom right hand corner of the map.</p>
+          <p>Use the buttons at the top of the map to switch between indicators, including accredited CHWs, paid CHWs, accredited and paid CHWs, policy status, and evidence of CHW policy implementation.</p>
+          <p>Use the download button in the bottom right corner to download a high-resolution image of the map or the raw data.</p>
           
-          <h4>Map Interaction</h4>
-          <p>Click on countries to view detailed policy information in the sidebar, or use the search bar to quickly find specific countries. The legend at the bottom left explains the color coding for each indicator.</p>
+          <h4>Explore the Map</h4>
+          <p>Click on a country to view policy details in the sidebar. You can also use the search bar to quickly find a specific country.</p>
+          <p>The legend at the bottom left explains the color coding for each indicator.</p>
           
-          <h4>Sidebar Features</h4>
-          <p>The sidebar shows detailed country information including CHW group information; policy or other government document details; evidence for commitments to professional CHWs including accreditation, paid, supervision, skills, and supplies; evidence for policy implementation; where available, a timeline of policy milestones; and AI-generated summaries for each country. Click on the expandable sections to view this information.</p>
+          <h4>View Country Details</h4>
+          <p>The sidebar provides detailed information for each country, including:</p>
+          <ul>
+            <li>CHW groups</li>
+            <li>Policy details</li>
+            <li>Commitments related to CHW accreditation, pay, supervision, training, and supplies</li>
+            <li>Evidence that policies are being implemented</li>
+            <li>A timeline of key policy milestones</li>
+            <li>AI-generated country summaries</li>
+          </ul>
+          <p>Click the expandable sections to view this information.</p>
           
-          <h4>See Something Missing?</h4>
-          <p>We want to hear from you! Please use the link in the sidebar to submit information or corrections.</p>
+          <h4>Contribute Data or Corrections</h4>
+          <p>We want to hear from you! Please use the link in the sidebar to submit information or corrections. Community contributions help keep the dashboard accurate and up to date.</p>
         </div>
       </div>
     </div>
@@ -1746,24 +1765,19 @@
       <div class="button-row">
         <div class="button-with-tooltip">
           <button type="button" id="accredited-and-paid-chws-button" class="button" data-indicator="paid_accredited_cat" data-header-key="accredited-and-paid">ACCREDITED & PAID CHWS</button>
-          <div class="accredited-and-paid-chws-button-def">For purposes of
-            this dashboard, we focus on two of the eight best practices that are indicative of formal,
-            fulfilling, and dignified labor conditions and for which sufficient data exists in policy
-            documents: accreditation and compensation.
-          </div>
+          <div class="accredited-and-paid-chws-button-def">This dashboard focuses on two of the eight proCHW best practices: accreditation and compensation. These are strong indicators of professional CHW programs and are most consistently documented in national policies.</div>
         </div>
         <div class="button-with-tooltip">
           <button type="button" id="accredited-chws-button" class="button" data-indicator="accreditation_cat" data-header-key="accredited">ACCREDITED CHWS</button>
-          <div class="accredited-chws-button-def">Does the government document explicitly recognize roles, qualifications, and/or competencies for at least one CHW group?</div>
+          <div class="accredited-chws-button-def">Does the government document explicitly recognize the roles, qualifications, and competencies of at least one CHW group?</div>
         </div>
         <div class="button-with-tooltip">
           <button type="button" id="paid-chws-button" class="button" data-indicator="paid_cat" data-header-key="paid">PAID CHWS</button>
-          <div class="paid-chws-button-def">Does the government document provide for at least one CHW group to be compensated, either through government wage bills (salaries) or another form of regular payment?</div>
+          <div class="paid-chws-button-def">Does the government document include salary or other regular payments for at least one CHW group?</div>
         </div>
         <div class="button-with-tooltip">
           <button type="button" id="implementation-evidence-button" class="button" data-indicator="any_implementation_evidence" data-header-key="implementation-evidence">IMPLEMENTATION EVIDENCE</button>
-          <div class="implementation-evidence-button-def">Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?
-          </div>
+          <div class="implementation-evidence-button-def">Is there any evidence that the CHW policy is implemented, based on at least one of the seven proxy indicators?</div>
         </div>
         <div class="button-with-tooltip">
           <button type="button" id="policy-status-button" class="button" data-indicator="doc_status" data-header-key="policy-status">POLICY STATUS</button>
@@ -1860,18 +1874,18 @@
         <!-- Accreditation, Paid, Supervision, Skills, & Supplies Section -->
         <div id="accreditation-section" class="accreditation-section" style="display: none;">
           <div class="accreditation-section-header">
-            <div class="accreditation-section-title">ACCREDITATION, PAYMENT, SUPERVISION, SKILLS, & SUPPLIES</div>
+            <div class="accreditation-section-title">ACCREDITED, PAID, SUPERVISED, SKILLED, & SUPPLIED</div>
             <div class="accreditation-section-arrow">></div>
           </div>
-          <div class="accreditation-section-subtitle">Does the policy reflect formal commitments to professional CHWs?</div>
+          <div class="accreditation-section-subtitle">Does the policy include formal commitments related to professional CHWs?</div>
           <div class="accreditation-section-content" style="display: none;">
             <!-- Accreditation Subsection -->
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
                 <div class="subsection-title-with-tooltip">
-                  <span class="accreditation-subsection-title">ACCREDITATION</span>
+                  <span class="accreditation-subsection-title">ACCREDITED</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document explicitly recognize roles, qualifications, and/or competencies for at least one CHW group?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document explicitly recognize the roles, qualifications, and competencies of at least one CHW group?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="accreditation-description"></div>
                 <div class="accreditation-subsection-source" id="accreditation-source"></div>
@@ -1886,9 +1900,9 @@
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
                 <div class="subsection-title-with-tooltip">
-                  <span class="accreditation-subsection-title">PAYMENT</span>
+                  <span class="accreditation-subsection-title">PAID</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document provide for at least one CHW group to be compensated, either through government wage bills (salaries) or another form of regular payment?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document include salary or other regular payments for at least one CHW group?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="paid-description"></div>
                 <div class="accreditation-subsection-source" id="paid-source"></div>
@@ -1903,9 +1917,9 @@
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
                 <div class="subsection-title-with-tooltip">
-                  <span class="accreditation-subsection-title">SUPERVISION</span>
+                  <span class="accreditation-subsection-title">SUPERVISED</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document establish a functional supervision system?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document establish a functional supervision system for CHWs?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="supervision-description"></div>
                 <div class="accreditation-subsection-source" id="supervision-source"></div>
@@ -1920,9 +1934,9 @@
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
                 <div class="subsection-title-with-tooltip">
-                  <span class="accreditation-subsection-title">SKILLS</span>
+                  <span class="accreditation-subsection-title">SKILLED</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document detail functional training for CHWs?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document describe a functional training system for CHWs?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="skills-description"></div>
                 <div class="accreditation-subsection-source" id="skills-source"></div>
@@ -1937,9 +1951,9 @@
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
                 <div class="subsection-title-with-tooltip">
-                  <span class="accreditation-subsection-title">SUPPLIES</span>
+                  <span class="accreditation-subsection-title">SUPPLIED</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document detail a functional system for CHWs to access equipment, supplies, and job aids?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document describe a functional system for CHWs to access equipment, supplies, and job aids?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="supplies-description"></div>
                 <div class="accreditation-subsection-source" id="supplies-source"></div>
@@ -1958,7 +1972,7 @@
             <div class="accreditation-section-title">POLICY IMPLEMENTATION</div>
             <div class="accreditation-section-arrow">></div>
           </div>
-          <div class="accreditation-section-subtitle">Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?</div>
+          <div class="accreditation-section-subtitle">Is there any evidence that the CHW policy is implemented, based on at least one of the seven proxy indicators?</div>
           <div class="accreditation-section-content" style="display: none;">
             <!-- Domestic Financing Commitment Subsection -->
             <div class="accreditation-subsection">
@@ -1966,7 +1980,7 @@
                 <div class="subsection-title-with-tooltip">
                   <span class="accreditation-subsection-title">DOMESTIC FINANCING COMMITMENT</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document describe commitments to finance CHW programs using domestic resources?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document commit to financing CHW programs?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="domestic-financing-commitment-description"></div>
                 <div class="accreditation-subsection-source" id="domestic-financing-commitment-source"></div>
@@ -2000,7 +2014,7 @@
                 <div class="subsection-title-with-tooltip">
                   <span class="accreditation-subsection-title">DATA SYSTEMS / FEEDBACK LOOPS</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document detail a functional data system for CHWs, including CHW data collection using standardized formats, supervisor review and feedback, reporting into public-sector M&amp;E systems, and data use for community problem-solving?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document describe a functional data system for CHWs?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="data-systems-description"></div>
                 <div class="accreditation-subsection-source" id="data-systems-source"></div>
@@ -2015,7 +2029,7 @@
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
                 <div class="subsection-title-with-tooltip">
-                  <span class="accreditation-subsection-title">MERL / M&amp;E FRAMEWORK</span>
+                  <span class="accreditation-subsection-title">MONITORING, EVALUATION, RESEARCH &amp; LEARNING FRAMEWORK</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
                   <div class="sidebar-subsection-tooltip">Does the government document describe a national MERL framework for measuring and tracking the performance of CHW programs?</div>
                 </div>
@@ -2034,7 +2048,7 @@
                 <div class="subsection-title-with-tooltip">
                   <span class="accreditation-subsection-title">CHW REGISTRY</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document describe the use of a digital registry or CHW master list?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document describe a digital registry or a CHW master list?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="chw-registry-description"></div>
                 <div class="accreditation-subsection-source" id="chw-registry-source"></div>
@@ -2051,7 +2065,7 @@
                 <div class="subsection-title-with-tooltip">
                   <span class="accreditation-subsection-title">COSTED DOCUMENTATION</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Is there costing information that explicitly includes CHWs?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document include costing information that explicitly includes CHWs?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="costed-documentation-description"></div>
                 <div class="accreditation-subsection-source" id="costed-documentation-source"></div>
@@ -2068,7 +2082,7 @@
                 <div class="subsection-title-with-tooltip">
                   <span class="accreditation-subsection-title">OPERATIONAL MATERIALS</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document describe existing or planned operational or implementation guidance for CHW programs, including operational plans, implementation manuals, protocols, or other resources that support CHW program execution?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document describe existing or planned operational guidance for CHW programs?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="operational-materials-description"></div>
                 <div class="accreditation-subsection-source" id="operational-materials-source"></div>
@@ -2139,42 +2153,47 @@
     const item = document.getElementById('legenditems');
     item.innerHTML = '';
     legendValues.forEach((legendValue, i) => {
+      const row = document.createElement('div');
+      row.className = 'legend-row';
+
       const key = document.createElement('span');
       key.className = 'legend-key';
       key.style.backgroundColor = legendColors[i];
 
       const value = document.createElement('span');
       value.innerHTML = legendValue;
-      item.append(key, value, document.createElement('br'));
+
+      row.append(key, value);
+      item.append(row);
     });
   }
 
   // Config for each map indicator: categories in legend display order
   const indicatorConfigs = {
     paid_accredited_cat: {
-      title: "Is at least one CHW group paid (salaried or regular payments) & accredited (fully or partially)?",
+      title: "Is at least one CHW group both accredited (fully or partially) & paid (salaried or regular pay)?",
       categories: [
-        { match: ["both"], color: "#9272d9", label: "Both (salaried or regular payments AND fully or partially accredited)" },
-        { match: ["only accredited or only paid"], color: "#20bdc5", label: "Only accredited (fully or partially) or only paid (salaried or regular payments)" },
-        { match: ["neither", "no document available", "not specified in documents reviewed"], color: "#F36744", label: "Neither or not specified in documents reviewed" },
+        { match: ["both"], color: "#9272d9", label: "Both (salaried or regular pay AND fully or partially accredited)" },
+        { match: ["only accredited or only paid"], color: "#20bdc5", label: "Only accredited (fully or partially) or only paid (salary or regular pay)" },
+        { match: ["neither", "no document available", "not specified in documents reviewed"], color: "#F36744", label: "Neither or no evidence in available sources" },
         { match: ["no known chws"], color: "#999999", label: "No known CHWs" },
       ]
     },
     accreditation_cat: {
       title: "Is at least one CHW group accredited (fully or partially)?",
       categories: [
-        { match: ["yes"], color: "#9272d9", label: "Yes (policy details all elements)", hoverLabel: "Yes" },
-        { match: ["partial"], color: "#20bdc5", label: "Partial (policy details 1-2 elements)", hoverLabel: "Partial" },
-        { match: ["no", "not specified in documents reviewed"], color: "#F36744", label: "No (no evidence of accreditation based on available sources)", hoverLabel: "No" },
+        { match: ["yes"], color: "#9272d9", label: "Yes (all elements)", hoverLabel: "Yes" },
+        { match: ["partial"], color: "#20bdc5", label: "Partial (1-2 elements)", hoverLabel: "Partial" },
+        { match: ["no", "not specified in documents reviewed"], color: "#F36744", label: "No or no evidence in available sources", hoverLabel: "No" },
         { match: ["no known chws"], color: "#999999", label: "No known CHWs", hoverLabel: "No known CHWs" },
       ]
     },
     paid_cat: {
-      title: "Is at least one CHW group paid (salaried or regular payments)?",
+      title: "Is at least one CHW group paid (salaried or regular pay)?",
       categories: [
-        { match: ["yes, salaried"], color: "#9272d9", label: "Yes (CHWs are paid via a wage bill)", hoverLabel: "Yes" },
-        { match: ["partial, paid regularly"], color: "#20bdc5", label: "Partial (CHWs receive regular payments e.g. monthly stipends)", hoverLabel: "Partial" },
-        { match: ["no, irregular pay or no evidence of payments", "not specified in documents reviewed"], color: "#F36744", label: "No (CHWs receive irregular payments, non-monetary incentives only, are explicitly not paid, or there is no evidence of payment available in the documents reviewed)", hoverLabel: "No" },
+        { match: ["yes, salaried"], color: "#9272d9", label: "Salaried (paid via the wage bill)", hoverLabel: "Yes" },
+        { match: ["partial, paid regularly"], color: "#20bdc5", label: "Regular pay (paid regular payments, e.g., monthly stipends)", hoverLabel: "Partial" },
+        { match: ["no, irregular pay or no evidence of payments", "not specified in documents reviewed"], color: "#F36744", label: "No (irregular pay, non-monetary incentives, or no evidence in available sources)", hoverLabel: "No" },
         { match: ["no known chws"], color: "#999999", label: "No known CHWs", hoverLabel: "No known CHWs" },
       ]
     },
@@ -2188,10 +2207,10 @@
       ]
     },
     any_implementation_evidence: {
-      title: "Is there any evidence of CHW policy implementation, as measured by the presence of any one of seven proxy indicators?",
+      title: "Is there any evidence that the CHW policy is being implemented?",
       categories: [
-        { match: ["yes"], color: "#9272d9", label: "Yes", hoverLabel: "Yes" },
-        { match: ["no", "no document available", "not specified in documents reviewed"], color: "#F36744", label: "No evidence of implementation based on available sources", hoverLabel: "No" },
+        { match: ["yes"], color: "#9272d9", label: "Yes (at least 1 proxy indicator)", hoverLabel: "Yes" },
+        { match: ["no", "no document available", "not specified in documents reviewed"], color: "#F36744", label: "No evidence in available sources", hoverLabel: "No" },
         { match: ["no known chws"], color: "#999999", label: "No known CHWs", hoverLabel: "No known CHWs" },
       ]
     }
@@ -2213,6 +2232,10 @@
     const config = indicatorConfigs[indicatorName];
     if (!config) return rawValue && rawValue.trim() !== '' ? rawValue.trim() : '—';
     const val = (rawValue || '').trim().toLowerCase();
+    if (val === 'not specified in documents reviewed' &&
+        (indicatorName === 'accreditation_cat' || indicatorName === 'paid_cat')) {
+      return 'Not specified in documents reviewed';
+    }
     for (let i = 0; i < config.categories.length; i++) {
       const cat = config.categories[i];
       if (cat.match.includes(val)) return cat.hoverLabel != null ? cat.hoverLabel : cat.label;
@@ -2330,15 +2353,15 @@
     switch (indicatorKey) {
       case "accredited-and-paid":
         numerator = countCategoricalYes("paid_accredited_cat", "both");
-        text = "COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED AND PAID";
+        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS BOTH ACCREDITED AND PAID";
         break;
       case "accredited":
         numerator = countCategoricalYes("accreditation_cat", ["yes", "partial"]);
-        text = "COUNTRIES HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED";
+        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS ACCREDITED";
         break;
       case "paid":
         numerator = countCategoricalYes("paid_cat", ["yes, salaried", "partial, paid regularly"]);
-        text = "COUNTRIES HAVE ONE OR MORE CHW GROUPS WHO ARE PAID";
+        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS PAID";
         break;
       case "policy-status":
         numerator = countPolicyStatusActive();
@@ -2350,7 +2373,7 @@
         break;
       default:
         numerator = countCategoricalYes("paid_accredited_cat", "both");
-        text = "COUNTRIES CURRENTLY HAVE ONE OR MORE CHW GROUPS WHO ARE ACCREDITED AND PAID";
+        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS BOTH ACCREDITED AND PAID";
     }
     document.getElementById('total-accredited-and-paid').textContent = numerator + "/" + totalDenominator;
     document.getElementById('totaltext').textContent = text;
@@ -3416,6 +3439,7 @@
         document.getElementById('out-of-scope-message').style.display = 'block';
         document.getElementById('out-of-scope-message').textContent = "This country is not a Countdown to 2030 country, so it is out of scope for this dashboard.";
         document.getElementById('no-known-chws-message').style.display = 'none';
+        document.getElementById('date-last-updated').style.display = 'none';
         
         // Hide all other elements
         document.getElementById('chw-cards-container').style.display = 'none';
@@ -3432,6 +3456,7 @@
         // No known CHWs – populate policy status via populateCHWCards, then hide everything else
         document.getElementById('out-of-scope-message').style.display = 'none';
         document.getElementById('no-known-chws-message').style.display = 'block';
+        document.getElementById('date-last-updated').style.display = '';
 
         // Populate cards/policy status (this also shows chw-cards-container internally)
         populateCHWCards(countryData);
@@ -3453,6 +3478,7 @@
         // Country is in scope - show everything
         document.getElementById('out-of-scope-message').style.display = 'none';
         document.getElementById('no-known-chws-message').style.display = 'none';
+        document.getElementById('date-last-updated').style.display = '';
         
         // Show all elements
         document.getElementById('chw-cards-container').style.display = 'flex';
@@ -3603,11 +3629,20 @@
     });
 
     document.getElementById('download-data-button').addEventListener('click', function () {
-      const link = document.createElement('a');
-      link.href = `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`;
-      link.download = 'chw-policy-data.csv';
-      link.click();
-      
+      fetch(`https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`)
+        .then(res => res.text())
+        .then(csvText => {
+          const BOM = '\uFEFF';
+          const blob = new Blob([BOM + csvText], { type: 'text/csv;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'chw-policy-data.csv';
+          link.click();
+          URL.revokeObjectURL(url);
+        })
+        .catch(err => console.error('Failed to download CSV:', err));
+
       document.getElementById('download-popup').style.display = 'none';
     });
 
