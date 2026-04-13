@@ -3772,30 +3772,19 @@
       });
     });
 
-    function closePopup(overlay) {
-      overlay.style.display = 'none';
-      if (overlay.id === 'how-to-use-popup') {
-        localStorage.setItem('hasSeenHowToUse', 'true');
-      }
-    }
-
     document.querySelectorAll('.popup-overlay .close-button').forEach(btn => {
       btn.addEventListener('click', function () {
-        closePopup(this.closest('.popup-overlay'));
+        this.closest('.popup-overlay').style.display = 'none';
       });
     });
 
     document.querySelectorAll('.popup-overlay').forEach(overlay => {
       overlay.addEventListener('click', function (e) {
         if (e.target === this) {
-          closePopup(this);
+          this.style.display = 'none';
         }
       });
     });
-
-    if (!localStorage.getItem('hasSeenHowToUse')) {
-      document.getElementById('how-to-use-popup').style.display = 'flex';
-    }
 
     // Handle submission button clicks
     const externalLinks = {
@@ -3859,7 +3848,7 @@
       if (e.key === 'Escape') {
         document.querySelectorAll('.popup-overlay').forEach(overlay => {
           if (overlay.style.display === 'flex') {
-            closePopup(overlay);
+            overlay.style.display = 'none';
           }
         });
         document.querySelectorAll('.subsection-title-with-tooltip.tooltip-open').forEach(w => w.classList.remove('tooltip-open'));
