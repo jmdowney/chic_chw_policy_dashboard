@@ -98,7 +98,7 @@
       .container {
         display: grid;
         grid-template-columns: repeat(4, minmax(0px, 1fr));
-        grid-template-rows: 10vh 6vh 50vh 34vh;
+        grid-template-rows: auto 50vh 34vh;
         max-width: 100%;
       }
 
@@ -136,7 +136,7 @@
       /* Map and sidebar */
       .content-section {
         grid-column: 1 / span 4;
-        grid-row: 3 / span 2;
+        grid-row: 2 / span 2;
       }
 
       /* Total accredited & paid */
@@ -210,7 +210,7 @@
       /* Map positioning */
       #map {
         grid-column: 1 / span 4;
-        grid-row: 3 / span 1;
+        grid-row: 2 / span 1;
         height: 100%;
         position: relative;
       }
@@ -265,7 +265,7 @@
 
       .buttoncontainer {
         position: absolute;
-        top: 16%;
+        top: 0;
         left: 0;
         margin-left: .5em;
         display: flex;
@@ -433,7 +433,7 @@
         display: flex;
         flex-direction: column;
         grid-column: 1 / span 4;
-        grid-row: 4 / span 1;
+        grid-row: 3 / span 1;
         background-color: var(--color-background);
         color: var(--color-primary-light);
         padding: 1.5em 2.5em 2em 2.5em;
@@ -721,16 +721,15 @@
       }
 
       .accreditation-section-title {
-        font-family: var(--font-display);
+        font-family: var(--font-accent);
         font-size: .81rem;
         color: var(--color-primary-light);
-        text-transform: uppercase;
         font-weight: bold;
         line-height: 1.2;
       }
 
       .accreditation-section-subtitle {
-        font-family: var(--font-accent);
+        font-family: var(--font-primary);
         font-size: .6rem;
         color: var(--color-black);
         font-style: normal;
@@ -1087,7 +1086,6 @@
         color: var(--color-primary-light);
         font-size: 1.16rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
       }
 
       .close-button {
@@ -1147,8 +1145,8 @@
       .container {
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-template-rows: 20vh 80vh;
-        height: 100%;
+        grid-template-rows: auto 1fr;
+        height: 100vh;
       }
 
       .header {
@@ -1457,8 +1455,8 @@
       }
 
       .accreditation-section-header:hover { background-color: rgba(79, 32, 73, 0.1); }
-      .accreditation-section-title { font-family: var(--font-display); font-size: clamp(0.63rem, 0.36rem + 0.9vw, 1.62rem); color: var(--color-primary-light); text-transform: uppercase; font-weight: bold; line-height: 1.2; }
-      .accreditation-section-subtitle { font-family: var(--font-accent); font-size: clamp(0.55rem, 0.4rem + 0.55vw, 0.95rem); color: var(--color-black); font-style: normal; padding: .5em; line-height: 1.3; }
+      .accreditation-section-title { font-family: var(--font-accent); font-size: clamp(0.63rem, 0.36rem + 0.9vw, 1.62rem); color: var(--color-primary-light); font-weight: bold; line-height: 1.2; }
+      .accreditation-section-subtitle { font-family: var(--font-primary); font-size: clamp(0.55rem, 0.4rem + 0.55vw, 0.95rem); color: var(--color-black); font-style: normal; padding: .5em; line-height: 1.3; }
       .accreditation-section-arrow { color: var(--color-neutral); font-weight: bold; font-size: .72rem; margin-left: .5em; transition: transform 0.2s ease; }
       .accreditation-section.expanded .accreditation-section-arrow { transform: rotate(90deg); }
       .accreditation-section-content { padding: .8em; background-color: rgba(79, 32, 73, 0.08); border-radius: var(--radius-lg); }
@@ -1499,6 +1497,7 @@
 
       .buttoncontainer {
         position: absolute;
+        top: 0;
         left: 0;
         margin-left: 10px;
         display: flex;
@@ -1570,7 +1569,7 @@
       }
 
       .popup-header { display: flex; justify-content: space-between; gap: 2em; align-items: center; margin-bottom: 1em; padding-bottom: 0.5em; }
-      .popup-header h3 { margin: 0; font-family: var(--font-display); color: var(--color-primary-light); text-transform: uppercase; letter-spacing: 0.05em; }
+      .popup-header h3 { margin: 0; font-family: var(--font-display); color: var(--color-primary-light); text-transform: uppercase; }
 
       .close-button {
         background: none; border: none; color: var(--color-primary); cursor: pointer; padding: 0;
@@ -1601,7 +1600,7 @@
       .timeline-year { font-size: .72rem; margin-top: 2.5em; margin-bottom: .4em; }
       .timeline-milestones-container { gap: .6em; }
       .timeline-milestone { font-size: .49rem; line-height: 1.4; max-width: 150px; }
-      .buttoncontainer { top: 22%; }
+      .buttoncontainer { top: 0; }
       .searchcontainer { width: 300px; }
       .search-results { max-height: 250px; }
       .popup-content { padding: 2em; max-width: 600px; }
@@ -1625,7 +1624,7 @@
       .timeline-year { font-size: .81rem; margin-top: 2.8em; margin-bottom: .5em; }
       .timeline-milestones-container { gap: .7em; }
       .timeline-milestone { font-size: .7rem; line-height: 1.2; max-width: 180px; }
-      .buttoncontainer { top: 20%; }
+      .buttoncontainer { top: 0; }
       .searchcontainer { width: 350px; }
       .search-results { max-height: 300px; }
       .popup-content { padding: 2.5em; max-width: 700px; }
@@ -1652,7 +1651,7 @@
       </div>
 
       <!-- Middle of header -->
-      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS BOTH ACCREDITED AND PAID</div>
+      <div id="totaltext" class="header-section middle">COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS BOTH ACCREDITED AND PAID.</div>
 
       <!-- Right side of header -->
       <div class="header-section right">
@@ -1668,7 +1667,7 @@
     <div id="how-to-use-popup" class="popup-overlay">
       <div class="popup-content">
         <div class="popup-header">
-          <h3>HOW TO USE THE DASHBOARD</h3>
+          <h3>HOW TO USE THE DASHBOARD.</h3>
           <button type="button" id="close-popup" class="close-button">&times;</button>
         </div>
         <div class="popup-body">
@@ -1758,40 +1757,40 @@
           Download High-Res Image or Raw Data
         </button>
       </div>
-    </div>
 
-    <!-- Button container -->
-    <div id="buttoncontainer" class="buttoncontainer">
-      <div class="button-row">
-        <div class="button-with-tooltip">
-          <button type="button" id="accredited-and-paid-chws-button" class="button" data-indicator="paid_accredited_cat" data-header-key="accredited-and-paid">ACCREDITED & PAID CHWS</button>
-          <div class="accredited-and-paid-chws-button-def">This dashboard focuses on two of the eight proCHW best practices: accreditation and compensation. These are strong indicators of professional CHW programs and are most consistently documented in national policies.</div>
-        </div>
-        <div class="button-with-tooltip">
-          <button type="button" id="accredited-chws-button" class="button" data-indicator="accreditation_cat" data-header-key="accredited">ACCREDITED CHWS</button>
-          <div class="accredited-chws-button-def">Does the government document explicitly recognize the roles, qualifications, and competencies of at least one CHW group?</div>
-        </div>
-        <div class="button-with-tooltip">
-          <button type="button" id="paid-chws-button" class="button" data-indicator="paid_cat" data-header-key="paid">PAID CHWS</button>
-          <div class="paid-chws-button-def">Does the government document include salary or other regular payments for at least one CHW group?</div>
-        </div>
-        <div class="button-with-tooltip">
-          <button type="button" id="implementation-evidence-button" class="button" data-indicator="any_implementation_evidence" data-header-key="implementation-evidence">IMPLEMENTATION EVIDENCE</button>
-          <div class="implementation-evidence-button-def">Is there any evidence that the CHW policy is implemented, based on at least one of the seven proxy indicators?</div>
-        </div>
-        <div class="button-with-tooltip">
-          <button type="button" id="policy-status-button" class="button" data-indicator="doc_status" data-header-key="policy-status">POLICY STATUS</button>
-          <div class="policy-status-button-def">What is the status of the country's policy?
+      <!-- Button container -->
+      <div id="buttoncontainer" class="buttoncontainer">
+        <div class="button-row">
+          <div class="button-with-tooltip">
+            <button type="button" id="accredited-and-paid-chws-button" class="button" data-indicator="paid_accredited_cat" data-header-key="accredited-and-paid">ACCREDITED & PAID CHWS</button>
+            <div class="accredited-and-paid-chws-button-def">This dashboard focuses on two of the eight proCHW best practices: accreditation and compensation. These are strong indicators of professional CHW programs and are most consistently documented in national policies.</div>
+          </div>
+          <div class="button-with-tooltip">
+            <button type="button" id="accredited-chws-button" class="button" data-indicator="accreditation_cat" data-header-key="accredited">ACCREDITED CHWS</button>
+            <div class="accredited-chws-button-def">Does the government document explicitly recognize the roles, qualifications, and competencies of at least one CHW group?</div>
+          </div>
+          <div class="button-with-tooltip">
+            <button type="button" id="paid-chws-button" class="button" data-indicator="paid_cat" data-header-key="paid">PAID CHWS</button>
+            <div class="paid-chws-button-def">Does the government document include salary or other regular payments for at least one CHW group?</div>
+          </div>
+          <div class="button-with-tooltip">
+            <button type="button" id="implementation-evidence-button" class="button" data-indicator="any_implementation_evidence" data-header-key="implementation-evidence">IMPLEMENTATION EVIDENCE</button>
+            <div class="implementation-evidence-button-def">Is there evidence that the CHW policy is being implemented, based on the presence of at least 4 out of 7 proxy indicators?</div>
+          </div>
+          <div class="button-with-tooltip">
+            <button type="button" id="policy-status-button" class="button" data-indicator="doc_status" data-header-key="policy-status">POLICY STATUS</button>
+            <div class="policy-status-button-def">What is the status of the country's policy?
+            </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Search bar container -->
-      <div id="searchcontainer" class="searchcontainer">
-        <input type="text" id="country-search" placeholder="Search for a country..." class="search-input">
-        <div id="search-results" class="search-results"></div>
-      </div>
+        
+        <!-- Search bar container -->
+        <div id="searchcontainer" class="searchcontainer">
+          <input type="text" id="country-search" placeholder="Search for a country..." class="search-input">
+          <div id="search-results" class="search-results"></div>
+        </div>
 
+      </div>
     </div>
 
     <!-- Sidebar -->
@@ -1800,7 +1799,7 @@
       <!-- Country details section within sidebar -->
       <div id='country-details' class='country-details'>
 
-        <div id="country-name">Select a country to see details</div>
+        <div id="country-name">Select a country to see details.</div>
         <div id="out-of-scope-message" class="out-of-scope-text" style="display: none;">
           Out of Scope
         </div>
@@ -1874,7 +1873,7 @@
         <!-- Accreditation, Paid, Supervision, Skills, & Supplies Section -->
         <div id="accreditation-section" class="accreditation-section" style="display: none;">
           <div class="accreditation-section-header">
-            <div class="accreditation-section-title">ACCREDITED, PAID, SUPERVISED, SKILLED, & SUPPLIED</div>
+            <div class="accreditation-section-title">Accredited, Paid, Supervised, Skilled, & Supplied</div>
             <div class="accreditation-section-arrow">></div>
           </div>
           <div class="accreditation-section-subtitle">Does the policy include formal commitments related to professional CHWs?</div>
@@ -1969,10 +1968,10 @@
         <!-- Policy Implementation Section -->
         <div id="policy-implementation-section" class="accreditation-section" style="display: none;">
           <div class="accreditation-section-header">
-            <div class="accreditation-section-title">POLICY IMPLEMENTATION</div>
+            <div class="accreditation-section-title">Policy Implementation</div>
             <div class="accreditation-section-arrow">></div>
           </div>
-          <div class="accreditation-section-subtitle">Is there any evidence that the CHW policy is implemented, based on at least one of the seven proxy indicators?</div>
+          <div class="accreditation-section-subtitle">Is there any evidence that the CHW policy is being implemented, as measured by seven proxy indicators?</div>
           <div class="accreditation-section-content" style="display: none;">
             <!-- Domestic Financing Commitment Subsection -->
             <div class="accreditation-subsection">
@@ -2098,7 +2097,7 @@
         <!-- Policy Timeline Section -->
         <div id="policy-timeline-section" class="accreditation-section" style="display: none;">
           <div class="accreditation-section-header">
-            <div class="accreditation-section-title">POLICY TIMELINE</div>
+            <div class="accreditation-section-title">Policy Timeline</div>
             <div class="accreditation-section-arrow">></div>
           </div>
           <div class="accreditation-section-content" style="display: none;">
@@ -2137,6 +2136,7 @@
 
   // Initialize data
   let csvData = [];
+  let currentIndicator = 'paid_accredited_cat';
 
   // Basemap info
   mapboxgl.accessToken = 'pk.eyJ1IjoiY2hpY3BvbGljeWRhc2hib2FyZCIsImEiOiJjbGV5M3ZncXIwam96M3FuMGU4b3puMDVlIn0.aIXbEvRX7bYtEjBE2mmLTg';
@@ -2171,29 +2171,29 @@
   // Config for each map indicator: categories in legend display order
   const indicatorConfigs = {
     paid_accredited_cat: {
-      title: "Is at least one CHW group both accredited (fully or partially) & paid (salaried or regular pay)?",
+      title: "Is at least one CHW group both accredited & paid?",
       categories: [
-        { match: ["both"], color: "#9272d9", label: "Both (salaried or regular pay AND fully or partially accredited)" },
-        { match: ["only accredited or only paid"], color: "#20bdc5", label: "Only accredited (fully or partially) or only paid (salary or regular pay)" },
+        { match: ["both"], color: "#9272d9", label: "Both" },
+        { match: ["only accredited or only paid"], color: "#20bdc5", label: "Only accredited or only paid" },
         { match: ["neither", "no document available", "not specified in documents reviewed"], color: "#F36744", label: "Neither or no evidence in available sources" },
         { match: ["no known chws"], color: "#999999", label: "No known CHWs" },
       ]
     },
     accreditation_cat: {
-      title: "Is at least one CHW group accredited (fully or partially)?",
+      title: "Is at least one CHW group accredited?",
       categories: [
-        { match: ["yes"], color: "#9272d9", label: "Yes (all elements)", hoverLabel: "Yes" },
-        { match: ["partial"], color: "#20bdc5", label: "Partial (1-2 elements)", hoverLabel: "Partial" },
+        { match: ["yes"], color: "#9272d9", label: "Yes", hoverLabel: "Yes" },
+        { match: ["partial"], color: "#20bdc5", label: "Partial", hoverLabel: "Partial" },
         { match: ["no", "not specified in documents reviewed"], color: "#F36744", label: "No or no evidence in available sources", hoverLabel: "No" },
         { match: ["no known chws"], color: "#999999", label: "No known CHWs", hoverLabel: "No known CHWs" },
       ]
     },
     paid_cat: {
-      title: "Is at least one CHW group paid (salaried or regular pay)?",
+      title: "Is at least one CHW group paid?",
       categories: [
-        { match: ["yes, salaried"], color: "#9272d9", label: "Salaried (paid via the wage bill)", hoverLabel: "Yes" },
-        { match: ["partial, paid regularly"], color: "#20bdc5", label: "Regular pay (paid regular payments, e.g., monthly stipends)", hoverLabel: "Partial" },
-        { match: ["no, irregular pay or no evidence of payments", "not specified in documents reviewed"], color: "#F36744", label: "No (irregular pay, non-monetary incentives, or no evidence in available sources)", hoverLabel: "No" },
+        { match: ["yes, salaried"], color: "#9272d9", label: "Yes, salaried", hoverLabel: "Yes" },
+        { match: ["partial, paid regularly"], color: "#20bdc5", label: "Yes, paid regularly", hoverLabel: "Partial" },
+        { match: ["no, irregular pay or no evidence of payments", "not specified in documents reviewed"], color: "#F36744", label: "No or no evidence in available sources", hoverLabel: "No" },
         { match: ["no known chws"], color: "#999999", label: "No known CHWs", hoverLabel: "No known CHWs" },
       ]
     },
@@ -2207,10 +2207,10 @@
       ]
     },
     any_implementation_evidence: {
-      title: "Is there any evidence that the CHW policy is being implemented?",
+      title: "Is there evidence that the CHW policy is being implemented?",
       categories: [
-        { match: ["yes"], color: "#9272d9", label: "Yes (at least 1 proxy indicator)", hoverLabel: "Yes" },
-        { match: ["no", "no document available", "not specified in documents reviewed"], color: "#F36744", label: "No evidence in available sources", hoverLabel: "No" },
+        { match: ["yes"], color: "#9272d9", label: "Yes", hoverLabel: "Yes" },
+        { match: ["no", "no document available", "not specified in documents reviewed"], color: "#F36744", label: "No or no evidence in available sources", hoverLabel: "No" },
         { match: ["no known chws"], color: "#999999", label: "No known CHWs", hoverLabel: "No known CHWs" },
       ]
     }
@@ -2247,10 +2247,27 @@
   function setColorsToMap(indicatorName) {
     const config = indicatorConfigs[indicatorName];
     if (!config) return;
+    currentIndicator = indicatorName;
 
     // Bucket ISO codes by category (case-insensitive matching)
     const buckets = config.categories.map(() => []);
     csvData.forEach(row => {
+      if (indicatorName === 'any_implementation_evidence') {
+        const isCountdown = (row.countdown_country || '').trim().toUpperCase() !== 'FALSE';
+        const noKnown = (row.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
+        if (!isCountdown) {
+          // Out of scope — leave unbucketed so it falls through to the default #dbdbdb
+        } else if (noKnown) {
+          for (let i = 0; i < config.categories.length; i++) {
+            if (config.categories[i].match.includes('no known chws')) { buckets[i].push(row.ISO_A3); break; }
+          }
+        } else if (countImplementationYes(row) >= 4) {
+          buckets[0].push(row.ISO_A3);
+        } else {
+          buckets[1].push(row.ISO_A3);
+        }
+        return;
+      }
       const val = (row[indicatorName] || "").trim().toLowerCase();
       for (let i = 0; i < config.categories.length; i++) {
         if (config.categories[i].match.includes(val)) {
@@ -2272,12 +2289,45 @@
 
     map.setPaintProperty('country-boundaries', 'fill-color', caseExpression);
 
+    // Color Zanzibar overlay based on its CSV data (skip if layer not yet loaded)
+    const zanzibarRow = csvData && csvData.find(row => row.country && row.country.toLowerCase() === 'zanzibar');
+    if (zanzibarRow && map.getLayer('zanzibar-fill')) {
+      let zanzibarColor = '#dbdbdb';
+      if (indicatorName === 'any_implementation_evidence') {
+        const isCountdown = (zanzibarRow.countdown_country || '').trim().toUpperCase() !== 'FALSE';
+        const noKnown = (zanzibarRow.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
+        if (!isCountdown) zanzibarColor = '#dbdbdb';
+        else if (noKnown) zanzibarColor = config.categories.find(c => c.match.includes('no known chws'))?.color || '#999999';
+        else if (countImplementationYes(zanzibarRow) >= 4) zanzibarColor = config.categories[0].color;
+        else zanzibarColor = config.categories[1].color;
+      } else {
+        const val = (zanzibarRow[indicatorName] || '').trim().toLowerCase();
+        for (let i = 0; i < config.categories.length; i++) {
+          if (config.categories[i].match.includes(val)) { zanzibarColor = config.categories[i].color; break; }
+        }
+      }
+      map.setPaintProperty('zanzibar-fill', 'fill-color', zanzibarColor);
+    }
+
     // Build legend
-    document.getElementById('legend-title').textContent = config.title;
+    const definitionsLink = ' <i>(See detailed indicator definitions <a href="https://docs.google.com/document/d/1-j6hCm36V-SSW3tXQwpPaMVLOevq9Rrbr9Ctp1KvbO8/edit?tab=t.0#heading=h.44vji42ocmi0" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">here</a>)</i>';
+    document.getElementById('legend-title').innerHTML = config.title + definitionsLink;
     buildLegend(
       config.categories.map(c => c.color).concat("#dbdbdb"),
       config.categories.map(c => c.label).concat("Out of scope")
     );
+  }
+
+  function isZanzibar(row) {
+    return (row.country || '').trim().toLowerCase() === 'zanzibar';
+  }
+
+  function getZanzibarRow() {
+    return csvData && csvData.find(row => isZanzibar(row));
+  }
+
+  function isTanzania(row) {
+    return (row.country || '').trim().toLowerCase() === 'tanzania';
   }
 
   // Create function to sum countries with data available for denominator 
@@ -2286,6 +2336,7 @@
     let denominatorArray = [];
 
     csvData.forEach((row) => {
+      if (isZanzibar(row)) return;
       if (row[sumDenominator] === "Yes" || row[sumDenominator] === "No") {
         denominatorArray.push(row.ISO_A3);
       }
@@ -2300,20 +2351,55 @@
     const validValues = ["Both", "Neither", "Only accredited or only paid", "Not specified in documents reviewed"];
     let count = 0;
     csvData.forEach((row) => {
+      if (isZanzibar(row)) return;
       const val = (row.paid_accredited_cat || "").trim();
       if (validValues.includes(val)) count++;
     });
     return count;
   }
 
+  const implementationColumns = [
+    'domestic_financing_commitment', 'chw_budget_line_item', 'data_systems',
+    'merl', 'chw_registry', 'costed', 'operational'
+  ];
+
+  function countImplementationYes(row) {
+    return implementationColumns.filter(col =>
+      (row[col] || '').trim().toLowerCase() === 'yes'
+    ).length;
+  }
+
+  function getImplementationHoverLabel(row) {
+    const isCountdown = (row.countdown_country || '').trim().toUpperCase() !== 'FALSE';
+    const noKnown = (row.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
+    if (!isCountdown) return 'Out of scope';
+    if (noKnown) return 'No known CHWs';
+    if (countImplementationYes(row) >= 4) return 'Yes';
+    return 'No';
+  }
+
   // Create function to sum counts for tickers
   function sumIndicators(sumIndicatorName) {
 
     let indicatorArray = [];
+    const znzRow = getZanzibarRow();
 
     csvData.forEach((row) => {
-      if (row[sumIndicatorName] === "Yes") {
-        indicatorArray.push(row.ISO_A3);
+      if (isZanzibar(row)) return;
+      if (sumIndicatorName === 'any_implementation_evidence') {
+        const isCountdown = (row.countdown_country || '').trim().toUpperCase() !== 'FALSE';
+        const noKnown = (row.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
+        let qualifies = isCountdown && !noKnown && countImplementationYes(row) >= 4;
+        if (!qualifies && isTanzania(row) && znzRow) {
+          const znzCountdown = (znzRow.countdown_country || '').trim().toUpperCase() !== 'FALSE';
+          const znzNoKnown = (znzRow.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
+          qualifies = znzCountdown && !znzNoKnown && countImplementationYes(znzRow) >= 4;
+        }
+        if (qualifies) indicatorArray.push(row.ISO_A3);
+      } else {
+        let qualifies = row[sumIndicatorName] === "Yes";
+        if (!qualifies && isTanzania(row) && znzRow && znzRow[sumIndicatorName] === "Yes") qualifies = true;
+        if (qualifies) indicatorArray.push(row.ISO_A3);
       }
     });
 
@@ -2324,9 +2410,16 @@
   function countPolicyStatusActive() {
     if (!csvData) return 0;
     let count = 0;
+    const znzRow = getZanzibarRow();
     csvData.forEach((row) => {
+      if (isZanzibar(row)) return;
       const status = (row.policy_status || row.doc_status || "").toString().toLowerCase();
-      if (status === "active") count++;
+      let qualifies = status === "active";
+      if (!qualifies && isTanzania(row) && znzRow) {
+        const znzStatus = (znzRow.policy_status || znzRow.doc_status || "").toString().toLowerCase();
+        qualifies = znzStatus === "active";
+      }
+      if (qualifies) count++;
     });
     return count;
   }
@@ -2338,9 +2431,16 @@
     const matches = Array.isArray(yesValue)
       ? yesValue.map(v => v.toLowerCase())
       : [(yesValue || "").toLowerCase()];
+    const znzRow = getZanzibarRow();
     csvData.forEach((row) => {
+      if (isZanzibar(row)) return;
       const val = (row[columnName] || "").toString().trim().toLowerCase();
-      if (matches.includes(val)) count++;
+      let qualifies = matches.includes(val);
+      if (!qualifies && isTanzania(row) && znzRow) {
+        const znzVal = (znzRow[columnName] || "").toString().trim().toLowerCase();
+        qualifies = matches.includes(znzVal);
+      }
+      if (qualifies) count++;
     });
     return count;
   }
@@ -2353,27 +2453,27 @@
     switch (indicatorKey) {
       case "accredited-and-paid":
         numerator = countCategoricalYes("paid_accredited_cat", "both");
-        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS BOTH ACCREDITED AND PAID";
+        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS BOTH ACCREDITED AND PAID.";
         break;
       case "accredited":
         numerator = countCategoricalYes("accreditation_cat", ["yes", "partial"]);
-        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS ACCREDITED";
+        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS ACCREDITED.";
         break;
       case "paid":
         numerator = countCategoricalYes("paid_cat", ["yes, salaried", "partial, paid regularly"]);
-        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS PAID";
+        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS PAID.";
         break;
       case "policy-status":
         numerator = countPolicyStatusActive();
-        text = "COUNTRIES HAVE AN ACTIVE CHW POLICY";
+        text = "COUNTRIES HAVE AN ACTIVE CHW POLICY.";
         break;
       case "implementation-evidence":
         numerator = sumIndicators("any_implementation_evidence");
-        text = "COUNTRIES SHOW EVIDENCE OF CHW POLICY IMPLEMENTATION";
+        text = "COUNTRIES SHOW EVIDENCE OF CHW POLICY IMPLEMENTATION.";
         break;
       default:
         numerator = countCategoricalYes("paid_accredited_cat", "both");
-        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS BOTH ACCREDITED AND PAID";
+        text = "COUNTRIES CURRENTLY HAVE AT LEAST ONE CHW GROUP THAT IS BOTH ACCREDITED AND PAID.";
     }
     document.getElementById('total-accredited-and-paid').textContent = numerator + "/" + totalDenominator;
     document.getElementById('totaltext').textContent = text;
@@ -2394,6 +2494,50 @@
     } else {
       map.setZoom(0.5);
     }
+
+    // Zanzibar overlay from Mapbox tileset
+    map.addSource('zanzibar', {
+      type: 'vector',
+      url: 'mapbox://chicpolicydashboard.bwh6s65k'
+    });
+
+    map.addLayer({
+      id: 'zanzibar-mask',
+      type: 'line',
+      source: 'zanzibar',
+      'source-layer': 'zanzibar-7azhgq',
+      paint: {
+        'line-color': '#F4F1EB',
+        'line-width': 40,
+        'line-opacity': [
+          'step', ['zoom'],
+          0,
+          7, 1
+        ]
+      }
+    });
+
+    map.addLayer({
+      id: 'zanzibar-fill',
+      type: 'fill',
+      source: 'zanzibar',
+      'source-layer': 'zanzibar-7azhgq',
+      paint: {
+        'fill-color': '#dbdbdb',
+        'fill-opacity': 1
+      }
+    });
+
+    map.addLayer({
+      id: 'zanzibar-outline',
+      type: 'line',
+      source: 'zanzibar',
+      'source-layer': 'zanzibar-7azhgq',
+      paint: {
+        'line-color': '#ffffff',
+        'line-width': 1
+      }
+    });
 
     // Parse CSV text into array of objects keyed by header row
     function parseCSV(text) {
@@ -2530,9 +2674,10 @@
                 const lat = parseFloat(thisCountry.latitude);
                 
                 if (!isNaN(lng) && !isNaN(lat)) {
+                  const zoomLevel = isZanzibar(thisCountry) ? 7 : 3.5;
                   map.flyTo({
                     center: [lng, lat],
-                    zoom: 3.5,
+                    zoom: zoomLevel,
                     duration: 500,
                     essential: true
                   });
@@ -3524,20 +3669,72 @@
       const thisCountry = csvData.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3);
 
       if (thisCountry) {
-        popup.setLngLat(e.lngLat)
-          .setHTML(`
+        const isCountdown = (thisCountry.countdown_country || '').trim().toUpperCase() !== 'FALSE';
+        const noKnown = (thisCountry.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
+        let hoverHTML;
+        if (!isCountdown) {
+          hoverHTML = `<div><strong>${thisCountry.country}</strong><br>Out of scope</div>`;
+        } else if (noKnown) {
+          hoverHTML = `<div><strong>${thisCountry.country}</strong><br>No known CHWs</div>`;
+        } else {
+          hoverHTML = `
             <div>
               <strong>${thisCountry.country}</strong><br>
               Accredited: ${getHoverLabel('accreditation_cat', thisCountry.accreditation_cat)}<br>
               Paid: ${getHoverLabel('paid_cat', thisCountry.paid_cat)}<br>
-              Any implementation evidence: ${getHoverLabel('any_implementation_evidence', thisCountry.any_implementation_evidence)}
-            </div>
-          `)
+              Any implementation evidence: ${getImplementationHoverLabel(thisCountry)}
+            </div>`;
+        }
+        popup.setLngLat(e.lngLat)
+          .setHTML(hoverHTML)
           .addTo(map);
       }
     });
 
     map.on('mouseleave', 'country-boundaries', () => {
+      map.getCanvas().style.cursor = '';
+      popup.remove();
+    });
+
+    // Zanzibar click handler
+    map.on('click', 'zanzibar-fill', () => {
+      clearPersistentData();
+      const zanzibarData = csvData.find(row => row.country && row.country.toLowerCase() === 'zanzibar');
+      if (zanzibarData) {
+        document.getElementById('country-name').textContent = zanzibarData.country;
+        document.getElementById('date-last-updated').textContent = 'Date last updated: ' + zanzibarData.date_last_updated;
+        populateSidebar(zanzibarData);
+      }
+    });
+
+    // Zanzibar hover handler
+    map.on('mousemove', 'zanzibar-fill', (e) => {
+      map.getCanvas().style.cursor = 'pointer';
+      const zanzibarData = csvData.find(row => row.country && row.country.toLowerCase() === 'zanzibar');
+      if (zanzibarData) {
+        const isCountdown = (zanzibarData.countdown_country || '').trim().toUpperCase() !== 'FALSE';
+        const noKnown = (zanzibarData.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
+        let hoverHTML;
+        if (!isCountdown) {
+          hoverHTML = `<div><strong>${zanzibarData.country}</strong><br>Out of scope</div>`;
+        } else if (noKnown) {
+          hoverHTML = `<div><strong>${zanzibarData.country}</strong><br>No known CHWs</div>`;
+        } else {
+          hoverHTML = `
+            <div>
+              <strong>${zanzibarData.country}</strong><br>
+              Accredited: ${getHoverLabel('accreditation_cat', zanzibarData.accreditation_cat)}<br>
+              Paid: ${getHoverLabel('paid_cat', zanzibarData.paid_cat)}<br>
+              Any implementation evidence: ${getImplementationHoverLabel(zanzibarData)}
+            </div>`;
+        }
+        popup.setLngLat(e.lngLat)
+          .setHTML(hoverHTML)
+          .addTo(map);
+      }
+    });
+
+    map.on('mouseleave', 'zanzibar-fill', () => {
       map.getCanvas().style.cursor = '';
       popup.remove();
     });
@@ -3575,19 +3772,30 @@
       });
     });
 
+    function closePopup(overlay) {
+      overlay.style.display = 'none';
+      if (overlay.id === 'how-to-use-popup') {
+        localStorage.setItem('hasSeenHowToUse', 'true');
+      }
+    }
+
     document.querySelectorAll('.popup-overlay .close-button').forEach(btn => {
       btn.addEventListener('click', function () {
-        this.closest('.popup-overlay').style.display = 'none';
+        closePopup(this.closest('.popup-overlay'));
       });
     });
 
     document.querySelectorAll('.popup-overlay').forEach(overlay => {
       overlay.addEventListener('click', function (e) {
         if (e.target === this) {
-          this.style.display = 'none';
+          closePopup(this);
         }
       });
     });
+
+    if (!localStorage.getItem('hasSeenHowToUse')) {
+      document.getElementById('how-to-use-popup').style.display = 'flex';
+    }
 
     // Handle submission button clicks
     const externalLinks = {
@@ -3651,7 +3859,7 @@
       if (e.key === 'Escape') {
         document.querySelectorAll('.popup-overlay').forEach(overlay => {
           if (overlay.style.display === 'flex') {
-            overlay.style.display = 'none';
+            closePopup(overlay);
           }
         });
         document.querySelectorAll('.subsection-title-with-tooltip.tooltip-open').forEach(w => w.classList.remove('tooltip-open'));
