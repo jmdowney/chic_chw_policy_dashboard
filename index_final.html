@@ -3012,11 +3012,11 @@
           if (v === "yes, salaried") {
             indicatorElement.className = 'indicator-circle yes';
             indicatorElement.innerHTML = '✓';
-            textElement.textContent = 'YES';
+            textElement.textContent = 'SALARY';
           } else if (v === "partial, paid regularly") {
             indicatorElement.className = 'indicator-circle partial';
             indicatorElement.innerHTML = '−';
-            textElement.textContent = 'PARTIAL';
+            textElement.innerHTML = 'REGULAR<br>PAY';
           } else if (v === "no, irregular pay or no evidence of payments") {
             indicatorElement.className = 'indicator-circle no';
             indicatorElement.innerHTML = '✗';
