@@ -2310,7 +2310,7 @@
     }
 
     // Build legend
-    const definitionsLink = ' <i>(See detailed indicator definitions <a href="https://docs.google.com/document/d/1-j6hCm36V-SSW3tXQwpPaMVLOevq9Rrbr9Ctp1KvbO8/edit?tab=t.0#heading=h.44vji42ocmi0" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">here</a>)</i>';
+    const definitionsLink = ' <i>(See detailed indicator definitions <a href="https://drive.google.com/file/d/1R6NBbnOT9tzFo7_L1eyYhIGz6QDD7gO5/view" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">here</a>)</i>';
     document.getElementById('legend-title').innerHTML = config.title + definitionsLink;
     buildLegend(
       config.categories.map(c => c.color).concat("#dbdbdb"),
@@ -2595,10 +2595,8 @@
     }
 
     // Fetch CSV data - this is where CHIC team will update data quarterly
-    // WORKING VERSION - FOR STAGING:
+    // Version 2.0:
     const sheetId = '2PACX-1vRVJ_0tdtOBgKYBiUMzPmTHVSSQ489khWOMzBNd0JV6O9OfkpwX3jWgEffbFHuPcJac1MRd1HgyS5lD';
-    // VERSION WITH AIRTABLE: const sheetId = '2PACX-1vQywgpExVZxfgBYhfqWB6DdBJc2jfC-2bDQJ3g0N8M-YGP5Jn1rkAO2rp2tRZob2sTmObPucw0bIBlS';
-    // LIVE SPREADSHEET const sheetId = '2PACX-1vQan4RTDeRovJT7VqPhh15B6GLNhvxVGTILpyjOIfbfEEf2Sd0Ky5xpPsRlLS9_9GmHeWVIwNcIU5X8';
     fetch(`https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?output=csv`)
       .catch(err => { console.error('Failed to load CSV data:', err); })
       .then(resp => resp.text())
@@ -2829,7 +2827,7 @@
             link.addEventListener('click', function(e) {
               e.preventDefault();
               e.stopPropagation();
-              window.open('https://docs.google.com/forms/d/e/1FAIpQLSf6RhMgxEQgC07DA0ZMoDXzi-VQ3Svq3deCwL7rhpahOXFPmw/viewform?usp=header', '_blank');
+              window.open('https://joinchic.link/8iv', '_blank');
             });
           }
         }, 0);
@@ -2953,20 +2951,26 @@
       }
     }
 
-    // Shared helper: set source link(s); supports multiple sources (semicolon-separated) with matching links
+    // Shared helper: set source link(s); supports multiple sources separated by line breaks
     function setSource(sourceElement, sourceText, sourceLink, pageNumber) {
       if (sourceText && sourceText !== "No document available" && sourceText !== "Not specified in documents reviewed" && sourceText !== "" && 
           sourceLink && sourceLink !== "No document available" && sourceLink !== "Not specified in documents reviewed" && sourceLink !== "") {
-        const sources = sourceText.split(';').map(s => s.trim()).filter(Boolean);
-        const links = sourceLink.split(';').map(s => s.trim()).filter(Boolean);
+        const splitMultiValueField = (value) => {
+          if (!value) return [];
+          const byLine = value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+          return byLine;
+        };
+
+        const sources = splitMultiValueField(sourceText);
+        const links = splitMultiValueField(sourceLink);
         const pages = (pageNumber && pageNumber !== "No document available" && pageNumber !== "Not specified in documents reviewed")
-          ? pageNumber.split(';').map(s => s.trim())
+          ? splitMultiValueField(pageNumber)
           : [];
         const parts = [];
         for (let i = 0; i < sources.length; i++) {
           let displayText = sources[i];
-          const page = pages[i] !== undefined && pages[i] !== '' ? pages[i] : (pages[0] || '');
-          if (page) displayText = `${sources[i]} (${page})`;
+          const pageForSource = pages[i] !== undefined ? pages[i] : (pages.length === 1 ? pages[0] : '');
+          if (pageForSource) displayText = `${sources[i]} (${pageForSource})`;
           const link = links[i] && links[i].trim() !== '';
           if (link) {
             parts.push(`<a href="${links[i].trim()}" target="_blank">${displayText}</a>`);
@@ -3788,9 +3792,9 @@
 
     // Handle submission button clicks
     const externalLinks = {
-      'submit-correction-button': 'https://docs.google.com/forms/d/e/1FAIpQLSdgVi7LFEMk4ztwWPJQhXEhtQr6CUPldvCd7kGuKwEy-qxkLQ/viewform?usp=preview',
-      'submit-policy-button': 'https://docs.google.com/forms/d/e/1FAIpQLScOVmqZyiwVWaSUthgYE6p1XOY51TH763Ftr_LRHbtZItLXhA/viewform?usp=dialog',
-      'submit-association-button': 'https://docs.google.com/forms/d/e/1FAIpQLSf6RhMgxEQgC07DA0ZMoDXzi-VQ3Svq3deCwL7rhpahOXFPmw/viewform?usp=header',
+      'submit-correction-button': 'https://joinchic.link/11e',
+      'submit-policy-button': 'https://joinchic.link/u0f',
+      'submit-association-button': 'https://joinchic.link/8iv',
     };
     Object.entries(externalLinks).forEach(([id, url]) => {
       document.getElementById(id).addEventListener('click', () => window.open(url, '_blank'));
