@@ -4,13 +4,19 @@
 <head>
   <meta charset="utf-8">
   <title>CHW Policy Dashboard</title>
-  <meta name="viewport" content="initial-scale=1,width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet'>
   <link href="https://fonts.googleapis.com/css?family=Playfair Display" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
 
   <style>
+    /* Prevent iOS Safari from auto-inflating text in landscape (causes inconsistent sizes between sibling elements) */
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
     /* CSS Variables - Design System */
     :root {
       /* Colors */
@@ -28,6 +34,7 @@
       
       /* Typography */
       --font-primary: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+      /* Anton is a single-weight face; use normal so the browser does not faux-bold */
       --font-display: 'Anton', sans-serif;
       --font-accent: 'Playfair Display', serif;
       
@@ -143,6 +150,7 @@
       #totaltext {
         color: var(--color-primary-light);
         font-family: var(--font-display);
+        font-weight: normal;
         font-size: 4.4vw;
         overflow-wrap: normal;
         vertical-align: middle;
@@ -151,22 +159,26 @@
         margin-right: .5rem;
         line-height: 1.1em;
         text-align: left;
+        min-height: 2.2em;
+        display: flex;
+        align-items: center;
       }
 
       #total-accredited-and-paid {
         color: var(--color-background);
         font-family: var(--font-display);
+        font-weight: normal;
         font-size: 4vw;
         text-align: center;
         vertical-align: middle;
         background-color: var(--color-primary);
         margin: .5rem;
-        padding: .5rem;
+        padding: .5rem .75rem;
         border-radius: var(--radius-sm);
-        width: 7ch;
         min-width: 7ch;
-        max-width: 7ch;
+        width: max-content;
         box-sizing: border-box;
+        white-space: nowrap;
       }
 
       /* How to Use Dashboard button design */
@@ -193,10 +205,6 @@
         justify-content: center;
         gap: 0.3em;
         margin: 0;
-      }
-
-      .play-icon {
-        font-size: 0.8em;
       }
 
       .right a:link {
@@ -449,6 +457,7 @@
         font-size: 1.16rem;
         text-transform: uppercase;
         font-family: var(--font-display);
+        font-weight: normal;
         margin-bottom: 1em;
       }
 
@@ -540,7 +549,7 @@
       .chw-card-number {
         font-family: var(--font-display);
         font-size: 1.16rem;
-        font-weight: bold;
+        font-weight: normal;
         margin-bottom: .2em;
       }
 
@@ -565,9 +574,10 @@
         background-color: rgba(79, 32, 73, 0.08);
         border: none;
         border-radius: var(--radius-lg);
-        padding: .5em;
+        padding: .8em;
         font-family: var(--font-primary);
         font-size: .49rem;
+        line-height: 1.2;
         width: 100%;
       }
 
@@ -975,6 +985,7 @@
 
       .timeline-year {
         font-family: var(--font-display);
+        font-weight: normal;
         font-size: .7rem;
         color: var(--color-primary);
         margin-top: 2.2em;
@@ -1083,6 +1094,7 @@
       .popup-header h3 {
         margin: 0;
         font-family: var(--font-display);
+        font-weight: normal;
         color: var(--color-primary-light);
         font-size: 1.16rem;
         text-transform: uppercase;
@@ -1195,34 +1207,38 @@
         gap: 0.5em;
       }
 
-      .play-icon { font-size: 0.8em; }
       .right a:link { text-decoration: none; }
       .right a:visited { text-decoration: none; }
 
       #totaltext {
         color: var(--color-primary-light);
         font-family: var(--font-display);
+        font-weight: normal;
         vertical-align: middle;
         margin-top: 0.3em;
         margin-bottom: 0.3em;
         margin-right: 0.3em;
         line-height: 1.1em;
         text-align: left;
+        min-height: 2.2em;
+        display: flex;
+        align-items: center;
       }
 
       #total-accredited-and-paid {
         color: var(--color-background);
         font-family: var(--font-display);
+        font-weight: normal;
         text-align: center;
         vertical-align: middle;
         background-color: var(--color-primary);
         margin: 0.3em;
-        padding: 0.3em;
+        padding: 0.3em 0.5em;
         border-radius: var(--radius-md);
-        width: 7ch;
         min-width: 7ch;
-        max-width: 7ch;
+        width: max-content;
         box-sizing: border-box;
+        white-space: nowrap;
       }
 
       #map {
@@ -1304,6 +1320,7 @@
         font-size: clamp(1.2rem, 0.6rem + 1.8vw, 3rem);
         text-transform: uppercase;
         font-family: var(--font-display);
+        font-weight: normal;
         line-height: 1.1em;
         margin-bottom: 1em;
       }
@@ -1367,7 +1384,7 @@
       }
 
       .chw-card:hover { background-color: var(--color-primary-light); color: var(--color-background); }
-      .chw-card-number { font-family: var(--font-display); font-weight: bold; margin-bottom: .3em; }
+      .chw-card-number { font-family: var(--font-display); font-weight: normal; margin-bottom: .3em; }
       .chw-card-number-not-available { font-family: var(--font-primary); font-style: italic; font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem); }
       .chw-card-label { padding: .8em; font-family: var(--font-primary); font-size: clamp(0.41rem, 0.32rem + 0.41vw, 0.81rem); font-weight: normal; }
       .chw-popups-container { margin-bottom: 1em; }
@@ -1485,7 +1502,7 @@
       .timeline-inner-wrapper::before { content: ""; position: absolute; left: 0; right: 0; background-color: var(--color-primary); z-index: 0; }
       .timeline-item { position: relative; text-align: center; flex: 1 1 0; }
       .timeline-item::before { content: ""; position: absolute; left: 50%; transform: translateX(-50%); border-radius: 50%; background-color: var(--color-primary); border: 2px solid var(--color-light-gray); z-index: 1; }
-      .timeline-year { font-family: var(--font-display); color: var(--color-primary); text-align: center; }
+      .timeline-year { font-family: var(--font-display); font-weight: normal; color: var(--color-primary); text-align: center; }
       .timeline-milestones-container { display: flex; flex-direction: column; }
       .timeline-milestone { font-family: var(--font-primary); color: var(--color-primary-light); text-align: center; margin: 0 auto; }
       .timeline-milestone a { color: var(--color-primary-light); text-decoration: underline; }
@@ -1569,7 +1586,7 @@
       }
 
       .popup-header { display: flex; justify-content: space-between; gap: 2em; align-items: center; margin-bottom: 1em; padding-bottom: 0.5em; }
-      .popup-header h3 { margin: 0; font-family: var(--font-display); color: var(--color-primary-light); text-transform: uppercase; }
+      .popup-header h3 { margin: 0; font-family: var(--font-display); font-weight: normal; color: var(--color-primary-light); text-transform: uppercase; }
 
       .close-button {
         background: none; border: none; color: var(--color-primary); cursor: pointer; padding: 0;
@@ -1656,7 +1673,6 @@
       <!-- Right side of header -->
       <div class="header-section right">
         <button type="button" id="how-to-use-button" class="how-to-use-button" data-popup="how-to-use-popup">
-          <span class="play-icon">▶</span>
           HOW TO USE THE DASHBOARD
         </button>
       </div>
@@ -1724,10 +1740,11 @@
     <div id="submit-review-popup" class="popup-overlay">
       <div class="popup-content">
         <div class="popup-header">
-          <h3>SUBMIT FOR REVIEW</h3>
+          <h3>SUBMIT FOR REVIEW.</h3>
           <button type="button" id="close-submit-review-popup" class="close-button">&times;</button>
         </div>
         <div class="popup-body">
+          <p>Updates are reviewed on a rolling basis. Our team will review and respond to submissions within 6 weeks. Approved changes are reflected in quarterly updates.</p>
           <p style="margin-bottom: 1.5em;">What would you like to submit for review?</p>
           <div style="display: flex; flex-direction: column; gap: 1em;">
             <button type="button" id="submit-correction-button" class="buttonsidebar" style="width: 100%; padding: 1em; cursor: pointer; text-transform: uppercase;">
@@ -1767,11 +1784,11 @@
           </div>
           <div class="button-with-tooltip">
             <button type="button" id="accredited-chws-button" class="button" data-indicator="accreditation_cat" data-header-key="accredited">ACCREDITED CHWS</button>
-            <div class="accredited-chws-button-def">Does the government document explicitly recognize the roles, qualifications, and competencies of at least one CHW group?</div>
+            <div class="accredited-chws-button-def">Does the government document explicitly recognize the roles, qualifications, and competencies for at least one CHW group?</div>
           </div>
           <div class="button-with-tooltip">
             <button type="button" id="paid-chws-button" class="button" data-indicator="paid_cat" data-header-key="paid">PAID CHWS</button>
-            <div class="paid-chws-button-def">Does the government document include salary or other regular payments for at least one CHW group?</div>
+            <div class="paid-chws-button-def">Does the government document include salaries or other regular payments for at least one CHW group?</div>
           </div>
           <div class="button-with-tooltip">
             <button type="button" id="implementation-evidence-button" class="button" data-indicator="any_implementation_evidence" data-header-key="implementation-evidence">IMPLEMENTATION EVIDENCE</button>
@@ -1884,7 +1901,7 @@
                 <div class="subsection-title-with-tooltip">
                   <span class="accreditation-subsection-title">ACCREDITED</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document explicitly recognize the roles, qualifications, and competencies of at least one CHW group?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document explicitly recognize the roles, qualifications, and competencies for at least one CHW group?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="accreditation-description"></div>
                 <div class="accreditation-subsection-source" id="accreditation-source"></div>
@@ -1901,7 +1918,7 @@
                 <div class="subsection-title-with-tooltip">
                   <span class="accreditation-subsection-title">PAID</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
-                  <div class="sidebar-subsection-tooltip">Does the government document include salary or other regular payments for at least one CHW group?</div>
+                  <div class="sidebar-subsection-tooltip">Does the government document include salaries or other regular payments for at least one CHW group?</div>
                 </div>
                 <div class="accreditation-subsection-description" id="paid-description"></div>
                 <div class="accreditation-subsection-source" id="paid-source"></div>
@@ -2011,7 +2028,7 @@
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
                 <div class="subsection-title-with-tooltip">
-                  <span class="accreditation-subsection-title">DATA SYSTEMS / FEEDBACK LOOPS</span>
+                  <span class="accreditation-subsection-title">DATA SYSTEMS & FEEDBACK LOOPS</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
                   <div class="sidebar-subsection-tooltip">Does the government document describe a functional data system for CHWs?</div>
                 </div>
@@ -2028,7 +2045,7 @@
             <div class="accreditation-subsection">
               <div class="accreditation-subsection-content">
                 <div class="subsection-title-with-tooltip">
-                  <span class="accreditation-subsection-title">MONITORING, EVALUATION, RESEARCH &amp; LEARNING FRAMEWORK</span>
+                  <span class="accreditation-subsection-title">MONITORING, EVALUATION, RESEARCH, &amp; LEARNING FRAMEWORK</span>
                   <span class="subsection-info-icon" aria-hidden="true">i</span>
                   <div class="sidebar-subsection-tooltip">Does the government document describe a national MERL framework for measuring and tracking the performance of CHW programs?</div>
                 </div>
@@ -2310,7 +2327,7 @@
     }
 
     // Build legend
-    const definitionsLink = ' <i>(See detailed indicator definitions <a href="https://drive.google.com/file/d/1R6NBbnOT9tzFo7_L1eyYhIGz6QDD7gO5/view" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">here</a>)</i>';
+    const definitionsLink = ' <i>(See detailed indicator definitions <a href="https://drive.google.com/file/d/1Wx-suxBfYSG4XI558RCLPHN59XUb-UMy/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">here</a>)</i>';
     document.getElementById('legend-title').innerHTML = config.title + definitionsLink;
     buildLegend(
       config.categories.map(c => c.color).concat("#dbdbdb"),
@@ -2817,7 +2834,7 @@
         associationsList.innerHTML = '';
         const messageP = document.createElement('p');
         messageP.className = 'association-message';
-        messageP.innerHTML = 'CHIC is not aware of any CHW associations in this country. If you know of one, please <a href="#" id="submit-association-link">submit information here</a>.';
+        messageP.innerHTML = 'CHIC is not aware of any CHW associations in this country. If you know of one, please <a href="#" id="submit-association-link">submit information here</a>. Updates are reviewed on a rolling basis. Our team will review and respond to submissions within 6 weeks. Approved changes are reflected in quarterly updates.';
         associationsList.appendChild(messageP);
         
         // Add click event to the link
@@ -3661,45 +3678,6 @@
       }
     });
 
-    // Create popup on hover
-    const popup = new mapboxgl.Popup({
-      closeButton: false,
-      closeOnClick: false
-    });
-
-    map.on('mousemove', 'country-boundaries', (e) => {
-      map.getCanvas().style.cursor = 'pointer';
-
-      const thisCountry = csvData.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3);
-
-      if (thisCountry) {
-        const isCountdown = (thisCountry.countdown_country || '').trim().toUpperCase() !== 'FALSE';
-        const noKnown = (thisCountry.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
-        let hoverHTML;
-        if (!isCountdown) {
-          hoverHTML = `<div><strong>${thisCountry.country}</strong><br>Out of scope</div>`;
-        } else if (noKnown) {
-          hoverHTML = `<div><strong>${thisCountry.country}</strong><br>No known CHWs</div>`;
-        } else {
-          hoverHTML = `
-            <div>
-              <strong>${thisCountry.country}</strong><br>
-              Accredited: ${getHoverLabel('accreditation_cat', thisCountry.accreditation_cat)}<br>
-              Paid: ${getHoverLabel('paid_cat', thisCountry.paid_cat)}<br>
-              Any implementation evidence: ${getImplementationHoverLabel(thisCountry)}
-            </div>`;
-        }
-        popup.setLngLat(e.lngLat)
-          .setHTML(hoverHTML)
-          .addTo(map);
-      }
-    });
-
-    map.on('mouseleave', 'country-boundaries', () => {
-      map.getCanvas().style.cursor = '';
-      popup.remove();
-    });
-
     // Zanzibar click handler
     map.on('click', 'zanzibar-fill', () => {
       clearPersistentData();
@@ -3711,37 +3689,77 @@
       }
     });
 
-    // Zanzibar hover handler
-    map.on('mousemove', 'zanzibar-fill', (e) => {
-      map.getCanvas().style.cursor = 'pointer';
-      const zanzibarData = csvData.find(row => row.country && row.country.toLowerCase() === 'zanzibar');
-      if (zanzibarData) {
-        const isCountdown = (zanzibarData.countdown_country || '').trim().toUpperCase() !== 'FALSE';
-        const noKnown = (zanzibarData.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
-        let hoverHTML;
-        if (!isCountdown) {
-          hoverHTML = `<div><strong>${zanzibarData.country}</strong><br>Out of scope</div>`;
-        } else if (noKnown) {
-          hoverHTML = `<div><strong>${zanzibarData.country}</strong><br>No known CHWs</div>`;
-        } else {
-          hoverHTML = `
-            <div>
-              <strong>${zanzibarData.country}</strong><br>
-              Accredited: ${getHoverLabel('accreditation_cat', zanzibarData.accreditation_cat)}<br>
-              Paid: ${getHoverLabel('paid_cat', zanzibarData.paid_cat)}<br>
-              Any implementation evidence: ${getImplementationHoverLabel(zanzibarData)}
-            </div>`;
-        }
-        popup.setLngLat(e.lngLat)
-          .setHTML(hoverHTML)
-          .addTo(map);
-      }
-    });
+    // Country hover popups - only enabled on devices with true hover support (desktop/laptop)
+    if (window.matchMedia('(hover: hover)').matches) {
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      });
 
-    map.on('mouseleave', 'zanzibar-fill', () => {
-      map.getCanvas().style.cursor = '';
-      popup.remove();
-    });
+      map.on('mousemove', 'country-boundaries', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+
+        const thisCountry = csvData.find(row => row.ISO_A3 === e.features[0].properties.iso_3166_1_alpha_3);
+
+        if (thisCountry) {
+          const isCountdown = (thisCountry.countdown_country || '').trim().toUpperCase() !== 'FALSE';
+          const noKnown = (thisCountry.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
+          let hoverHTML;
+          if (!isCountdown) {
+            hoverHTML = `<div><strong>${thisCountry.country}</strong><br>Out of scope</div>`;
+          } else if (noKnown) {
+            hoverHTML = `<div><strong>${thisCountry.country}</strong><br>No known CHWs</div>`;
+          } else {
+            hoverHTML = `
+              <div>
+                <strong>${thisCountry.country}</strong><br>
+                Accredited: ${getHoverLabel('accreditation_cat', thisCountry.accreditation_cat)}<br>
+                Paid: ${getHoverLabel('paid_cat', thisCountry.paid_cat)}<br>
+                Any implementation evidence: ${getImplementationHoverLabel(thisCountry)}
+              </div>`;
+          }
+          popup.setLngLat(e.lngLat)
+            .setHTML(hoverHTML)
+            .addTo(map);
+        }
+      });
+
+      map.on('mouseleave', 'country-boundaries', () => {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+
+      map.on('mousemove', 'zanzibar-fill', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+        const zanzibarData = csvData.find(row => row.country && row.country.toLowerCase() === 'zanzibar');
+        if (zanzibarData) {
+          const isCountdown = (zanzibarData.countdown_country || '').trim().toUpperCase() !== 'FALSE';
+          const noKnown = (zanzibarData.accreditation_cat || '').trim().toLowerCase() === 'no known chws';
+          let hoverHTML;
+          if (!isCountdown) {
+            hoverHTML = `<div><strong>${zanzibarData.country}</strong><br>Out of scope</div>`;
+          } else if (noKnown) {
+            hoverHTML = `<div><strong>${zanzibarData.country}</strong><br>No known CHWs</div>`;
+          } else {
+            hoverHTML = `
+              <div>
+                <strong>${zanzibarData.country}</strong><br>
+                Accredited: ${getHoverLabel('accreditation_cat', zanzibarData.accreditation_cat)}<br>
+                Paid: ${getHoverLabel('paid_cat', zanzibarData.paid_cat)}<br>
+                Any implementation evidence: ${getImplementationHoverLabel(zanzibarData)}
+              </div>`;
+          }
+          popup.setLngLat(e.lngLat)
+            .setHTML(hoverHTML)
+            .addTo(map);
+        }
+      });
+
+      map.on('mouseleave', 'zanzibar-fill', () => {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+    }
 
     // Create hover on buttons with definitions - Desktop only
     // Check if device supports hover (desktop/laptop) and viewport is wide enough
